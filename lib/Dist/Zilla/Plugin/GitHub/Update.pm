@@ -45,7 +45,7 @@ In your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This Dist::Zilla Plugin updates the information of the GitHub repository
+This Dist::Zilla plugin updates the information of the GitHub repository
 when C<dzil release> is run.
 
 =cut

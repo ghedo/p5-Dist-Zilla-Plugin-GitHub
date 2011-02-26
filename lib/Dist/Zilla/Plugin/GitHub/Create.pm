@@ -40,7 +40,7 @@ In your F<profile.ini>:
 
 =head1 DESCRIPTION
 
-This Dist::Zilla Plugin creates a new git repository on GitHub.com when
+This Dist::Zilla plugin creates a new git repository on GitHub.com when
 a new distribution is created with C<dzil new>.
 
 =cut

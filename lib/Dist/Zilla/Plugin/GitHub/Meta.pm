@@ -33,7 +33,7 @@ In your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This Dist::Zilla Plugin adds some information about the distribution's
+This Dist::Zilla plugin adds some information about the distribution's
 GitHub repository to the META.{yml,json} files.
 
 =cut
