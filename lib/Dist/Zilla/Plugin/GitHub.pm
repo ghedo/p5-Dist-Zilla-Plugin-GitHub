@@ -28,6 +28,10 @@ integrate GitHub and Dist::Zilla:
 
 =back
 
+Both GitHub::Create and GitHub::Update used to be standalone modules
+(named respectively L<Dist::Zilla::Plugin::GithubCreate> and
+L<Dist::Zilla::Plugin::GithubUpdate>) that are now deprecated.
+
 =head1 AUTHOR
 
 Alessandro Ghedini <alexbio@cpan.org>
@@ -69,9 +73,6 @@ L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-GitHub>
 L<http://search.cpan.org/dist/Dist-Zilla-Plugin-GitHub/>
 
 =back
-
-=head1 SEE ALSO
-
 
 =head1 LICENSE AND COPYRIGHT
 
