@@ -138,47 +138,6 @@ value of C<github.token> from the Git configuration, to set it, type:
 
 Alessandro Ghedini <alexbio@cpan.org>
 
-=head1 BUGS
-
-Please report any bugs or feature requests at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dist-Zilla-Plugin-GitHub>.
-I will be notified, and then you'll automatically be notified of progress
-on your bug as I make changes.
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Dist::Zilla::Plugin::GitHub::Meta
-
-You can also look for information at:
-
-=over 4
-
-=item * GitHub page
-
-L<http://github.com/AlexBio/Dist-Zilla-Plugin-GitHub>
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dist-Zilla-Plugin-GitHub>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Dist-Zilla-Plugin-GitHub>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Dist-Zilla-Plugin-GitHub>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Dist-Zilla-Plugin-GitHub/>
-
-=back
-
-=head1 SEE ALSO
-
-
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2011 Alessandro Ghedini.
