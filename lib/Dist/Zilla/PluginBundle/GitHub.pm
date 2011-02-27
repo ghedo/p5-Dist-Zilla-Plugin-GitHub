@@ -7,18 +7,11 @@ use strict;
 
 with 'Dist::Zilla::Role::PluginBundle::Easy';
 
-has login => (
+has repo => (
 	is      => 'ro',
 	isa     => 'Maybe[Str]',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {login} }
-);
-
-has token => (
-	is   	=> 'ro',
-	isa     => 'Maybe[Str]',
-	lazy    => 1,
-	default => sub { $_[0] -> payload -> {token} }
+	default => sub { $_[0] -> payload -> {repo} }
 );
 
 has cpan => (
@@ -41,9 +34,15 @@ Dist::Zilla::PluginBundle::GitHub - GitHub plugins all-in-one
 
 =head1 SYNOPSIS
 
-In your F<dist.ini>:
+Configure git with your GitHub credentials:
+
+    $ git config --global github.user LoginName
+    $ git config --global github.token GitHubToken
+
+then, in your F<dist.ini>:
 
     [@GitHub]
+    repo = SomeRepo
 
 =head1 DESCRIPTION
 
@@ -56,15 +55,13 @@ sub configure {
 
 	$self -> add_plugins(
 		['GitHub::Meta' => {
-			login => $self -> login,
-			token => $self -> token
+			repo => $self -> repo,
 		}],
 
 		['GitHub::Update' => {
-			login => $self -> login,
-			token => $self -> token,
+			repo => $self -> repo,
 			cpan  => $self -> cpan,
-			p3rl  => $self -> p3rl
+			p3rl  => $self -> p3rl,
 		}]
 	);
 }
@@ -73,19 +70,10 @@ sub configure {
 
 =over
 
-=item C<login>
+=item C<repo>
 
-The GitHub login name. If not provided, will be used the value of
-C<github.user> from the Git configuration, to set it, type:
-
-    $ git config --global github.user LoginName
-
-=item C<token>
-
-The GitHub API token for the user. If not provided, will be used the
-value of C<github.token> from the Git configuration, to set it, type:
-
-    $ git config --global github.token GitHubToken
+The name of the GitHub repository. By default the dist name (from dist.ini)
+is used.
 
 =item C<cpan>
 

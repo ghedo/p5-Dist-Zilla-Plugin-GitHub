@@ -9,14 +9,9 @@ use strict;
 
 with 'Dist::Zilla::Role::MetaProvider';
 
-has login => (
+has repo => (
 	is      => 'ro',
 	isa     => 'Maybe[Str]',
-);
-
-has token => (
-	is   	=> 'ro',
-	isa  	=> 'Maybe[Str]',
 );
 
 =head1 NAME
@@ -25,11 +20,15 @@ Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
 
 =head1 SYNOPSIS
 
-In your F<dist.ini>:
+Configure git with your GitHub credentials:
+
+    $ git config --global github.user LoginName
+    $ git config --global github.token GitHubToken
+
+then, in your F<dist.ini>:
 
     [GitHub::Meta]
-    login  = LoginName
-    token  = GitHubToken
+    repo = SomeRepo
 
 =head1 DESCRIPTION
 
@@ -42,20 +41,11 @@ sub metadata {
 	my $self 	= shift;
 	my ($opts) 	= @_;
 	my $base_url	= 'https://github.com/api/v2/json';
-	my $repo_name	= $self -> zilla -> name;
-	my ($login, $token);
+	my $repo_name	= $self -> repo || $self -> zilla -> name;
 
-	if ($self -> login) {
-		$login = $self -> login;
-	} else {
-		$login = `git config github.user`;
-	}
+	my $login = `git config github.user`;
 
-	if ($self -> token) {
-		$token = $self -> token;
-	} else {
-		$token = `git config github.token`;
-	}
+	my $token = `git config github.token`;
 
 	chomp $login; chomp $token;
 
@@ -118,19 +108,10 @@ sub metadata {
 
 =over
 
-=item C<login>
+=item C<repo>
 
-The GitHub login name. If not provided, will be used the value of
-C<github.user> from the Git configuration, to set it, type:
-
-    $ git config --global github.user LoginName
-
-=item C<token>
-
-The GitHub API token for the user. If not provided, will be used the
-value of C<github.token> from the Git configuration, to set it, type:
-
-    $ git config --global github.token GitHubToken
+The name of the GitHub repository. By default the dist name (from dist.ini)
+is used.
 
 =back
 
