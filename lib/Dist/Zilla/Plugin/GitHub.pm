@@ -5,7 +5,7 @@ use strict;
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub - Set of Plugin for working with GitHub
+Dist::Zilla::Plugin::GitHub - Set of plugins for working with GitHub
 
 =head1 SYNOPSIS
 
