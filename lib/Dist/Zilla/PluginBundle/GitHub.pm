@@ -9,14 +9,14 @@ with 'Dist::Zilla::Role::PluginBundle::Easy';
 
 has login => (
 	is      => 'ro',
-	isa     => 'Str',
+	isa     => 'Maybe[Str]',
 	lazy    => 1,
 	default => sub { $_[0] -> payload -> {login} }
 );
 
 has token => (
 	is   	=> 'ro',
-	isa     => 'Str',
+	isa     => 'Maybe[Str]',
 	lazy    => 1,
 	default => sub { $_[0] -> payload -> {token} }
 );

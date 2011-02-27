@@ -11,12 +11,12 @@ with 'Dist::Zilla::Role::MetaProvider';
 
 has login => (
 	is      => 'ro',
-	isa     => 'Str',
+	isa     => 'Maybe[Str]',
 );
 
 has token => (
 	is   	=> 'ro',
-	isa  	=> 'Str',
+	isa  	=> 'Maybe[Str]',
 );
 
 =head1 NAME

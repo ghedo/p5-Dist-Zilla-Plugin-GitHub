@@ -10,12 +10,12 @@ with 'Dist::Zilla::Role::Releaser';
 
 has login => (
 	is      => 'ro',
-	isa     => 'Str',
+	isa     => 'Maybe[Str]',
 );
 
 has token => (
 	is   	=> 'ro',
-	isa  	=> 'Str',
+	isa  	=> 'Maybe[Str]',
 );
 
 has cpan => (
