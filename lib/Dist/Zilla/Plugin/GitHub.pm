@@ -7,14 +7,6 @@ use strict;
 
 Dist::Zilla::Plugin::GitHub - Set of plugins for working with GitHub
 
-=head1 SYNOPSIS
-
-Synopsis section
-
-    use Dist::Zilla::Plugin::GitHub;
-
-    ...
-
 =head1 DESCRIPTION
 
 The following is a list of Plugin in this distribution to help you
@@ -27,6 +19,8 @@ integrate GitHub and Dist::Zilla:
 =item * L<Dist::Zilla::Plugin::GitHub::Update> Update GitHub repo info on release
 
 =item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to META.{yml,json}
+
+=item * L<Dist::Zilla::Plugin::GitHub::ListIssues> List module's GitHub issues before the release
 
 =back
 
