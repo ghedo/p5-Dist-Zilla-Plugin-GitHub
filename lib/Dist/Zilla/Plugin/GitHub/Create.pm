@@ -9,7 +9,7 @@ use strict;
 
 with 'Dist::Zilla::Role::AfterMint';
 
-has public => (
+has 'public' => (
 	is   	=> 'ro',
 	isa  	=> 'Bool',
 	default	=> 1

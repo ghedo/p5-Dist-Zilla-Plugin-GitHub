@@ -6,20 +6,17 @@ use HTTP::Tiny;
 use warnings;
 use strict;
 
+extends 'Dist::Zilla::Plugin::GitHub';
+
 with 'Dist::Zilla::Role::Releaser';
 
-has repo => (
-	is      => 'ro',
-	isa     => 'Maybe[Str]',
-);
-
-has cpan => (
+has 'cpan' => (
 	is   	=> 'ro',
 	isa  	=> 'Bool',
 	default => 1
 );
 
-has p3rl => (
+has 'p3rl' => (
 	is   	=> 'ro',
 	isa  	=> 'Bool',
 	default => 0

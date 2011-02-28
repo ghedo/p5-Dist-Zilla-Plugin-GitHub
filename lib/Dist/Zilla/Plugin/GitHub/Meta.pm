@@ -7,29 +7,26 @@ use HTTP::Tiny;
 use warnings;
 use strict;
 
+extends 'Dist::Zilla::Plugin::GitHub';
+
 with 'Dist::Zilla::Role::MetaProvider';
 
-has repo => (
+has 'homepage' => (
 	is      => 'ro',
-	isa     => 'Maybe[Str]',
+	isa     => 'Maybe[Bool]',
+	default => 1
 );
 
-has homepage => (
+has 'bugs' => (
 	is      => 'ro',
-	isa     => 'Bool',
-	default => 1,
+	isa     => 'Maybe[Bool]',
+	default => 1
 );
 
-has bugs => (
+has 'wiki' => (
 	is      => 'ro',
-	isa     => 'Bool',
-	default => 1,
-);
-
-has wiki => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 0,
+	isa     => 'Maybe[Bool]',
+	default => 0
 );
 
 =head1 NAME
@@ -132,6 +129,16 @@ sub metadata {
 
 The name of the GitHub repository. By default the dist name (from dist.ini)
 is used.
+
+=item C<homepage>
+
+If set to '1' (default), the META homepage field will be set to the
+value of the homepage field set on the GitHub repository's info.
+
+=item C<bugs>
+
+If set to '1' (default), the META bugtracker web field will be set to the
+issue's page of the repository on GitHub.
 
 =back
 

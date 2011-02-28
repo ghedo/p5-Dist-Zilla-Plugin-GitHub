@@ -5,27 +5,52 @@ use Moose;
 use warnings;
 use strict;
 
+extends 'Dist::Zilla::Plugin::GitHub';
+
 with 'Dist::Zilla::Role::PluginBundle::Easy';
 
-has repo => (
-	is      => 'ro',
-	isa     => 'Maybe[Str]',
+has '+repo' => (
 	lazy    => 1,
 	default => sub { $_[0] -> payload -> {repo} }
 );
 
-has cpan => (
-	is   	=> 'ro',
+# GitHub::Meta
+
+has 'homepage' => (
+	is      => 'ro',
 	isa     => 'Bool',
 	lazy    => 1,
-	default => 1
+	default => sub { $_[0] -> payload -> {homepage} }
 );
 
-has p3rl => (
-	is   	=> 'ro',
+has 'bugs' => (
+	is      => 'ro',
 	isa     => 'Bool',
 	lazy    => 1,
-	default => 0
+	default => sub { $_[0] -> payload -> {bugs} }
+);
+
+has 'wiki' => (
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub { $_[0] -> payload -> {wiki} }
+);
+
+# GitHub::Update
+
+has 'cpan' => (
+	is   	=> 'ro',
+	isa  	=> 'Bool',
+	lazy    => 1,
+	default => sub { $_[0] -> payload -> {cpan} }
+);
+
+has 'p3rl' => (
+	is   	=> 'ro',
+	isa  	=> 'Bool',
+	lazy    => 1,
+	default => sub { $_[0] -> payload -> {p3rl} }
 );
 
 =head1 NAME
@@ -55,13 +80,16 @@ sub configure {
 
 	$self -> add_plugins(
 		['GitHub::Meta' => {
-			repo => $self -> repo,
+			repo => defined $self -> repo ? $self -> repo : undef,
+			homepage => defined $self -> homepage ? $self -> homepage : undef,
+			bugs => defined $self -> bugs ? $self -> bugs : undef,
+			wiki => defined $self -> wiki ? $self -> wiki : undef
 		}],
 
 		['GitHub::Update' => {
-			repo => $self -> repo,
-			cpan  => $self -> cpan,
-			p3rl  => $self -> p3rl,
+			repo => defined $self -> repo ? $self -> repo : undef,
+			cpan => defined $self -> cpan ? $self -> cpan : undef,
+			p3rl => defined $self -> p3rl ? $self -> p3rl : undef
 		}]
 	);
 }

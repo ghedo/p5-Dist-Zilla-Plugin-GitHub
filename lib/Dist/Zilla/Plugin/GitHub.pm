@@ -1,7 +1,14 @@
 package Dist::Zilla::Plugin::GitHub;
 
+use Moose;
+
 use warnings;
 use strict;
+
+has 'repo' => (
+	is      => 'ro',
+	isa     => 'Maybe[Str]'
+);
 
 =head1 NAME
 
