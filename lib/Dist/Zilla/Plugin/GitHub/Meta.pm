@@ -14,6 +14,24 @@ has repo => (
 	isa     => 'Maybe[Str]',
 );
 
+has homepage => (
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1,
+);
+
+has bugs => (
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1,
+);
+
+has wiki => (
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0,
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
@@ -83,23 +101,25 @@ sub metadata {
 		$wiki = "$git_web/wiki";
 	}
 
-	my $meta = {
-		'resources' => {
+	my $meta -> {'resources'} = {
 			'repository' => {
 				'web'  => $git_web,
 				'url'  => $git_url,
 				'type' => 'git'
-			},
+			}
+		};
 
-			'homepage'   => $homepage,
+	if ($self -> homepage == 1) {
+		$meta -> {'resources'} -> {'homepage'} = $homepage;
+	}
 
-			'bugtracker' => {
-				'web' => $bugtracker
-			},
+	if ($self -> bugs == 1) {
+		$meta -> {'resources'} -> {'bugtracker'} = { 'web' => $bugtracker };
+	}
 
-			'x_wiki'     => $wiki,
-		}
-	};
+	if ($self -> wiki == 1) {
+		$meta -> {'resources'} -> {'x_wiki'} = $wiki;
+	}
 
 	return $meta;
 }
