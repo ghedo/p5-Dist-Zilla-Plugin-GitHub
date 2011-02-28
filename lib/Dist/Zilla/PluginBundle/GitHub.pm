@@ -20,21 +20,30 @@ has 'homepage' => (
 	is      => 'ro',
 	isa     => 'Bool',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {homepage} }
+	default => sub {
+			defined $_[0] -> payload -> {homepage} ?
+				$_[0] -> payload -> {homepage} : 1
+		}
 );
 
 has 'bugs' => (
 	is      => 'ro',
 	isa     => 'Bool',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {bugs} }
+	default => sub {
+			defined $_[0] -> payload -> {bugs} ?
+				$_[0] -> payload -> {bugs} : 1
+		}
 );
 
 has 'wiki' => (
 	is      => 'ro',
 	isa     => 'Bool',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {wiki} }
+	default => sub {
+			defined $_[0] -> payload -> {wiki} ?
+				$_[0] -> payload -> {wiki} : 0
+		}
 );
 
 # GitHub::Update
@@ -43,14 +52,20 @@ has 'cpan' => (
 	is   	=> 'ro',
 	isa  	=> 'Bool',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {cpan} }
+	default => sub {
+			defined $_[0] -> payload -> {cpan} ?
+				$_[0] -> payload -> {cpan} : 1
+		}
 );
 
 has 'p3rl' => (
 	is   	=> 'ro',
 	isa  	=> 'Bool',
 	lazy    => 1,
-	default => sub { $_[0] -> payload -> {p3rl} }
+	default => sub {
+			defined $_[0] -> payload -> {p3rl} ?
+				$_[0] -> payload -> {p3rl} : 0
+		}
 );
 
 =head1 NAME
@@ -80,16 +95,16 @@ sub configure {
 
 	$self -> add_plugins(
 		['GitHub::Meta' => {
-			repo => defined $self -> repo ? $self -> repo : undef,
-			homepage => defined $self -> homepage ? $self -> homepage : undef,
-			bugs => defined $self -> bugs ? $self -> bugs : undef,
-			wiki => defined $self -> wiki ? $self -> wiki : undef
+			repo => $self -> repo,
+			homepage => $self -> homepage,
+			bugs => $self -> bugs,
+			wiki => $self -> wiki
 		}],
 
 		['GitHub::Update' => {
-			repo => defined $self -> repo ? $self -> repo : undef,
-			cpan => defined $self -> cpan ? $self -> cpan : undef,
-			p3rl => defined $self -> p3rl ? $self -> p3rl : undef
+			repo => $self -> repo,
+			cpan => $self -> cpan,
+			p3rl => $self -> p3rl
 		}]
 	);
 }
