@@ -20,8 +20,6 @@ integrate GitHub and Dist::Zilla:
 
 =item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to META.{yml,json}
 
-=item * L<Dist::Zilla::Plugin::GitHub::ListIssues> List module's GitHub issues before the release
-
 =back
 
 Both GitHub::Create and GitHub::Update used to be standalone modules
