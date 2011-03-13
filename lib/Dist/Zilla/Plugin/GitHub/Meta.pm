@@ -140,7 +140,7 @@ sub metadata {
 
 	}
 
-	if ($self -> bugs && $self -> bugs == 1) {
+	if ($self -> bugs && $self -> bugs == 1 && $bugtracker) {
 		$meta -> {'resources'} -> {'bugtracker'} = { 'web' => $bugtracker };
 	}
 
