@@ -49,6 +49,33 @@ then, in your F<dist.ini>:
 
 This Dist::Zilla plugin adds some information about the distribution's
 GitHub repository to the META.{yml,json} files.
+It currently sets the following fields:
+
+=over 4
+
+=item * C<homepage> - Project's homepage
+
+=item * C<repository> - Github repository's information
+
+=over 4
+
+=item * C<web>
+
+=item * C<url>
+
+=item * C<type>
+
+=back
+
+=item * C<bugtracker> - Github issues tracker's information
+
+=over 4
+
+=item * C<web>
+
+=back
+
+=back
 
 =cut
 
@@ -138,7 +165,8 @@ value of the homepage field set on the GitHub repository's info.
 =item C<bugs>
 
 If set to '1' (default), the META bugtracker web field will be set to the
-issue's page of the repository on GitHub.
+issue's page of the repository on GitHub, if happens to be activated (see the
+GitHub repository's C<Admin> panel).
 
 =back
 
