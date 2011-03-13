@@ -135,7 +135,7 @@ sub metadata {
 
 	if ($self -> wiki && $self -> wiki == 1 && $wiki) {
 		$meta -> {'resources'} -> {'homepage'} = $wiki;
-	} elsif ($self -> homepage && $self -> homepage == 1) {
+	} elsif ($self -> homepage && $self -> homepage == 1 && $homepage) {
 		$meta -> {'resources'} -> {'homepage'} = $homepage;
 
 	}
