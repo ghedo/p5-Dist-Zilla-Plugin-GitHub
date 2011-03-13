@@ -123,6 +123,12 @@ is used.
 If set to '1' (default), the META homepage field will be set to the
 value of the homepage field set on the GitHub repository's info.
 
+=item C<wiki>
+
+If set to '1' (default '0'), the META homepage field will be set to the
+URL of the wiki of the GitHub repository, if happens to be activated (see the
+GitHub repository's C<Admin> panel).
+
 =item C<bugs>
 
 If set to '1' (default), the META bugtracker web field will be set to the
