@@ -70,7 +70,7 @@ sub release {
 	my @params;
 
 	push @params, "login=$login", "token=$token",
-			'values[description]'.$self -> zilla -> abstract;
+			'values[description]='.$self -> zilla -> abstract;
 
 	if ($self -> p3rl == 1) {
 		my $guess_name = $repo_name;
