@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 6;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -49,7 +49,9 @@ TODO: {
   );
 
   module_boilerplate_ok('lib/Dist/Zilla/Plugin/GitHub/Create.pm');
+  module_boilerplate_ok('lib/Dist/Zilla/Plugin/GitHub/Meta.pm');
   module_boilerplate_ok('lib/Dist/Zilla/Plugin/GitHub/Update.pm');
+  module_boilerplate_ok('lib/Dist/Zilla/PluginBundle/GitHub.pm');
 
 
 }
