@@ -83,20 +83,6 @@ sub after_mint {
 
 =over
 
-=item C<login>
-
-The GitHub login name. If not provided, will be used the value of
-C<github.user> from the Git configuration, to set it, type:
-
-    $ git config --global github.user LoginName
-
-=item C<token>
-
-The GitHub API token for the user. If not provided, will be used the
-value of C<github.token> from the Git configuration, to set it, type:
-
-    $ git config --global github.token GitHubToken
-
 =item C<public>
 
 Create a public repository if this is '1' (default), else create a private one.
