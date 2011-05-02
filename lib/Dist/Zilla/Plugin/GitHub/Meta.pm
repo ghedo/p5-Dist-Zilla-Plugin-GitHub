@@ -87,13 +87,11 @@ sub metadata {
 
 	my $login = `git config github.user`;
 
-	my $token = `git config github.token`;
-
-	chomp $login; chomp $token;
+	chomp $login;
 
 	$self -> log("Getting GitHub repository info");
 
-	if (!$login || !$token) {
+	if (! $login) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
