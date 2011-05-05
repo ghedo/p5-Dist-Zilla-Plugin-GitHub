@@ -1,6 +1,7 @@
 package Dist::Zilla::Plugin::GitHub;
 
 use Moose;
+use HTTP::Tiny;
 
 use warnings;
 use strict;

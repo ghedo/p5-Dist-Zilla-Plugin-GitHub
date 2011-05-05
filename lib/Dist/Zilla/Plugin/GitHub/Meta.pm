@@ -2,7 +2,6 @@ package Dist::Zilla::Plugin::GitHub::Meta;
 
 use Moose;
 use JSON;
-use HTTP::Tiny;
 
 use warnings;
 use strict;

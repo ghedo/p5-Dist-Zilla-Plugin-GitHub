@@ -1,7 +1,6 @@
 package Dist::Zilla::Plugin::GitHub::Create;
 
 use Moose;
-use HTTP::Tiny;
 use File::Basename;
 
 use warnings;
