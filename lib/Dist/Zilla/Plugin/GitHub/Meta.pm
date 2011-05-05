@@ -48,30 +48,44 @@ then, in your F<dist.ini>:
 =head1 DESCRIPTION
 
 This Dist::Zilla plugin adds some information about the distribution's
-GitHub repository to the META.{yml,json} files.
+GitHub repository to the META.{yml,json} files, using the official L<CPAN::Meta>
+specification.
+
 It currently sets the following fields:
 
 =over 4
 
-=item * C<homepage> - Project's homepage
+=item * C<homepage>
 
-=item * C<repository> - Github repository's information
+The official home of this project on the web, taken from the GitHub repository
+info. If the C<bugs> option is set to '0' this will be skipped.
+
+=item * C<repository>
 
 =over 4
 
 =item * C<web>
+
+URL pointing to the GitHub page of the project.
 
 =item * C<url>
 
+URL pointing to the GitHub repository (C<git://...>).
+
 =item * C<type>
+
+This is set to C<git> by default.
 
 =back
 
-=item * C<bugtracker> - Github issues tracker's information
+=item * C<bugtracker>
 
 =over 4
 
 =item * C<web>
+
+URL pointing to the GitHub issues page of the project. If the C<bugs> option is
+set to '0' or the issues are disabled in the GitHub repository, this will be skipped.
 
 =back
 
