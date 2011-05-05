@@ -35,8 +35,10 @@ integrate GitHub and Dist::Zilla:
 
 =back
 
-Both GitHub::Create and GitHub::Update used to be standalone modules
-(named respectively L<Dist::Zilla::Plugin::GithubCreate> and
+=head1 ACKNOWLEDGMENTS
+
+Both the GitHub::Create and the GitHub::Update modules used to be standalone
+modules (named respectively L<Dist::Zilla::Plugin::GithubCreate> and
 L<Dist::Zilla::Plugin::GithubUpdate>) that are now deprecated.
 
 =head1 AUTHOR
