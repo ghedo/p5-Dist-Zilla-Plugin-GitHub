@@ -10,6 +10,12 @@ has 'repo' => (
 	isa     => 'Maybe[Str]'
 );
 
+has 'api'  => (
+	is      => 'ro',
+	isa     => 'Str',
+	default => 'https://github.com/api/v2/json'
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub - Set of plugins for working with GitHub

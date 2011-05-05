@@ -49,14 +49,10 @@ when C<dzil release> is run.
 sub release {
 	my $self 	= shift;
 	my ($opts) 	= @_;
-	my $base_url	= 'https://github.com/api/v2/json';
 	my $repo_name	= $self -> repo || $self -> zilla -> name;
 
-	my $login = `git config github.user`;
-
-	my $token = `git config github.token`;
-
-	chomp $login; chomp $token;
+	my $login = `git config github.user`;  chomp $login;
+	my $token = `git config github.token`; chomp $token;
 
 	$self -> log("Updating GitHub repository info");
 
@@ -67,9 +63,7 @@ sub release {
 
 	my $http = HTTP::Tiny -> new();
 
-	my @params;
-
-	push @params, "login=$login", "token=$token",
+	push my @params, "login=$login", "token=$token",
 			'values[description]='.$self -> zilla -> abstract;
 
 	if ($self -> p3rl == 1) {
@@ -80,8 +74,7 @@ sub release {
 		push @params, "values[homepage]=http://search.cpan.org/dist/$repo_name/"
 	}
 
-	my $url 	= "$base_url/repos/show/$login/$repo_name";
-
+	my $url 	= $self -> api."/repos/show/$login/$repo_name";
 	my $response	= $http -> request('POST', $url, {
 		content => join("&", @params),
 		headers => {'content-type' => 'application/x-www-form-urlencoded'}

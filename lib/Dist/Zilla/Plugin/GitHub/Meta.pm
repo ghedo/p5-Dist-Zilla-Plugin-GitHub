@@ -82,24 +82,19 @@ It currently sets the following fields:
 sub metadata {
 	my $self 	= shift;
 	my ($opts) 	= @_;
-	my $base_url	= 'https://github.com/api/v2/json';
 	my $repo_name	= $self -> repo || $self -> zilla -> name;
 
-	my $login = `git config github.user`;
-
-	chomp $login;
+	my $login = `git config github.user`; chomp $login;
 
 	$self -> log("Getting GitHub repository info");
 
-	if (! $login) {
+	if (!$login) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
-	my $http = HTTP::Tiny -> new();
-
-	my $url = "$base_url/repos/show/$login/$repo_name";
-
+	my $http	= HTTP::Tiny -> new();
+	my $url		= $self -> api."/repos/show/$login/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
 	if ($response -> {'status'} == 401) {
@@ -124,12 +119,12 @@ sub metadata {
 	}
 
 	my $meta -> {'resources'} = {
-			'repository' => {
-				'web'  => $git_web,
-				'url'  => $git_url,
-				'type' => 'git'
-			}
-		};
+		'repository' => {
+			'web'  => $git_web,
+			'url'  => $git_url,
+			'type' => 'git'
+		}
+	};
 
 	if ($self -> wiki && $self -> wiki == 1 && $wiki) {
 		$meta -> {'resources'} -> {'homepage'} = $wiki;
