@@ -22,8 +22,10 @@ Dist::Zilla::Plugin::GitHub - Set of plugins for working with GitHub
 
 =head1 DESCRIPTION
 
-The following is a list of Plugin in this distribution to help you
-integrate GitHub and Dist::Zilla:
+B<Dist::Zilla::Plugin::GitHub> ships a bunch of L<Dist::Zilla> plugins, aimed at
+easing the maintainance of Dist::Zilla-managed modules with L<GitHub|https://github.com>.
+
+The following is the list of the plugins shipped in this distribution:
 
 =over 4
 
