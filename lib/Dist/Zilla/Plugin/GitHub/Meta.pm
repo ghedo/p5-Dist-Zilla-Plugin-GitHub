@@ -57,7 +57,7 @@ It currently sets the following fields:
 =item * C<homepage>
 
 The official home of this project on the web, taken from the GitHub repository
-info. If the C<bugs> option is set to '0' this will be skipped.
+info. If the C<homepage> option is set to '0' this will be skipped.
 
 =item * C<repository>
 
