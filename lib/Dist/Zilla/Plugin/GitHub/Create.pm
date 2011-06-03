@@ -6,6 +6,8 @@ use File::Basename;
 use warnings;
 use strict;
 
+extends 'Dist::Zilla::Plugin::GitHub';
+
 with 'Dist::Zilla::Role::AfterMint';
 
 has 'public' => (
