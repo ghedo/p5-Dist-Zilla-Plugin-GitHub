@@ -72,13 +72,16 @@ sub release {
 			'values[description]='.$self -> zilla -> abstract;
 
 	if ($self -> metacpan == 1) {
+		$self -> log("Using MetaCPAN URL");
 		push @params, "values[homepage]=http://metacpan.org/release/$repo_name/"
 	} elsif ($self -> p3rl == 1) {
 		my $guess_name = $repo_name;
 		$guess_name =~ s/\-/\:\:/g;
 
+		$self -> log("Using P3rl URL");
 		push @params, "values[homepage]=http://p3rl.org/$guess_name"
 	} elsif ($self -> cpan == 1) {
+		$self -> log("Using CPAN URL");
 		push @params, "values[homepage]=http://search.cpan.org/dist/$repo_name/"
 	}
 
