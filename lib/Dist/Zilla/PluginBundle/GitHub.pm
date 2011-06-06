@@ -68,6 +68,16 @@ has 'p3rl' => (
 		}
 );
 
+has 'metacpan' => (
+	is   	=> 'ro',
+	isa  	=> 'Bool',
+	lazy    => 1,
+	default => sub {
+			defined $_[0] -> payload -> {metacpan} ?
+				$_[0] -> payload -> {metacpan} : 0
+		}
+);
+
 =head1 NAME
 
 Dist::Zilla::PluginBundle::GitHub - GitHub plugins all-in-one
@@ -104,7 +114,8 @@ sub configure {
 		['GitHub::Update' => {
 			repo => $self -> repo,
 			cpan => $self -> cpan,
-			p3rl => $self -> p3rl
+			p3rl => $self -> p3rl,
+			metacpan => $self -> metacpan
 		}]
 	);
 }

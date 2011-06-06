@@ -21,6 +21,12 @@ has 'p3rl' => (
 	default => 0
 );
 
+has 'metacpan' => (
+	is   	=> 'ro',
+	isa  	=> 'Bool',
+	default => 0
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Update - Update GitHub repo info on release
@@ -65,9 +71,12 @@ sub release {
 	push my @params, "login=$login", "token=$token",
 			'values[description]='.$self -> zilla -> abstract;
 
-	if ($self -> p3rl == 1) {
+	if ($self -> metacpan == 1) {
+		push @params, "values[homepage]=http://metacpan.org/release/$repo_name/"
+	} elsif ($self -> p3rl == 1) {
 		my $guess_name = $repo_name;
 		$guess_name =~ s/\-/\:\:/g;
+
 		push @params, "values[homepage]=http://p3rl.org/$guess_name"
 	} elsif ($self -> cpan == 1) {
 		push @params, "values[homepage]=http://search.cpan.org/dist/$repo_name/"
@@ -104,6 +113,13 @@ If set to '1' (default '0'), the GitHub homepage field will be set to the
 p3rl.org shortened URL (e.g. C<http://p3rl.org/My::Module>).
 This takes precedence over the C<cpan> option (if both '1', p3rl will
 be used).
+
+=item C<metacpan>
+
+If set to '1' (default '0'), the GitHub homepage field will be set to the
+metacpan.org distribution URL (e.g. C<http://metacpan.org/release/My-Module>).
+This takes precedence over the C<cpan> and C<p3rl> options (if all three '1',
+metacpan will be used).
 
 =back
 
