@@ -116,6 +116,11 @@ sub metadata {
 
 	my $json_text = decode_json $response -> {'content'};
 
+	if ($json_text -> {'error'} && $json_text -> {'error'} ne "") {
+		$self -> log("Err: ", $json_text -> {'error'});
+		return;
+	}
+
 	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
 
 	$git_web  = $git_url = $json_text -> {'repository'} -> {'url'};
