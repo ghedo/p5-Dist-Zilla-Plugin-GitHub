@@ -91,6 +91,11 @@ sub release {
 		headers => {'content-type' => 'application/x-www-form-urlencoded'}
 	});
 
+	if ($response -> {'success'} eq '') {
+		$self -> log("Err: Can't connect to GitHub.com");
+		return;
+	}
+
 	if ($response -> {'status'} == 401) {
 		$self -> log("Err: Not authorized");
 	}

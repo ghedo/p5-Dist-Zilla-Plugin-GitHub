@@ -110,6 +110,11 @@ sub metadata {
 	my $url		= $self -> api."/repos/show/$login/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
+	if ($response -> {'success'} eq '') {
+		$self -> log("Err: Can't connect to GitHub.com");
+		return;
+	}
+
 	if ($response -> {'status'} == 401) {
 		$self -> log("Err: Not authorized");
 	}
