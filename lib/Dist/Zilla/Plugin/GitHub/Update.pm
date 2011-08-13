@@ -98,6 +98,7 @@ sub release {
 
 	if ($response -> {'status'} == 401) {
 		$self -> log("Err: Not authorized");
+		return;
 	}
 }
 

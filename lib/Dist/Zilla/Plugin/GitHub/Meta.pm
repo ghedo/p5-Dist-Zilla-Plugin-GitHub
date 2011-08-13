@@ -117,6 +117,7 @@ sub metadata {
 
 	if ($response -> {'status'} == 401) {
 		$self -> log("Err: Not authorized");
+		return;
 	}
 
 	my $json_text = decode_json $response -> {'content'};
