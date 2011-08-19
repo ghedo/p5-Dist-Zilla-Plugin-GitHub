@@ -28,6 +28,12 @@ has 'wiki' => (
 	default => 0
 );
 
+has 'fork' => (
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
@@ -110,21 +116,15 @@ sub metadata {
 	my $url		= $self -> api."/repos/show/$login/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
-	if ($response -> {'success'} eq '') {
-		$self -> log("Err: Can't connect to GitHub.com");
-		return;
-	}
+	my $json_text = check_response($self, $response);
+	return unless ($json_text ne "");
 
-	if ($response -> {'status'} == 401) {
-		$self -> log("Err: Not authorized");
-		return;
-	}
+	if ($json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
+		my $url		= $self -> api."/repos/show/".$json_text -> {'repository'} -> {'parent'};
+		my $response	= $http -> request('GET', $url);
 
-	my $json_text = decode_json $response -> {'content'};
-
-	if ($json_text -> {'error'} && $json_text -> {'error'} ne "") {
-		$self -> log("Err: ", $json_text -> {'error'});
-		return;
+		$json_text = check_response($self, $response);
+		return unless ($json_text ne "");
 	}
 
 	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
@@ -162,6 +162,24 @@ sub metadata {
 	}
 
 	return $meta;
+
+	sub check_response {
+		my ($self, $response) = @_;
+
+		if ($response && $response -> {'success'} eq '') {
+			$self -> log("Err: Can't connect to GitHub.com");
+			return;
+		}
+
+		my $json_text = decode_json $response -> {'content'};
+
+		if ($json_text -> {'error'} && $json_text -> {'error'} ne "") {
+			$self -> log("Err: ", $json_text -> {'error'});
+			return;
+		}
+
+		return $json_text;
+	 }
 }
 
 =head1 ATTRIBUTES
@@ -189,6 +207,12 @@ GitHub repository's C<Admin> panel).
 If set to '1' (default), the META bugtracker web field will be set to the
 issue's page of the repository on GitHub, if happens to be activated (see the
 GitHub repository's C<Admin> panel).
+
+=item C<fork>
+
+If set to '1' (default), and if the repository is a GitHub fork of another
+repository, this option will make all the information be taken from the original
+repository instead of the forked one.
 
 =back
 
