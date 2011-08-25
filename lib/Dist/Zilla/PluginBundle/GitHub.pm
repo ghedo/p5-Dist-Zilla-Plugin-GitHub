@@ -175,6 +175,13 @@ p3rl.org shortened URL (e.g. C<http://p3rl.org/My::Module>).
 This takes precedence over the C<cpan> option (if both '1', p3rl will
 be used).
 
+=item C<metacpan>
+
+If set to '1' (default '0'), the GitHub homepage field will be set to the 
+metacpan.org distribution URL (e.g. /release/My-Module). 
+This takes precedence over the cpan and p3rl options (if all three '1', 
+metacpan will be used).
+
 =back
 
 =head1 SEE ALSO
