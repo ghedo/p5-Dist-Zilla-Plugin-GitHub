@@ -93,7 +93,7 @@ sub after_mint {
 	my $git_dir = $opts -> {mint_root}."/.git";
 	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
 
-	if (!-d $rem_ref) {
+	if ((-d $git_dir) && (!-d $rem_ref)) {
 		my $remote_url = "git\@github.com:/$login/$repo_name.git";
 
 		$self -> log("Setting GitHub remote '".$self -> remote."'");
