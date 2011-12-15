@@ -113,22 +113,25 @@ is used.
 
 =item C<cpan>
 
-If set to '1' (default), the GitHub homepage field will be set to the
-CPAN page of the module.
+The GitHub homepage field will be set to the CPAN page of the module if this
+option is set to true (default),
 
 =item C<p3rl>
 
-If set to '1' (default '0'), the GitHub homepage field will be set to the
-p3rl.org shortened URL (e.g. C<http://p3rl.org/My::Module>).
-This takes precedence over the C<cpan> option (if both '1', p3rl will
+The GitHub homepage field will be set to the p3rl.org shortened URL (e.g.
+C<http://p3rl.org/My::Module>) if this option is set to true (default is false).
+
+This takes precedence over the C<cpan> option (if both are true, p3rl will
 be used).
 
 =item C<metacpan>
 
-If set to '1' (default '0'), the GitHub homepage field will be set to the
-metacpan.org distribution URL (e.g. C<http://metacpan.org/release/My-Module>).
-This takes precedence over the C<cpan> and C<p3rl> options (if all three '1',
-metacpan will be used).
+The GitHub homepage field will be set to the metacpan.org distribution URL (e.g.
+C<http://metacpan.org/release/My-Module>) if this option is set to true (default
+is false).
+
+This takes precedence over the C<cpan> and C<p3rl> options (if all three are
+true, metacpan will be used).
 
 =back
 

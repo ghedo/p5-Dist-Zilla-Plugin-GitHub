@@ -63,7 +63,8 @@ It currently sets the following fields:
 =item * C<homepage>
 
 The official home of this project on the web, taken from the GitHub repository
-info. If the C<homepage> option is set to '0' this will be skipped.
+info. If the C<homepage> option is set to false this will be skipped (default is
+true).
 
 =item * C<repository>
 
@@ -90,7 +91,8 @@ This is set to C<git> by default.
 =item * C<web>
 
 URL pointing to the GitHub issues page of the project. If the C<bugs> option is
-set to '0' or the issues are disabled in the GitHub repository, this will be skipped.
+set to false (default is true) or the issues are disabled in the GitHub
+repository, this will be skipped.
 
 =back
 
@@ -193,26 +195,26 @@ is used.
 
 =item C<homepage>
 
-If set to '1' (default), the META homepage field will be set to the
-value of the homepage field set on the GitHub repository's info.
+The META homepage field will be set to the value of the homepage field set on
+the GitHub repository's info if this option is set to true (default).
 
 =item C<wiki>
 
-If set to '1' (default '0'), the META homepage field will be set to the
-URL of the wiki of the GitHub repository, if happens to be activated (see the
-GitHub repository's C<Admin> panel).
+The META homepage field will be set to the URL of the wiki of the GitHub
+repository, if this option is set to true (default is false) and if the GitHub
+Wiki happens to be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<bugs>
 
-If set to '1' (default), the META bugtracker web field will be set to the
-issue's page of the repository on GitHub, if happens to be activated (see the
-GitHub repository's C<Admin> panel).
+The META bugtracker web field will be set to the issue's page of the repository
+on GitHub, if this options is set to true (default) and if the GitHub Issues happen to
+be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<fork>
 
-If set to '1' (default), and if the repository is a GitHub fork of another
-repository, this option will make all the information be taken from the original
-repository instead of the forked one.
+If the repository is a GitHub fork of another repository this option will make
+all the information be taken from the original repository instead of the forked
+one, if it's set to true (default).
 
 =back
 

@@ -120,12 +120,13 @@ sub _confirm {
 
 =item C<prompt>
 
-If true, prompt for confirmation before creating a GitHub repository.  The
-default is false.
+Prompt for confirmation before creating a GitHub repository if this option is
+set to true (default is false).
 
 =item C<public>
 
-Create a public repository if this is '1' (default), else create a private one.
+Create a public repository if this option is set to true (default), otherwise
+create a private repository.
 
 =item C<remote>
 
