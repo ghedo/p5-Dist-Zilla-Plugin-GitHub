@@ -117,14 +117,14 @@ sub metadata {
 	my $response	= $http -> request('GET', $url);
 
 	my $json_text = check_response($self, $response);
-	return unless ($json_text ne "");
+	return if not $json_text;
 
 	if ($json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
 		my $url		= $self -> api."/repos/show/".$json_text -> {'repository'} -> {'parent'};
 		my $response	= $http -> request('GET', $url);
 
 		$json_text = check_response($self, $response);
-		return unless ($json_text ne "");
+		return if not $json_text;
 	}
 
 	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
