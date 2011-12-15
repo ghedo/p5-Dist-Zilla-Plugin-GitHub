@@ -22,6 +22,12 @@ has 'remote' => (
 	default	=> 'origin'
 );
 
+has 'prompt' => (
+        is      => 'ro',
+        isa     => 'Bool',
+        default => 0
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Create - Create GitHub repo on dzil new
@@ -51,6 +57,9 @@ repository's private URL. See L</"ADDING REMOTE"> for more info.
 sub after_mint {
 	my $self 	= shift;
 	my ($opts) 	= @_;
+
+        return if $self->prompt() and not $self->_confirm();
+
 	my $repo_name 	= basename($opts -> {mint_root});
 
 	my $login = `git config github.user`;  chomp $login;
@@ -96,9 +105,23 @@ sub after_mint {
 	}
 }
 
+sub _confirm {
+    my ($self) = @_;
+
+    my $dist = $self->zilla->name();
+    my $prompt = "Shall I create a GitHub repository for $dist?";
+    return $self->zilla->chrome->prompt_yn($prompt, {default => 1} );
+
+}
+
 =head1 ATTRIBUTES
 
 =over
+
+=item C<prompt>
+
+If true, prompt for confirmation before creating a GitHub repository.  The
+default is false.
 
 =item C<public>
 
