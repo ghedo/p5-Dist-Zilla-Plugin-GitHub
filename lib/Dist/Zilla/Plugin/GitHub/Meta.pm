@@ -66,6 +66,8 @@ The official home of this project on the web, taken from the GitHub repository
 info. If the C<homepage> option is set to false this will be skipped (default is
 true).
 
+When offline, this is not set.
+
 =item * C<repository>
 
 =over 4
@@ -94,6 +96,8 @@ URL pointing to the GitHub issues page of the project. If the C<bugs> option is
 set to false (default is true) or the issues are disabled in the GitHub
 repository, this will be skipped.
 
+When offline, this is not set.
+
 =back
 
 =back
@@ -104,6 +108,7 @@ sub metadata {
 	my $self 	= shift;
 	my ($opts) 	= @_;
 	my $repo_name	= $self -> repo || $self -> zilla -> name;
+	my $offline	= 0;
 
 	my $login = `git config github.user`; chomp $login;
 
@@ -119,9 +124,9 @@ sub metadata {
 	my $response	= $http -> request('GET', $url);
 
 	my $json_text = check_response($self, $response);
-	return if not $json_text;
+	$offline = 1 if not $json_text;
 
-	if ($json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
+	if (!$offline && $json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
 		my $url		= $self -> api."/repos/show/".$json_text -> {'repository'} -> {'parent'};
 		my $response	= $http -> request('GET', $url);
 
@@ -131,16 +136,16 @@ sub metadata {
 
 	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
 
-	$git_web  = $git_url = $json_text -> {'repository'} -> {'url'};
+	$git_web  = $git_url = $offline ? "https://github.com/$login/$repo_name" : $json_text -> {'repository'} -> {'url'};
 	$git_url  =~ s/https/git/;
 	$git_url  .= '.git';
-	$homepage = $json_text -> {'repository'} -> {'homepage'};
+	$homepage = $offline ? undef : $json_text -> {'repository'} -> {'homepage'};
 
-	if ($json_text -> {'repository'} -> {'has_issues'} == JSON::true()) {
+	if (!$offline && $json_text -> {'repository'} -> {'has_issues'} == JSON::true()) {
 		$bugtracker = "$git_web/issues";
 	}
 
-	if ($json_text -> {'repository'} -> {'has_wiki'} == JSON::true()) {
+	if (!$offline && $json_text -> {'repository'} -> {'has_wiki'} == JSON::true()) {
 		$wiki = "$git_web/wiki";
 	}
 
