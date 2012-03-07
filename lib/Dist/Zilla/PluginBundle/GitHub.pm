@@ -142,45 +142,48 @@ is used.
 
 =item C<homepage>
 
-If set to '1' (default), the META homepage field will be set to the
-value of the homepage field set on the GitHub repository's info.
+The META homepage field will be set to the value of the homepage field set on
+the GitHub repository's info if this option is set to true (default).
 
 =item C<wiki>
 
-If set to '1' (default '0'), the META homepage field will be set to the
-URL of the wiki of the GitHub repository, if happens to be activated (see the
-GitHub repository's C<Admin> panel).
+The META homepage field will be set to the URL of the wiki of the GitHub
+repository, if this option is set to true (default is false) and if the GitHub
+Wiki happens to be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<bugs>
 
-If set to '1' (default), the META bugtracker web field will be set to the
-issue's page of the repository on GitHub, if happens to be activated (see the
-GitHub repository's C<Admin> panel).
+The META bugtracker web field will be set to the issue's page of the repository
+on GitHub, if this options is set to true (default) and if the GitHub Issues happen to
+be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<fork>
 
-If set to '1' (default), and if the repository is a GitHub fork of another
-repository, this option will make all the information be taken from the original
-repository instead of the forked one.
+If the repository is a GitHub fork of another repository this option will make
+all the information be taken from the original repository instead of the forked
+one, if it's set to true (default).
 
 =item C<cpan>
 
-If set to '1' (default), the GitHub homepage field will be set to the
-CPAN page of the module.
+The GitHub homepage field will be set to the CPAN page of the module if this
+option is set to true (default),
 
 =item C<p3rl>
 
-If set to '1' (default '0'), the GitHub homepage field will be set to the
-p3rl.org shortened URL (e.g. C<http://p3rl.org/My::Module>).
-This takes precedence over the C<cpan> option (if both '1', p3rl will
+The GitHub homepage field will be set to the p3rl.org shortened URL (e.g.
+C<http://p3rl.org/My::Module>) if this option is set to true (default is false).
+
+This takes precedence over the C<cpan> option (if both are true, p3rl will
 be used).
 
 =item C<metacpan>
 
-If set to '1' (default '0'), the GitHub homepage field will be set to the 
-metacpan.org distribution URL (e.g. /release/My-Module). 
-This takes precedence over the cpan and p3rl options (if all three '1', 
-metacpan will be used).
+The GitHub homepage field will be set to the metacpan.org distribution URL (e.g.
+C<http://metacpan.org/release/My-Module>) if this option is set to true (default
+is false).
+
+This takes precedence over the C<cpan> and C<p3rl> options (if all three are
+true, metacpan will be used).
 
 =back
 
