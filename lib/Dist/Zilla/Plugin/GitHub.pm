@@ -3,8 +3,8 @@ package Dist::Zilla::Plugin::GitHub;
 use Moose;
 use HTTP::Tiny;
 
-use warnings;
 use strict;
+use warnings;
 
 has 'repo' => (
 	is      => 'ro',

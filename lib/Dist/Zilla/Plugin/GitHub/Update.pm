@@ -2,8 +2,8 @@ package Dist::Zilla::Plugin::GitHub::Update;
 
 use Moose;
 
-use warnings;
 use strict;
+use warnings;
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
@@ -54,22 +54,26 @@ when C<dzil release> is run.
 sub release {
 	my $self 	= shift;
 	my ($opts) 	= @_;
-	my $repo_name	= $self -> repo || $self -> zilla -> name;
+	my $repo_name	= $self -> repo ?
+				$self -> repo :
+				$self -> zilla -> name;
 
 	my $login = `git config github.user`;  chomp $login;
 	my $token = `git config github.token`; chomp $token;
 
-	$self -> log("Updating GitHub repository info");
-
-	if (!$login || !$token) {
+	if (!$login or !$token) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
-	my $http = HTTP::Tiny -> new();
+	my $http = HTTP::Tiny -> new;
 
-	push my @params, "login=$login", "token=$token",
-			'values[description]='.$self -> zilla -> abstract;
+	$self -> log("Updating GitHub repository info");
+
+	push my @params,
+		"login=$login",
+		"token=$token",
+		'values[description]='.$self -> zilla -> abstract;
 
 	if ($self -> metacpan == 1) {
 		$self -> log("Using MetaCPAN URL");

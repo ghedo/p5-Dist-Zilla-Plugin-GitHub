@@ -3,8 +3,8 @@ package Dist::Zilla::Plugin::GitHub::Create;
 use Moose;
 use File::Basename;
 
-use warnings;
 use strict;
+use warnings;
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
@@ -55,30 +55,32 @@ repository's private URL. See L</"ADDING REMOTE"> for more info.
 =cut
 
 sub after_mint {
-	my $self 	= shift;
-	my ($opts) 	= @_;
+	my $self	= shift;
+	my ($opts)	= @_;
 
-        return if $self->prompt() and not $self->_confirm();
+        return if $self -> prompt and not $self -> _confirm;
 
-	my $repo_name 	= basename($opts -> {mint_root});
+	my $repo_name	= basename($opts -> {'mint_root'});
 
 	my $login = `git config github.user`;  chomp $login;
 	my $token = `git config github.token`; chomp $token;
 
-	$self -> log("Creating new GitHub repository '$repo_name'");
-
-	if (!$login || !$token) {
+	if (!$login or !$token) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
-	my $http = HTTP::Tiny -> new();
+	my $http = HTTP::Tiny -> new;
 
-	push my @params, "login=$login", "token=$token",
-			'values[description]'.$self -> zilla -> abstract;
+	$self -> log("Creating new GitHub repository '$repo_name'");
 
-	push @params, "login=$login", "token=$token", "name=$repo_name",
-			'public='.$self -> public;
+	push my @params, "login=$login", "token=$token";
+
+	push @params,
+		"login=$login",
+		"token=$token",
+		"name=$repo_name",
+		'public='.$self -> public;
 
 	my $url 	= $self -> api.'/repos/create';
 	my $response	= $http -> request('POST', $url, {
@@ -108,9 +110,9 @@ sub after_mint {
 sub _confirm {
     my ($self) = @_;
 
-    my $dist = $self->zilla->name();
+    my $dist = $self -> zilla -> name;
     my $prompt = "Shall I create a GitHub repository for $dist?";
-    return $self->zilla->chrome->prompt_yn($prompt, {default => 1} );
+    return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
 
 }
 

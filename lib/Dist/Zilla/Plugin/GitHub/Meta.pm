@@ -3,8 +3,8 @@ package Dist::Zilla::Plugin::GitHub::Meta;
 use Moose;
 use JSON;
 
-use warnings;
 use strict;
+use warnings;
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
@@ -107,24 +107,29 @@ When offline, this is not set.
 sub metadata {
 	my $self 	= shift;
 	my ($opts) 	= @_;
-	my $repo_name	= $self -> repo || $self -> zilla -> name;
+	my $repo_name	= $self -> repo ?
+				$self -> repo :
+				$self -> zilla -> name;
 	my $offline	= 0;
 
 	my $login = `git config github.user`; chomp $login;
-
-	$self -> log("Getting GitHub repository info");
 
 	if (!$login) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
-	my $http	= HTTP::Tiny -> new();
+	my $http	= HTTP::Tiny -> new;
+
+	$self -> log("Getting GitHub repository info");
+
 	my $url		= $self -> api."/repos/show/$login/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
 	my $json_text = check_response($self, $response);
 	$offline = 1 if not $json_text;
+
+	$self -> log("Using offline repository information") if $offline;
 
 	if (!$offline && $json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
 		my $url		= $self -> api."/repos/show/".$json_text -> {'repository'} -> {'parent'};
