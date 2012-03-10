@@ -36,6 +36,11 @@ Dist::Zilla::Plugin::GitHub::Update - Update GitHub repo info on release
 Configure git with your GitHub credentials:
 
     $ git config --global github.user LoginName
+    $ git config --global github.password GitHubPassword
+
+Alternatively, the GitHub login token can be used instead of the password
+(note that token-based login has been deprecated by GitHub):
+
     $ git config --global github.token GitHubToken
 
 then, in your F<dist.ini>:
@@ -60,24 +65,35 @@ sub release {
 
 	my $login = `git config github.user`;  chomp $login;
 	my $token = `git config github.token`; chomp $token;
+	my $pass  = `git config github.password`;  chomp $pass;
 
-	if (!$login or !$token) {
+	if (!$login) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
 	if ($token) {
 		$self -> log("Warn: Login with GitHub token is deprecated");
+	
+	} elsif (!$pass) {
+		require Term::ReadKey;
+
+		Term::ReadKey::ReadMode('noecho');
+		$pass = $self -> zilla -> chrome -> term_ui -> get_reply(
+			prompt => "GitHub password for '$login'",
+			allow  => sub { defined $_[0] and length $_[0] },
+		);
+		Term::ReadKey::ReadMode('normal');
 	}
 
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Updating GitHub repository info");
 
-	push my @params,
-		"login=$login",
-		"token=$token",
-		'values[description]='.$self -> zilla -> abstract;
+	my @params;
+
+	push @params, "login=$login", "token=$token" if $token;
+	push @params, 'values[description]='.$self -> zilla -> abstract;
 
 	if ($self -> metacpan == 1) {
 		$self -> log("Using MetaCPAN URL");
@@ -93,16 +109,23 @@ sub release {
 		push @params, "values[homepage]=http://search.cpan.org/dist/$repo_name/"
 	}
 
-	my $url 	= $self -> api."/repos/show/$login/$repo_name";
+	my $url 	= $self -> api."repos/show/$login/$repo_name";
+
+	my $headers	= {
+		'content-type' => 'application/x-www-form-urlencoded'
+	};
+
+	if ($pass) {
+		require MIME::Base64;
+
+		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
+		$headers -> {'authorization'} = "Basic $basic";
+	}
+
 	my $response	= $http -> request('POST', $url, {
 		content => join("&", @params),
-		headers => {'content-type' => 'application/x-www-form-urlencoded'}
+		headers => $headers 
 	});
-
-	if ($response -> {'success'} eq '') {
-		$self -> log("Err: Can't connect to GitHub.com");
-		return;
-	}
 
 	if ($response -> {'status'} == 401) {
 		$self -> log("Err: Not authorized");

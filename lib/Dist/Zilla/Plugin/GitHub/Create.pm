@@ -37,6 +37,11 @@ Dist::Zilla::Plugin::GitHub::Create - Create GitHub repo on dzil new
 Configure git with your GitHub credentials:
 
     $ git config --global github.user LoginName
+    $ git config --global github.password GitHubPassword
+
+Alternatively, the GitHub login token can be used instead of the password
+(note that token-based login has been deprecated by GitHub):
+
     $ git config --global github.token GitHubToken
 
 then, in your F<profile.ini>:
@@ -64,32 +69,51 @@ sub after_mint {
 
 	my $login = `git config github.user`;  chomp $login;
 	my $token = `git config github.token`; chomp $token;
+	my $pass  = `git config github.password`;  chomp $pass;
 
-	if (!$login or !$token) {
+	if (!$login) {
 		$self -> log("Err: Provide valid GitHub login values");
 		return;
 	}
 
 	if ($token) {
 		$self -> log("Warn: Login with GitHub token is deprecated");
+	} elsif (!$pass) {
+		require Term::ReadKey;
+
+		Term::ReadKey::ReadMode('noecho');
+		$pass = $self -> zilla -> chrome -> term_ui -> get_reply(
+			prompt => "GitHub password for '$login'",
+			allow  => sub { defined $_[0] and length $_[0] },
+		);
+		Term::ReadKey::ReadMode('normal');
 	}
 
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Creating new GitHub repository '$repo_name'");
 
-	push my @params, "login=$login", "token=$token";
+	my @params;
 
-	push @params,
-		"login=$login",
-		"token=$token",
-		"name=$repo_name",
-		'public='.$self -> public;
+	push @params, "login=$login", "token=$token" if $token;
+	push @params, "name=$repo_name", 'public='.$self -> public;
 
 	my $url 	= $self -> api.'/repos/create';
+
+	my $headers	= {
+		'content-type' => 'application/x-www-form-urlencoded'
+	};
+
+	if ($pass) {
+		require MIME::Base64;
+
+		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
+		$headers -> {'authorization'} = "Basic $basic";
+	}
+
 	my $response	= $http -> request('POST', $url, {
 		content => join("&", @params),
-		headers => {'content-type' => 'application/x-www-form-urlencoded'}
+		headers => $headers
 	});
 
 	if ($response -> {'status'} == 401) {
