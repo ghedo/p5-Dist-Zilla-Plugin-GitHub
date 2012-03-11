@@ -66,6 +66,10 @@ sub release {
 		return;
 	}
 
+	if ($token) {
+		$self -> log("Warn: Login with GitHub token is deprecated");
+	}
+
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Updating GitHub repository info");

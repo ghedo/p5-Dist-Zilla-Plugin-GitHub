@@ -70,6 +70,10 @@ sub after_mint {
 		return;
 	}
 
+	if ($token) {
+		$self -> log("Warn: Login with GitHub token is deprecated");
+	}
+
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Creating new GitHub repository '$repo_name'");
