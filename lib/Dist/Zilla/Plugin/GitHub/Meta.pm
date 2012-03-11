@@ -125,8 +125,10 @@ sub metadata {
 
 	$self -> log("Using offline repository information") if $offline;
 
-	if (!$offline && $json_text -> {'repository'} -> {'fork'} == JSON::true() && $self -> fork == 1) {
-		my $url		= $self -> api."/repos/show/".$json_text -> {'repository'} -> {'parent'};
+	if (!$offline && $json_text -> {'repository'}
+			-> {'fork'} == JSON::true() && $self -> fork == 1) {
+		my $url		= $self -> api."/repos/show/".$json_text
+			-> {'repository'} -> {'parent'};
 		my $response	= $http -> request('GET', $url);
 
 		$json_text = check_response($self, $response);
@@ -135,16 +137,24 @@ sub metadata {
 
 	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
 
-	$git_web  = $git_url = $offline ? "https://github.com/$login/$repo_name" : $json_text -> {'repository'} -> {'url'};
+	$git_web  = $git_url = $offline			?
+		"https://github.com/$login/$repo_name"	:
+		$json_text -> {'repository'} -> {'url'};
+
 	$git_url  =~ s/https/git/;
 	$git_url  .= '.git';
-	$homepage = $offline ? undef : $json_text -> {'repository'} -> {'homepage'};
 
-	if (!$offline && $json_text -> {'repository'} -> {'has_issues'} == JSON::true()) {
+	$homepage = $offline	?
+		undef		:
+		$json_text -> {'repository'} -> {'homepage'};
+
+	if (!$offline && $json_text -> {'repository'}
+			-> {'has_issues'} == JSON::true()) {
 		$bugtracker = "$git_web/issues";
 	}
 
-	if (!$offline && $json_text -> {'repository'} -> {'has_wiki'} == JSON::true()) {
+	if (!$offline && $json_text -> {'repository'}
+			-> {'has_wiki'} == JSON::true()) {
 		$wiki = "$git_web/wiki";
 	}
 
@@ -164,7 +174,8 @@ sub metadata {
 	}
 
 	if ($self -> bugs && $self -> bugs == 1 && $bugtracker) {
-		$meta -> {'resources'} -> {'bugtracker'} = { 'web' => $bugtracker };
+		$meta -> {'resources'} -> {'bugtracker'} =
+			{ 'web' => $bugtracker };
 	}
 
 	return $meta;
