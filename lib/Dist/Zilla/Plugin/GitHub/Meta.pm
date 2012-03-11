@@ -112,12 +112,7 @@ sub metadata {
 				$self -> zilla -> name;
 	my $offline	= 0;
 
-	my $login = `git config github.user`; chomp $login;
-
-	if (!$login) {
-		$self -> log("Err: Provide valid GitHub login values");
-		return;
-	}
+	my ($login, undef, undef)  = $self -> _get_credentials(1);
 
 	my $http	= HTTP::Tiny -> new;
 

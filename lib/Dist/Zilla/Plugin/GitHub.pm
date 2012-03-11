@@ -37,6 +37,41 @@ The following is the list of the plugins shipped in this distribution:
 =item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to META.{yml,json}
 
 =back
+=cut
+
+sub _get_credentials {
+	my ($self, $nopass) = @_;
+
+	my ($login, $pass, $token);
+
+	$login = `git config github.user`;  chomp $login;
+	
+	if (!$login) {
+		$self -> log("Err: Provide valid GitHub login values");
+		return;
+	}
+
+	if (!$nopass) {
+		$token = `git config github.token`;    chomp $token;
+		$pass  = `git config github.password`; chomp $pass;
+
+		if ($token) {
+			$self -> log("Warn: Login with GitHub token is deprecated");
+
+		} elsif (!$pass) {
+			require Term::ReadKey;
+
+			Term::ReadKey::ReadMode('noecho');
+			$pass = $self -> zilla -> chrome -> term_ui -> get_reply(
+					prompt => "GitHub password for '$login'",
+					allow  => sub { defined $_[0] and length $_[0] },
+					);
+			Term::ReadKey::ReadMode('normal');
+		}
+	}
+
+	return ($login, $pass, $token);
+}
 
 =head1 ACKNOWLEDGMENTS
 

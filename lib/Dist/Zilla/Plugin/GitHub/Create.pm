@@ -67,27 +67,7 @@ sub after_mint {
 
 	my $repo_name	= basename($opts -> {'mint_root'});
 
-	my $login = `git config github.user`;  chomp $login;
-	my $token = `git config github.token`; chomp $token;
-	my $pass  = `git config github.password`;  chomp $pass;
-
-	if (!$login) {
-		$self -> log("Err: Provide valid GitHub login values");
-		return;
-	}
-
-	if ($token) {
-		$self -> log("Warn: Login with GitHub token is deprecated");
-	} elsif (!$pass) {
-		require Term::ReadKey;
-
-		Term::ReadKey::ReadMode('noecho');
-		$pass = $self -> zilla -> chrome -> term_ui -> get_reply(
-			prompt => "GitHub password for '$login'",
-			allow  => sub { defined $_[0] and length $_[0] },
-		);
-		Term::ReadKey::ReadMode('normal');
-	}
+	my ($login, $pass, $token)  = $self -> _get_credentials(0);
 
 	my $http = HTTP::Tiny -> new;
 
