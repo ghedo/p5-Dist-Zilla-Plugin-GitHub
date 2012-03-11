@@ -43,7 +43,6 @@ Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
 Configure git with your GitHub credentials:
 
     $ git config --global github.user LoginName
-    $ git config --global github.token GitHubToken
 
 then, in your F<dist.ini>:
 
