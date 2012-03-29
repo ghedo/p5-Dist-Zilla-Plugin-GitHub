@@ -64,6 +64,7 @@ sub release {
 				$self -> zilla -> name;
 
 	my ($login, $pass, $token)  = $self -> _get_credentials(0);
+	return if (!$login);
 
 	my $http = HTTP::Tiny -> new;
 
