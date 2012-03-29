@@ -47,7 +47,7 @@ sub _get_credentials {
 	$login = `git config github.user`;  chomp $login;
 
 	if (!$login) {
-		$self -> log("Err: Provide valid GitHub login values");
+		$self -> log("Err: Missing value 'github.user' in git config");
 		return;
 	}
 
