@@ -112,6 +112,7 @@ sub metadata {
 	my $offline	= 0;
 
 	my ($login, undef, undef)  = $self -> _get_credentials(1);
+	return {} if (!$login);
 
 	my $http	= HTTP::Tiny -> new;
 
