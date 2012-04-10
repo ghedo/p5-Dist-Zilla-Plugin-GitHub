@@ -51,8 +51,8 @@ has 'fork' => (
 	isa     => 'Bool',
 	lazy    => 1,
 	default => sub {
-			defined $_[0] -> payload -> {bugs} ?
-				$_[0] -> payload -> {bugs} : 1
+			defined $_[0] -> payload -> {fork} ?
+				$_[0] -> payload -> {fork} : 1
 		}
 );
 
