@@ -2,6 +2,7 @@ package Dist::Zilla::Plugin::GitHub;
 
 use JSON;
 use Moose;
+use Try::Tiny;
 use HTTP::Tiny;
 
 use strict;
@@ -79,15 +80,21 @@ sub _get_credentials {
 sub _check_response {
 	my ($self, $response) = @_;
 
-	my $json_text = from_json $response -> {'content'};
+	try {
+		my $json_text = from_json $response -> {'content'};
 
-	if (!$response -> {'success'}) {
-		$self -> log("Err: ", $json_text -> {'message'});
+		if (!$response -> {'success'}) {
+			$self -> log("Err: ", $json_text -> {'message'});
+			return;
+		}
+
+		return $json_text;
+	} catch {
+		$self -> log("Err: Can't connect to GitHub");
+
 		return;
 	}
-
-	return $json_text;
- }
+}
 
 =head1 ACKNOWLEDGMENTS
 
