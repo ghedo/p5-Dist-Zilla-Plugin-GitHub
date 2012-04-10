@@ -1,5 +1,6 @@
 package Dist::Zilla::Plugin::GitHub::Update;
 
+use JSON;
 use Moose;
 
 use strict;
@@ -63,57 +64,52 @@ sub release {
 				$self -> repo :
 				$self -> zilla -> name;
 
-	my ($login, $pass, $token)  = $self -> _get_credentials(0);
+	my ($login, $pass)  = $self -> _get_credentials(0);
 	return if (!$login);
 
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Updating GitHub repository info");
 
-	my @params;
+	my ($params, $headers, $content);
 
-	push @params, "login=$login", "token=$token" if $token;
-	push @params, 'values[description]='.$self -> zilla -> abstract;
+	$params -> {'name'} = $repo_name;
+	$params -> {'description'} = $self -> zilla -> abstract;
 
 	if ($self -> metacpan == 1) {
 		$self -> log("Using MetaCPAN URL");
-		push @params,
-			"values[homepage]=http://metacpan.org/release/$repo_name/"
+		$params -> {'homepage'} =
+			"http://metacpan.org/release/$repo_name/"
 	} elsif ($self -> p3rl == 1) {
 		my $guess_name = $repo_name;
 		$guess_name =~ s/\-/\:\:/g;
 
 		$self -> log("Using P3rl URL");
-		push @params,
-			"values[homepage]=http://p3rl.org/$guess_name"
+		$params -> {'homepage'} = "http://p3rl.org/$guess_name"
 	} elsif ($self -> cpan == 1) {
 		$self -> log("Using CPAN URL");
-		push @params,
-			"values[homepage]=http://search.cpan.org/dist/$repo_name/"
+		$params -> {'homepage'} =
+			"http://search.cpan.org/dist/$repo_name/"
 	}
 
-	my $url 	= $self -> api."repos/show/$login/$repo_name";
-
-	my $headers	= {
-		'content-type' => 'application/x-www-form-urlencoded'
-	};
+	my $url = $self -> api."/repos/$login/$repo_name";
 
 	if ($pass) {
 		require MIME::Base64;
 
 		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-		$headers -> {'authorization'} = "Basic $basic";
+		$headers -> {'Authorization'} = "Basic $basic";
 	}
 
-	my $response	= $http -> request('POST', $url, {
-		content => join("&", @params),
+	$content = to_json $params;
+
+	my $response	= $http -> request('PATCH', $url, {
+		content => $content,
 		headers => $headers
 	});
 
-	if ($response -> {'status'} == 401) {
-		$self -> log("Err: Not authorized");
-		return;
-	}
+	my $repo = $self -> _check_response($response);
+	return if not $repo;
 }
 
 =head1 ATTRIBUTES

@@ -1,5 +1,6 @@
 package Dist::Zilla::Plugin::GitHub;
 
+use JSON;
 use Moose;
 use HTTP::Tiny;
 
@@ -14,7 +15,7 @@ has 'repo' => (
 has 'api'  => (
 	is      => 'ro',
 	isa     => 'Str',
-	default => 'https://github.com/api/v2/json'
+	default => 'https://api.github.com'
 );
 
 =head1 NAME
@@ -56,7 +57,8 @@ sub _get_credentials {
 		$pass  = `git config github.password`; chomp $pass;
 
 		if ($token) {
-			$self -> log("Warn: Login with GitHub token is deprecated");
+			$self -> log("Err: Login with GitHub token is deprecated");
+			return (undef, undef);
 		} elsif (!$pass) {
 			require Term::ReadKey;
 
@@ -71,8 +73,21 @@ sub _get_credentials {
 		}
 	}
 
-	return ($login, $pass, $token);
+	return ($login, $pass);
 }
+
+sub _check_response {
+	my ($self, $response) = @_;
+
+	my $json_text = from_json $response -> {'content'};
+
+	if (!$response -> {'success'}) {
+		$self -> log("Err: ", $json_text -> {'message'});
+		return;
+	}
+
+	return $json_text;
+ }
 
 =head1 ACKNOWLEDGMENTS
 

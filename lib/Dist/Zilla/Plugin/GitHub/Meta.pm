@@ -1,7 +1,7 @@
 package Dist::Zilla::Plugin::GitHub::Meta;
 
-use Moose;
 use JSON;
+use Moose;
 
 use strict;
 use warnings;
@@ -114,54 +114,53 @@ sub metadata {
 	my ($login, undef, undef)  = $self -> _get_credentials(1);
 	return {} if (!$login);
 
-	my $http	= HTTP::Tiny -> new;
+	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Getting GitHub repository info");
 
-	my $url		= $self -> api."/repos/show/$login/$repo_name";
+	my $url		= $self -> api."/repos/$login/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
-	my $json_text = check_response($self, $response);
-	$offline = 1 if not $json_text;
+	my $repo = $self -> _check_response($response);
+	$offline = 1 if not $repo;
 
 	$self -> log("Using offline repository information") if $offline;
 
-	if (!$offline && $json_text -> {'repository'}
-			-> {'fork'} == JSON::true() && $self -> fork == 1) {
-		my $url		= $self -> api."/repos/show/".$json_text
-			-> {'repository'} -> {'parent'};
+	if (!$offline && $repo -> {'fork'} == JSON::true() &&
+						$self -> fork == 1) {
+		my $url		=
+			$self -> api.'/repos/show/'.$repo -> {'parent'};
 		my $response	= $http -> request('GET', $url);
 
-		$json_text = check_response($self, $response);
-		return if not $json_text;
+		$repo = $self -> _check_response($response);
+		return if not $repo;
 	}
 
-	my ($git_web, $git_url, $homepage, $bugtracker, $wiki);
+	my ($html_url, $git_url, $homepage, $bugtracker, $wiki);
 
-	$git_web  = $git_url = $offline			?
-		"https://github.com/$login/$repo_name"	:
-		$json_text -> {'repository'} -> {'url'};
+	$html_url = $offline			?
+		"https://github.com/$login/$repo_name"   :
+		$repo -> {'html_url'};
 
-	$git_url  =~ s/https/git/;
-	$git_url  .= '.git';
+	$git_url = $offline			?
+		"git://github.com/$login/$repo_name.git" :
+		$repo -> {'git_url'};
 
 	$homepage = $offline	?
 		undef		:
-		$json_text -> {'repository'} -> {'homepage'};
+		$repo -> {'homepage'};
 
-	if (!$offline && $json_text -> {'repository'}
-			-> {'has_issues'} == JSON::true()) {
-		$bugtracker = "$git_web/issues";
+	if (!$offline && $repo -> {'has_issues'} == JSON::true()) {
+		$bugtracker = "$html_url/issues";
 	}
 
-	if (!$offline && $json_text -> {'repository'}
-			-> {'has_wiki'} == JSON::true()) {
-		$wiki = "$git_web/wiki";
+	if (!$offline && $repo -> {'has_wiki'} == JSON::true()) {
+		$wiki = "$html_url/wiki";
 	}
 
 	my $meta -> {'resources'} = {
 		'repository' => {
-			'web'  => $git_web,
+			'web'  => $html_url,
 			'url'  => $git_url,
 			'type' => 'git'
 		}
@@ -180,24 +179,6 @@ sub metadata {
 	}
 
 	return $meta;
-
-	sub check_response {
-		my ($self, $response) = @_;
-
-		if ($response && $response -> {'success'} eq '') {
-			$self -> log("Err: Can't connect to GitHub.com");
-			return;
-		}
-
-		my $json_text = decode_json $response -> {'content'};
-
-		if ($json_text -> {'error'} && $json_text -> {'error'} ne "") {
-			$self -> log("Err: ", $json_text -> {'error'});
-			return;
-		}
-
-		return $json_text;
-	 }
 }
 
 =head1 ATTRIBUTES

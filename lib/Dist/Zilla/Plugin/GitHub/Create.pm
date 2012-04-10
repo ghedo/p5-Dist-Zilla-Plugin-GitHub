@@ -1,5 +1,6 @@
 package Dist::Zilla::Plugin::GitHub::Create;
 
+use JSON;
 use Moose;
 use File::Basename;
 
@@ -67,22 +68,18 @@ sub after_mint {
 
 	my $repo_name	= basename($opts -> {'mint_root'});
 
-	my ($login, $pass, $token)  = $self -> _get_credentials(0);
+	my ($login, $pass)  = $self -> _get_credentials(0);
 
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Creating new GitHub repository '$repo_name'");
 
-	my @params;
+	my ($params, $headers, $content);
 
-	push @params, "login=$login", "token=$token" if $token;
-	push @params, "name=$repo_name", 'public='.$self -> public;
+	$params -> {'name'}   = $repo_name;
+	$params -> {'public'} = $self -> public;
 
-	my $url 	= $self -> api.'/repos/create';
-
-	my $headers	= {
-		'content-type' => 'application/x-www-form-urlencoded'
-	};
+	my $url = $self -> api.'/user/repos';
 
 	if ($pass) {
 		require MIME::Base64;
@@ -91,26 +88,27 @@ sub after_mint {
 		$headers -> {'authorization'} = "Basic $basic";
 	}
 
+	$content = to_json $params;
+
 	my $response	= $http -> request('POST', $url, {
-		content => join("&", @params),
+		content => $content,
 		headers => $headers
 	});
 
-	if ($response -> {'status'} == 401) {
-		$self -> log("Err: Not authorized");
-	}
+	my $repo = $self -> _check_response($response);
+	return if not $repo;
 
 	my $git_dir = $opts -> {mint_root}."/.git";
 	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
 
 	if ((-d $git_dir) && (!-d $rem_ref)) {
-		my $remote_url = "git\@github.com:/$login/$repo_name.git";
+		my $ssh_url = $repo -> {'ssh_url'};
 
 		$self -> log("Setting GitHub remote '".$self -> remote."'");
 
 		system(
 			"git", "--git-dir=$git_dir", "remote", "add",
-			$self -> remote, $remote_url
+			$self -> remote, $ssh_url
 		);
 	}
 }
