@@ -71,6 +71,7 @@ sub _get_credentials {
 					defined $_[0] and length $_[0]
 				});
 			Term::ReadKey::ReadMode('normal');
+			print "\n";
 		}
 	}
 
