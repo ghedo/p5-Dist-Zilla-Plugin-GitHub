@@ -21,7 +21,7 @@ has 'api'  => (
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub - Set of plugins for working with GitHub
+Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 DESCRIPTION
 
