@@ -28,6 +28,12 @@ has 'metacpan' => (
 	default	=> 0
 );
 
+has 'meta_home' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 0
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Update - Update GitHub repo info on release
@@ -76,7 +82,13 @@ sub release {
 	$params -> {'name'} = $repo_name;
 	$params -> {'description'} = $self -> zilla -> abstract;
 
-	if ($self -> metacpan == 1) {
+	my $meta_home = $self -> zilla -> distmeta
+		-> {'resources'} -> {'homepage'};
+
+	if ($meta_home && $self -> meta_home) {
+		$self -> log("Using distmeta URL");
+		$params -> {'homepage'} = $meta_home;
+	} elsif ($self -> metacpan == 1) {
 		$self -> log("Using MetaCPAN URL");
 		$params -> {'homepage'} =
 			"http://metacpan.org/release/$repo_name/"
@@ -142,6 +154,15 @@ is false).
 
 This takes precedence over the C<cpan> and C<p3rl> options (if all three are
 true, metacpan will be used).
+
+=item C<meta_home>
+
+The GitHub homepage field will be set to the value present in the dist meta
+(e.g. the one set by other plugins) if this option is set to true (default is
+false). If no value is present in the dist meta, this option is ignored.
+
+This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all 
+four are true, meta_home will be used).
 
 =back
 
