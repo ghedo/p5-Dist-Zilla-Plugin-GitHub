@@ -1,31 +1,31 @@
 package Dist::Zilla::Plugin::GitHub::Update;
 
-use JSON;
-use Moose;
-
 use strict;
 use warnings;
+
+use JSON;
+use Moose;
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
 with 'Dist::Zilla::Role::Releaser';
 
 has 'cpan' => (
-	is   	=> 'ro',
-	isa  	=> 'Bool',
-	default => 1
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 1
 );
 
 has 'p3rl' => (
-	is   	=> 'ro',
-	isa  	=> 'Bool',
-	default => 0
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 0
 );
 
 has 'metacpan' => (
-	is   	=> 'ro',
-	isa  	=> 'Bool',
-	default => 0
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 0
 );
 
 =head1 NAME
