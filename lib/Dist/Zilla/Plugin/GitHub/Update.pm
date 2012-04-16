@@ -64,8 +64,8 @@ when C<dzil release> is run.
 =cut
 
 sub release {
-	my $self 	= shift;
-	my ($opts) 	= @_;
+	my $self	= shift;
+	my ($opts)	= @_;
 	my $repo_name	= $self -> repo ?
 				$self -> repo :
 				$self -> zilla -> name;
@@ -161,7 +161,7 @@ The GitHub homepage field will be set to the value present in the dist meta
 (e.g. the one set by other plugins) if this option is set to true (default is
 false). If no value is present in the dist meta, this option is ignored.
 
-This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all 
+This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all
 four are true, meta_home will be used).
 
 =back

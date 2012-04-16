@@ -104,8 +104,8 @@ When offline, this is not set.
 =cut
 
 sub metadata {
-	my $self 	= shift;
-	my ($opts) 	= @_;
+	my $self	= shift;
+	my ($opts)	= @_;
 	my $repo_name	= $self -> repo ?
 				$self -> repo :
 				$self -> zilla -> name;
