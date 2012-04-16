@@ -88,6 +88,16 @@ has 'metacpan' => (
 		}
 );
 
+has 'meta_home' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	lazy	=> 1,
+	default	=> sub {
+			defined $_[0] -> payload -> {meta_home} ?
+				$_[0] -> payload -> {meta_home} : 0
+		}
+);
+
 =head1 NAME
 
 Dist::Zilla::PluginBundle::GitHub - GitHub plugins all-in-one
@@ -126,7 +136,8 @@ sub configure {
 			repo => $self -> repo,
 			cpan => $self -> cpan,
 			p3rl => $self -> p3rl,
-			metacpan => $self -> metacpan
+			metacpan  => $self -> metacpan,
+			meta_home => $self -> meta_home
 		}]
 	);
 }
@@ -184,6 +195,15 @@ is false).
 
 This takes precedence over the C<cpan> and C<p3rl> options (if all three are
 true, metacpan will be used).
+
+=item C<meta_home>
+
+The GitHub homepage field will be set to the value present in the dist meta
+(e.g. the one set by other plugins) if this option is set to true (default is
+false). If no value is present in the dist meta, this option is ignored.
+
+This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all 
+four are true, meta_home will be used).
 
 =back
 
