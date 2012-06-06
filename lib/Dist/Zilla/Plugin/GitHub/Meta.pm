@@ -158,7 +158,8 @@ sub metadata {
 		$wiki = "$html_url/wiki";
 	}
 
-	my $meta -> {'resources'} = {
+	my $meta;
+	$meta -> {'resources'} = {
 		'repository' => {
 			'web'  => $html_url,
 			'url'  => $git_url,
