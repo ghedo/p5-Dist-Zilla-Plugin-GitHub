@@ -4,6 +4,7 @@ use JSON;
 use Moose;
 use Try::Tiny;
 use HTTP::Tiny;
+use Class::Load qw(try_load_class);
 
 use strict;
 use warnings;
@@ -46,16 +47,32 @@ sub _get_credentials {
 
 	my ($login, $pass, $token);
 
-	$login = `git config github.user`;  chomp $login;
+	my %identity = Config::Identity::GitHub -> load
+		if try_load_class('Config::Identity::GitHub');
+
+	if (%identity) {
+		$login = $identity{'login'};
+	} else {
+		$login = `git config github.user`;  chomp $login;
+	}
 
 	if (!$login) {
-		$self -> log("Err: Missing value 'github.user' in git config");
+		my $error = %identity ?
+			"Err: missing value 'user' in ~/.github" :
+			"Err: Missing value 'github.user' in git config";
+
+		$self -> log($error);
 		return;
 	}
 
 	if (!$nopass) {
-		$token = `git config github.token`;    chomp $token;
-		$pass  = `git config github.password`; chomp $pass;
+		if (%identity) {
+			$token = $identity{'token'};
+			$pass  = $identity{'password'};
+		} else {
+			$token = `git config github.token`;    chomp $token;
+			$pass  = `git config github.password`; chomp $pass;
+		}
 
 		if ($token) {
 			$self -> log("Err: Login with GitHub token is deprecated");
