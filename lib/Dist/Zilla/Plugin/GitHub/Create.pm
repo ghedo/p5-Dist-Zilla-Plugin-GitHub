@@ -40,10 +40,11 @@ Configure git with your GitHub credentials:
     $ git config --global github.user LoginName
     $ git config --global github.password GitHubPassword
 
-Alternatively, the GitHub login token can be used instead of the password
-(note that token-based login has been deprecated by GitHub):
+Alternatively, you can write your credentials in the (optionally GPG-encrypted)
+C<~/.github> file as follows:
 
-    $ git config --global github.token GitHubToken
+    login LoginName
+    password GitHubpassword
 
 then, in your F<profile.ini>:
 
