@@ -48,7 +48,7 @@ sub execute {
 
 		when ('update') {
 			my $update = _find_plug($zilla, 'GitHub::Update');
-			
+
 			$_ -> gather_files for
 				@{ $zilla -> plugins_with(-FileGatherer) };
 
