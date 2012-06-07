@@ -65,9 +65,11 @@ sub after_mint {
 	my $self	= shift;
 	my ($opts)	= @_;
 
-        return if $self -> prompt and not $self -> _confirm;
+	my $root = $opts -> {'mint_root'};
 
-	my $repo_name	= basename($opts -> {'mint_root'});
+	return if $self -> prompt and not $self -> _confirm;
+
+	my $repo_name	= basename($root);
 
 	my ($login, $pass)  = $self -> _get_credentials(0);
 
@@ -99,7 +101,7 @@ sub after_mint {
 	my $repo = $self -> _check_response($response);
 	return if not $repo;
 
-	my $git_dir = $opts -> {mint_root}."/.git";
+	my $git_dir = "$root/.git";
 	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
 
 	if ((-d $git_dir) && (!-d $rem_ref)) {
@@ -115,12 +117,12 @@ sub after_mint {
 }
 
 sub _confirm {
-    my ($self) = @_;
+	my ($self) = @_;
 
-    my $dist = $self -> zilla -> name;
-    my $prompt = "Shall I create a GitHub repository for $dist?";
-    return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
+	my $dist = $self -> zilla -> name;
+	my $prompt = "Shall I create a GitHub repository for $dist?";
 
+	return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
 }
 
 =head1 ATTRIBUTES
