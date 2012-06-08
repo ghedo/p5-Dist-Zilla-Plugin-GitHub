@@ -14,10 +14,10 @@ Dist::Zilla::App::Command::gh - Use the GitHub plugins from the command-line
 =head1 SYNOPSIS
 
     # create a new GitHub repository for your dist
-    dzil gh create
+    $ dzil gh create [<repository>]
 
     # update GitHub repo information
-    dzil gh update
+    $ dzil gh update
 
 =cut
 
@@ -40,10 +40,13 @@ sub execute {
 			);
 
 			my $create = _find_plug($minter, 'GitHub::Create');
-			#TODO: allow custom repository name
 			my $root   = `pwd`; chomp $root;
+			my $repo   = $arg -> [1];
 
-			$create -> after_mint({ mint_root => $root });
+			$create -> after_mint({
+				mint_root => $root,
+				repo      => $repo
+			});
 		}
 
 		when ('update') {

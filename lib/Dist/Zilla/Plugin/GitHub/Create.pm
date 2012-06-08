@@ -69,7 +69,7 @@ sub after_mint {
 
 	return if $self -> prompt and not $self -> _confirm;
 
-	my $repo_name	= basename($root);
+	my $repo_name	= $opts -> {'repo'} || basename($root);
 
 	my ($login, $pass)  = $self -> _get_credentials(0);
 
