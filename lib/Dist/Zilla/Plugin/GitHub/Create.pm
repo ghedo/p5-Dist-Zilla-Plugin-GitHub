@@ -40,8 +40,8 @@ Configure git with your GitHub credentials:
     $ git config --global github.user LoginName
     $ git config --global github.password GitHubPassword
 
-Alternatively, you can write your credentials in the (optionally GPG-encrypted)
-C<~/.github> file as follows:
+Alternatively you can install L<Config::Identity> and write your credentials
+in the (optionally GPG-encrypted) C<~/.github> file as follows:
 
     login LoginName
     password GitHubpassword
