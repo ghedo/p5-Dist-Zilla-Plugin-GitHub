@@ -21,6 +21,10 @@ Dist::Zilla::App::Command::gh - Use the GitHub plugins from the command-line
 
 =cut
 
+sub abstract    { 'use the GitHub plugins from the command-line' }
+sub description { 'Use the GitHub plugins from the command-line' }
+sub usage_desc  { '%c %o [ update | create [<repository>] ]' }
+
 sub execute {
 	my ($self, $opt, $arg) = @_;
 
