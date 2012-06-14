@@ -128,7 +128,7 @@ sub metadata {
 
 	if (!$offline && $repo->{'fork'} == JSON::true() && $self->fork == 1) {
 		my $parent	= $repo -> {'parent'} -> {'full_name'};
-		my $url		= $self -> api.'/repos/show/'.$parent;
+		my $url		= $self -> api.'/repos/'.$parent;
 		my $response	= $http -> request('GET', $url);
 
 		$repo = $self -> _check_response($response);
