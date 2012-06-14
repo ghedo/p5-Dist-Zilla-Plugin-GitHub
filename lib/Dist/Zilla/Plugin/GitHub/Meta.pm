@@ -51,8 +51,8 @@ then, in your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This Dist::Zilla plugin adds some information about the distribution's
-GitHub repository to the META.{yml,json} files, using the official L<CPAN::Meta>
+This Dist::Zilla plugin adds some information about the distribution's GitHub
+repository to the META.{yml,json} files, using the official L<CPAN::Meta>
 specification.
 
 It currently sets the following fields:
