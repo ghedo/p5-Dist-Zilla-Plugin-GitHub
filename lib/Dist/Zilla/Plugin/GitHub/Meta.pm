@@ -55,7 +55,11 @@ This Dist::Zilla plugin adds some information about the distribution's GitHub
 repository to the META.{yml,json} files, using the official L<CPAN::Meta>
 specification.
 
-It currently sets the following fields:
+Note that, to work properly, L<GitHub::Meta> needs the network to connect to
+GitHub itself. If the network is not available, it will try to come up with
+sensible data, but it may be inaccurate.
+
+L<GitHub::Meta> currently sets the following fields:
 
 =over 4
 
