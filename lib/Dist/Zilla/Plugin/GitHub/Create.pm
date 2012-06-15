@@ -48,8 +48,14 @@ in the (optionally GPG-encrypted) C<~/.github> file as follows:
 
 then, in your F<profile.ini>:
 
+    # default config
     [GitHub::Create]
-    public = 1
+
+    # to override publicness
+    [GitHub::Create]
+    public = 0
+
+See L</ATTRIBUTES> for more options.
 
 =head1 DESCRIPTION
 

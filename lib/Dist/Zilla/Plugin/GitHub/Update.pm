@@ -53,9 +53,14 @@ in the (optionally GPG-encrypted) C<~/.github> file as follows:
 
 then, in your F<dist.ini>:
 
-    [GitHub::Update]
+    # default config
+    [GitHub::Meta]
+
+    # to override the repo name
+    [GitHub::Meta]
     repo = SomeRepo
-    cpan = 1
+
+See L</ATTRIBUTES> for more options.
 
 =head1 DESCRIPTION
 

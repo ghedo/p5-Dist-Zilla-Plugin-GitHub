@@ -46,8 +46,14 @@ Configure git with your GitHub credentials:
 
 then, in your F<dist.ini>:
 
+    # default config
+    [GitHub::Meta]
+
+    # to override the repo name
     [GitHub::Meta]
     repo = SomeRepo
+
+See L</ATTRIBUTES> for more options.
 
 =head1 DESCRIPTION
 
