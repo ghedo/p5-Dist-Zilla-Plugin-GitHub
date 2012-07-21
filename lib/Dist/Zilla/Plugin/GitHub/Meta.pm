@@ -40,7 +40,7 @@ Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
 
 =head1 SYNOPSIS
 
-Configure git with your GitHub credentials:
+Configure git with your GitHub login name:
 
     $ git config --global github.user LoginName
 
