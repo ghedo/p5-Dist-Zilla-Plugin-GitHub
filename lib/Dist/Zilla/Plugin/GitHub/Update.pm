@@ -51,6 +51,8 @@ in the (optionally GPG-encrypted) C<~/.github> file as follows:
     login LoginName
     password GitHubpassword
 
+(if only the login name is set, the password will be asked interactively)
+
 then, in your F<dist.ini>:
 
     # default config
