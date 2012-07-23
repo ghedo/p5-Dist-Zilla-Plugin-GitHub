@@ -69,7 +69,7 @@ L<GitHub::Meta> currently sets the following fields:
 
 =over 4
 
-=item * C<homepage>
+=item C<homepage>
 
 The official home of this project on the web, taken from the GitHub repository
 info. If the C<homepage> option is set to false this will be skipped (default is
@@ -77,29 +77,29 @@ true).
 
 When offline, this is not set.
 
-=item * C<repository>
+=item C<repository>
 
 =over 4
 
-=item * C<web>
+=item C<web>
 
 URL pointing to the GitHub page of the project.
 
-=item * C<url>
+=item C<url>
 
 URL pointing to the GitHub repository (C<git://...>).
 
-=item * C<type>
+=item C<type>
 
 This is set to C<git> by default.
 
 =back
 
-=item * C<bugtracker>
+=item C<bugtracker>
 
 =over 4
 
-=item * C<web>
+=item C<web>
 
 URL pointing to the GitHub issues page of the project. If the C<bugs> option is
 set to false (default is true) or the issues are disabled in the GitHub
