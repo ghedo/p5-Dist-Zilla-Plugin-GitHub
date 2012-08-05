@@ -89,6 +89,7 @@ sub after_mint {
 
 	$params -> {'name'}   = $repo_name;
 	$params -> {'public'} = $self -> public;
+	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
 
 	my $url = $self -> api.'/user/repos';
 
