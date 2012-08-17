@@ -1,13 +1,13 @@
 package Dist::Zilla::Plugin::GitHub;
 
+use strict;
+use warnings;
+
 use JSON;
 use Moose;
 use Try::Tiny;
 use HTTP::Tiny;
 use Class::Load qw(try_load_class);
-
-use strict;
-use warnings;
 
 has 'repo' => (
 	is      => 'ro',
