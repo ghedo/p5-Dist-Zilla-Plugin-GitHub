@@ -77,7 +77,7 @@ sub after_mint {
 
 	return if $self -> prompt and not $self -> _confirm;
 
-	my $repo_name	= $opts -> {'repo'} || basename($root);
+	my $repo_name = $opts -> {'repo'} || basename($root);
 
 	my ($login, $pass)  = $self -> _get_credentials(0);
 
@@ -102,7 +102,7 @@ sub after_mint {
 
 	$content = to_json $params;
 
-	my $response	= $http -> request('POST', $url, {
+	my $response = $http -> request('POST', $url, {
 		content => $content,
 		headers => $headers
 	});

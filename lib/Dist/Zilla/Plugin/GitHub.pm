@@ -95,6 +95,14 @@ sub _get_credentials {
 	return ($login, $pass);
 }
 
+sub _get_repo_name {
+	my ($self, $login) = @_;
+
+	my $repo = $self -> repo ? $self -> repo : $self -> zilla -> name;
+
+	return ($repo =~ /.*\/.*/ ? $repo : "$login/$repo");
+}
+
 sub _check_response {
 	my ($self, $response) = @_;
 

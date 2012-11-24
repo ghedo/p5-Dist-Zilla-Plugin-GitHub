@@ -116,19 +116,18 @@ When offline, this is not set.
 sub metadata {
 	my $self	= shift;
 	my ($opts)	= @_;
-	my $repo_name	= $self -> repo ?
-				$self -> repo :
-				$self -> zilla -> name;
 	my $offline	= 0;
 
-	my ($login, undef, undef)  = $self -> _get_credentials(1);
+	my ($login, undef, undef) = $self -> _get_credentials(1);
 	return {} if (!$login);
+
+	my $repo_name = $self -> _get_repo_name($login);
 
 	my $http = HTTP::Tiny -> new;
 
 	$self -> log("Getting GitHub repository info");
 
-	my $url		= $self -> api."/repos/$login/$repo_name";
+	my $url		= $self -> api."/repos/$repo_name";
 	my $response	= $http -> request('GET', $url);
 
 	my $repo = $self -> _check_response($response);
@@ -148,11 +147,11 @@ sub metadata {
 	my ($html_url, $git_url, $homepage, $bugtracker, $wiki);
 
 	$html_url = $offline			?
-		"https://github.com/$login/$repo_name"   :
+		"https://github.com/$repo_name"   :
 		$repo -> {'html_url'};
 
 	$git_url = $offline			?
-		"git://github.com/$login/$repo_name.git" :
+		"git://github.com/$repo_name.git" :
 		$repo -> {'git_url'};
 
 	$homepage = $offline	?
