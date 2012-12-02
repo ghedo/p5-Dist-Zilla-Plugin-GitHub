@@ -107,7 +107,15 @@ Dist::Zilla::PluginBundle::GitHub - GitHub plugins all-in-one
 Configure git with your GitHub credentials:
 
     $ git config --global github.user LoginName
-    $ git config --global github.token GitHubToken
+    $ git config --global github.password GitHubPassword
+
+Alternatively you can install L<Config::Identity> and write your credentials
+in the (optionally GPG-encrypted) C<~/.github> file as follows:
+
+    login LoginName
+    password GitHubpassword
+
+(if only the login name is set, the password will be asked interactively)
 
 then, in your F<dist.ini>:
 
@@ -149,7 +157,8 @@ sub configure {
 =item C<repo>
 
 The name of the GitHub repository. By default the dist name (from dist.ini)
-is used.
+is used. It can also be in the form C<user/repo> when it belongs to another
+GitHub user/organization
 
 =item C<homepage>
 

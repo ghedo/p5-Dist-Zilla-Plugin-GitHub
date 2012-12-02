@@ -197,7 +197,8 @@ sub metadata {
 =item C<repo>
 
 The name of the GitHub repository. By default the dist name (from dist.ini)
-is used.
+is used. It can also be in the form C<user/repo> when it belongs to another
+GitHub user/organization
 
 =item C<homepage>
 
