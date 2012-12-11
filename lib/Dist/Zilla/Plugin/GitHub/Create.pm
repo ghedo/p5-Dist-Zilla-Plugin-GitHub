@@ -31,7 +31,7 @@ has 'prompt' => (
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub::Create - Create GitHub repo on dzil new
+Dist::Zilla::Plugin::GitHub::Create - Create a new GitHub repo on dzil new
 
 =head1 SYNOPSIS
 

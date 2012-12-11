@@ -36,7 +36,7 @@ has 'fork' => (
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub::Meta - Add GitHub repo info to META.{yml,json}
+Dist::Zilla::Plugin::GitHub::Meta - Add a GitHub repo's info to META.{yml,json}
 
 =head1 SYNOPSIS
 

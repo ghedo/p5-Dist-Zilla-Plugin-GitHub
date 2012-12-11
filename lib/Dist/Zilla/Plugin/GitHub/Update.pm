@@ -36,7 +36,7 @@ has 'meta_home' => (
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub::Update - Update GitHub repo info on release
+Dist::Zilla::Plugin::GitHub::Update - Update a GitHub repo's info on release
 
 =head1 SYNOPSIS
 

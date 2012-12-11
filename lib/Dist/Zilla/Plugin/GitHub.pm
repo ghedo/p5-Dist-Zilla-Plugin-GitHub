@@ -40,6 +40,11 @@ The following is the list of the plugins shipped in this distribution:
 =item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to META.{yml,json}
 
 =back
+
+This distribution also provides an additional C<dzil> command (L<dzil
+gh|Dist::Zilla::App::Command::gh>) and a L<plugin
+bundle|Dist::Zilla::PluginBundle::GitHub>.
+
 =cut
 
 sub _get_credentials {
@@ -121,12 +126,6 @@ sub _check_response {
 		return;
 	}
 }
-
-=head1 ACKNOWLEDGMENTS
-
-Both the GitHub::Create and the GitHub::Update modules used to be standalone
-modules (named respectively L<Dist::Zilla::Plugin::GithubCreate> and
-L<Dist::Zilla::Plugin::GithubUpdate>) that are now deprecated.
 
 =head1 AUTHOR
 
