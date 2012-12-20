@@ -1,6 +1,6 @@
 package Dist::Zilla::App::Command::gh;
 
-use v5.10;
+use feature 'switch';
 
 use strict;
 use warnings;
