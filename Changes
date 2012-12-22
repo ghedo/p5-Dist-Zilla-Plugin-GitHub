@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.29      2012-12-22 14:02:45 Europe/Rome
+
  - Documentation fixes (no functional changes)
  - Use feature 'switch' instead of v5.10 (GH#16) (thanks, @brianphillips)
 
