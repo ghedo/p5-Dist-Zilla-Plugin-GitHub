@@ -158,7 +158,7 @@ sub configure {
 
 The name of the GitHub repository. By default the dist name (from dist.ini)
 is used. It can also be in the form C<user/repo> when it belongs to another
-GitHub user/organization
+GitHub user/organization.
 
 =item C<homepage>
 
@@ -185,22 +185,23 @@ one, if it's set to true (default).
 
 =item C<cpan>
 
-The GitHub homepage field will be set to the CPAN page of the module if this
-option is set to true (default),
+The GitHub homepage field will be set to the CPAN page (search.cpan.org) of the
+module if this option is set to true (default),
 
 =item C<p3rl>
 
-The GitHub homepage field will be set to the p3rl.org shortened URL (e.g.
-C<http://p3rl.org/My::Module>) if this option is set to true (default is false).
+The GitHub homepage field will be set to the p3rl.org shortened URL
+(e.g. C<http://p3rl.org/My::Module>) if this option is set to true (default is
+false).
 
-This takes precedence over the C<cpan> option (if both are true, p3rl will
-be used).
+This takes precedence over the C<cpan> option (if both are true, p3rl will be
+used).
 
 =item C<metacpan>
 
-The GitHub homepage field will be set to the metacpan.org distribution URL (e.g.
-C<http://metacpan.org/release/My-Module>) if this option is set to true (default
-is false).
+The GitHub homepage field will be set to the metacpan.org distribution URL
+(e.g. C<http://metacpan.org/release/My-Module>) if this option is set to true
+(default is false).
 
 This takes precedence over the C<cpan> and C<p3rl> options (if all three are
 true, metacpan will be used).
