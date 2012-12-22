@@ -26,8 +26,8 @@ Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 DESCRIPTION
 
-B<Dist::Zilla::Plugin::GitHub> ships a bunch of L<Dist::Zilla> plugins, aimed at
-easing the maintainance of Dist::Zilla-managed modules with L<GitHub|https://github.com>.
+B<Dist::Zilla::Plugin::GitHub> is a set of plugins for L<Dist::Zilla> intended
+to more easily integrate L<GitHub|https://github.com> in the C<dzil> workflow.
 
 The following is the list of the plugins shipped in this distribution:
 
