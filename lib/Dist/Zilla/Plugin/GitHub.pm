@@ -9,6 +9,12 @@ use Try::Tiny;
 use HTTP::Tiny;
 use Class::Load qw(try_load_class);
 
+has 'remote' => (
+	is      => 'ro',
+	isa     => 'Maybe[Str]',
+	default	=> 'origin'
+);
+
 has 'repo' => (
 	is      => 'ro',
 	isa     => 'Maybe[Str]'
@@ -103,7 +109,16 @@ sub _get_credentials {
 sub _get_repo_name {
 	my ($self, $login) = @_;
 
-	my $repo = $self -> repo ? $self -> repo : $self -> zilla -> name;
+	my $repo;
+
+	$repo = $self -> repo if $self -> repo;
+
+	my $remote = $self -> remote;
+	`git remote show -n $remote` =~ /Fetch URL: (.*)/;
+	$1 =~ /github\.com.*\/(.*)\.git$/;
+	$repo = $1 unless $repo and !$1;
+
+	$repo = $self -> zilla -> name unless $repo;
 
 	return ($repo =~ /.*\/.*/ ? $repo : "$login/$repo");
 }

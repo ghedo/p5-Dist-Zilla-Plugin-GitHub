@@ -17,16 +17,10 @@ has 'public' => (
 	default	=> 1
 );
 
-has 'remote' => (
-	is	=> 'ro',
-	isa	=> 'Str',
-	default	=> 'origin'
-);
-
 has 'prompt' => (
-        is	=> 'ro',
-        isa	=> 'Bool',
-        default	=> 0
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 0
 );
 
 =head1 NAME

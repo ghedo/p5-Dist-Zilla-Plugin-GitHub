@@ -156,9 +156,15 @@ sub configure {
 
 =item C<repo>
 
-The name of the GitHub repository. By default the dist name (from dist.ini)
-is used. It can also be in the form C<user/repo> when it belongs to another
-GitHub user/organization.
+The name of the GitHub repository. By default the name will be extracted from
+the URL of the remote specified in the C<remote> option, and if that fails the
+dist name (from dist.ini) is used. It can also be in the form C<user/repo>
+when it belongs to another GitHub user/organization.
+
+=item C<remote>
+
+The name of the Git remote pointing to the GitHub repository (C<"origin"> by
+default). This is used when trying to guess the repository name.
 
 =item C<homepage>
 
