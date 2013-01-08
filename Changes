@@ -2,8 +2,10 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
- - Meta and Update now try to extract the GitHub repository name from the URL of
-   the remote pointing to the repository (whose name can be also configured).
+ - Meta and Update now try to extract the GitHub repository name from the URL
+   of the remote pointing to the repository (whose name can be also configured).
+ - Set the remote tracking for the current branch to the GitHub remote on
+   create (GH#17) (thanks, @rkitover!)
 
 0.29      2012-12-22 14:02:45 Europe/Rome
 
