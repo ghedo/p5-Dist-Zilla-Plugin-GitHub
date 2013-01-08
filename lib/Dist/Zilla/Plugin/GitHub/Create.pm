@@ -214,7 +214,9 @@ C<GitHub::Create> plugin, as follows:
     [GitHub::Create]
     remote = myremote
 
-Remember to put C<[Git::Init]> B<before> C<[GitHub::Create]>.
+Remember to put C<[Git::Init]> B<before> C<[GitHub::Create]>. After the new
+remote is added, the current branch will track it, unless remote tracking for
+the branch was already set.
 
 =head1 AUTHOR
 
