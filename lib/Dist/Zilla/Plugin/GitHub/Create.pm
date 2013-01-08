@@ -116,6 +116,16 @@ sub after_mint {
 			"git", "--git-dir=$git_dir", "remote", "add",
 			$self -> remote, $ssh_url
 		);
+
+		if (my $branch = $self -> _current_branch($git_dir)) {
+			if ((not $self -> _git_config($git_dir, "branch.$branch.merge"))
+					&& (not $self -> _git_config($git_dir, "branch.$branch.remote"))) {
+				$self -> log("Setting up remote tracking for branch '$branch'.");
+
+				$self -> _git_config($git_dir, "branch.$branch.merge",  "refs/heads/$branch");
+				$self -> _git_config($git_dir, "branch.$branch.remote", $self -> remote)
+			}
+		}
 	}
 }
 
@@ -126,6 +136,38 @@ sub _confirm {
 	my $prompt = "Shall I create a GitHub repository for $dist?";
 
 	return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
+}
+
+sub _current_branch {
+	my ($self, $git_dir) = @_;
+
+	open my $old_err, '>&', *STDERR;
+	close STDERR;
+
+	open my $pipe, '-|', "git", "--git-dir=$git_dir", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "HEAD";
+
+	chomp(my $branch = <$pipe>);
+
+	close $pipe;
+
+	$branch = undef if $? >> 8 != 0;
+
+	open STDERR, '>&', $old_err;
+
+	return $branch;
+}
+
+sub _git_config {
+	my ($self, $git_dir, $key, $val) = @_;
+
+	open my $pipe, '-|', "git", "--git-dir=$git_dir", "config", $key, (defined $val ? ($val) : ());
+
+	my $out = <$pipe>;
+	chomp($out) if defined $out;
+
+	$val = $out unless defined $val;
+
+	return $val;
 }
 
 =head1 ATTRIBUTES
