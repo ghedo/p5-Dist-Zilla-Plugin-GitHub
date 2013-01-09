@@ -146,7 +146,8 @@ sub _current_branch {
 
 	open my $pipe, '-|', "git", "--git-dir=$git_dir", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "HEAD";
 
-	chomp(my $branch = <$pipe>);
+	my $branch = <$pipe>;
+	chomp($branch) if defined $branch;
 
 	close $pipe;
 
