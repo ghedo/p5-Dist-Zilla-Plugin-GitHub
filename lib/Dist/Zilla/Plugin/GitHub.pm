@@ -7,12 +7,13 @@ use JSON;
 use Moose;
 use Try::Tiny;
 use HTTP::Tiny;
+use Git::Wrapper;
 use Class::Load qw(try_load_class);
 
 has 'remote' => (
 	is      => 'ro',
 	isa     => 'Maybe[Str]',
-	default	=> 'origin'
+	default => 'origin'
 );
 
 has 'repo' => (
@@ -110,13 +111,13 @@ sub _get_repo_name {
 	my ($self, $login) = @_;
 
 	my $repo;
+	my $git = Git::Wrapper -> new('./');
 
 	$repo = $self -> repo if $self -> repo;
 
-	my $remote = $self -> remote;
-	`git remote show -n $remote` =~ /Fetch URL: (.*)/;
-	$1 =~ /github\.com.*\/(.*)\.git$/;
-	$repo = $1 unless $repo and !$1;
+	my ($url) = map /Fetch URL: (.*)/, $git -> remote('show', '-n', $self -> remote);
+	$url =~ /github\.com.*\/(.*)\.git$/;
+	$repo = $1 unless $repo and not $1;
 
 	$repo = $self -> zilla -> name unless $repo;
 
