@@ -5,6 +5,8 @@ use warnings;
 
 use JSON;
 use Moose;
+use Try::Tiny;
+use Git::Wrapper;
 use File::Basename;
 
 extends 'Dist::Zilla::Plugin::GitHub';
@@ -107,24 +109,26 @@ sub after_mint {
 	my $git_dir = "$root/.git";
 	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
 
-	if ((-d $git_dir) && (!-d $rem_ref)) {
-		my $ssh_url = $repo -> {'ssh_url'};
+	if ((-d $git_dir) && (not -d $rem_ref)) {
+		my $git = Git::Wrapper -> new($root);
 
 		$self -> log("Setting GitHub remote '".$self -> remote."'");
+		$git -> remote("add", $self -> remote, $repo -> {'ssh_url'});
 
-		system(
-			"git", "--git-dir=$git_dir", "remote", "add",
-			$self -> remote, $ssh_url
+		my ($branch) = $git -> rev_parse(
+			{ abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'
 		);
 
-		if (my $branch = $self -> _current_branch($git_dir)) {
-			if ((not $self -> _git_config($git_dir, "branch.$branch.merge"))
-					&& (not $self -> _git_config($git_dir, "branch.$branch.remote"))) {
+		if ($branch) {
+			try {
+				$git -> config("branch.$branch.merge");
+				$git -> config("branch.$branch.remote");
+			} catch {
 				$self -> log("Setting up remote tracking for branch '$branch'.");
 
-				$self -> _git_config($git_dir, "branch.$branch.merge",  "refs/heads/$branch");
-				$self -> _git_config($git_dir, "branch.$branch.remote", $self -> remote)
-			}
+				$git -> config("branch.$branch.merge", "refs/heads/$branch");
+				$git -> config("branch.$branch.remote", $self -> remote);
+			};
 		}
 	}
 }
@@ -136,38 +140,6 @@ sub _confirm {
 	my $prompt = "Shall I create a GitHub repository for $dist?";
 
 	return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
-}
-
-sub _current_branch {
-	my ($self, $git_dir) = @_;
-
-	open my $old_err, '>&', *STDERR;
-	close STDERR;
-
-	open my $pipe, '-|', "git", "--git-dir=$git_dir", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "HEAD";
-
-	chomp(my $branch = <$pipe>);
-
-	close $pipe;
-
-	$branch = undef if $? >> 8 != 0;
-
-	open STDERR, '>&', $old_err;
-
-	return $branch;
-}
-
-sub _git_config {
-	my ($self, $git_dir, $key, $val) = @_;
-
-	open my $pipe, '-|', "git", "--git-dir=$git_dir", "config", $key, (defined $val ? ($val) : ());
-
-	my $out = <$pipe>;
-	chomp($out) if defined $out;
-
-	$val = $out unless defined $val;
-
-	return $val;
 }
 
 =head1 ATTRIBUTES
