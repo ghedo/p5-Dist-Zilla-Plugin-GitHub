@@ -159,9 +159,9 @@ sub _confirm {
 
 =item C<repo>
 
-Name of the GitHub repository to create. This can be a template.
-
-Example:
+Specifies the name of the GitHub repository to be created (by default the name
+of the dist is used). This can be a template, so something like the following
+will work:
 
     repo = {{ lc $dist -> name }}
 
