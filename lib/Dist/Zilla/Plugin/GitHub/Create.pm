@@ -209,6 +209,12 @@ Remember to put C<[Git::Init]> B<before> C<[GitHub::Create]>. After the new
 remote is added, the current branch will track it, unless remote tracking for
 the branch was already set.
 
+This may allow one to use the L<Dist::Zilla::Plugin::Git::Push> plugin without
+the need to do a C<git push> between the C<dzil new> and C<dzil release>. Note
+though that this will work only when the C<push.default> Git configuration
+option is set to either C<upstream> or C<simple> (which will be the default in
+Git 2.0).
+
 =head1 AUTHOR
 
 Alessandro Ghedini <alexbio@cpan.org>
