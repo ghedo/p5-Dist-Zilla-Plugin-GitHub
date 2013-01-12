@@ -12,6 +12,7 @@ use File::Basename;
 extends 'Dist::Zilla::Plugin::GitHub';
 
 with 'Dist::Zilla::Role::AfterMint';
+with 'Dist::Zilla::Role::TextTemplate';
 
 has 'public' => (
 	is	=> 'ro',
@@ -69,11 +70,21 @@ sub after_mint {
 	my $self	= shift;
 	my ($opts)	= @_;
 
-	my $root = $opts -> {'mint_root'};
-
 	return if $self -> prompt and not $self -> _confirm;
 
-	my $repo_name = $opts -> {'repo'} || basename($root);
+	my $root = $opts -> {'mint_root'};
+
+	my $repo_name;
+
+	if ($opts -> {'repo'}) {
+		$repo_name = $opts -> {'repo'};
+	} elsif ($self -> repo) {
+		$repo_name = $self -> fill_in_string(
+			$self -> repo, { dist => \($self->zilla) },
+		);
+	} else {
+		$repo_name = $self -> zilla -> name;
+	}
 
 	my ($login, $pass)  = $self -> _get_credentials(0);
 
@@ -145,6 +156,14 @@ sub _confirm {
 =head1 ATTRIBUTES
 
 =over
+
+=item C<repo>
+
+Name of the GitHub repository to create. This can be a template.
+
+Example:
+
+    repo = {{ lc $dist -> name }}
 
 =item C<prompt>
 
