@@ -54,6 +54,10 @@ then, in your F<profile.ini>:
     [GitHub::Create]
     public = 0
 
+    # use a template for the repository name
+    [GitHub::Create]
+    repo = {{ lc $dist -> name }}
+
 See L</ATTRIBUTES> for more options.
 
 =head1 DESCRIPTION
