@@ -26,6 +26,12 @@ has 'prompt' => (
 	default	=> 0
 );
 
+has 'push' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> undef
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Create - Create a new GitHub repo on dzil new
@@ -57,6 +63,11 @@ then, in your F<profile.ini>:
     # use a template for the repository name
     [GitHub::Create]
     repo = {{ lc $dist -> name }}
+
+    # push current branch, if there is anything to push, e.g. initial commit
+    # from Git::Init (this is the default with push.default = 'matching')
+    [GitHub::Create]
+    push = 1
 
 See L</ATTRIBUTES> for more options.
 
@@ -134,16 +145,31 @@ sub after_mint {
 			{ abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'
 		) };
 
-		if ($branch) {
-			try {
-				$git -> config("branch.$branch.merge");
-				$git -> config("branch.$branch.remote");
-			} catch {
-				$self -> log("Setting up remote tracking for branch '$branch'.");
+		if ($branch && (not grep defined try { $git -> config("branch.$branch.$_") }, qw/merge remote/)) {
+			$self -> log("Setting up remote tracking for branch '$branch'.");
 
-				$git -> config("branch.$branch.merge", "refs/heads/$branch");
-				$git -> config("branch.$branch.remote", $self -> remote);
-			};
+			$git -> config("branch.$branch.merge", "refs/heads/$branch");
+			$git -> config("branch.$branch.remote", $self -> remote);
+
+			# push current branch if push.default = 'matching' or
+			# unset and git version is < 2.0, or the push config is
+			# set to true
+
+			my $do_push = $self -> push;
+
+			$do_push &&= $self -> fill_in_string($do_push, { dist => \($self->zilla) });
+
+			$do_push = undef if defined $do_push && $do_push =~ /^\s*$/;
+
+			my ($git_major) = ($git -> version)[0] =~ /^(\d+)/;
+
+			my ($push_default) = try { $git -> config('push.default') } || '';
+
+			if ($do_push || (!defined($do_push) && ($push_default eq 'matching' || (!$push_default && $git_major < 2)))) {
+				$self -> log("Pushing branch '$branch' to GitHub.");
+
+				$git -> push($self -> remote, $branch);
+			}
 		}
 	}
 }
@@ -185,6 +211,14 @@ Specifies the git remote name to be added (default 'origin'). This will point to
 the newly created GitHub repository's private URL. See L</"ADDING REMOTE"> for
 more info.
 
+=item C<push>
+
+Set to C<1> to push the current branch at the time of repo creation to the same
+named branch on GitHub. Default is C<0>.
+
+If your git config setting for C<push.default> is C<matching> (this is the
+default before 2.0) then this option defaults to on.
+
 =back
 
 =head1 ADDING REMOTE
@@ -218,6 +252,13 @@ the need to do a C<git push> between the C<dzil new> and C<dzil release>. Note
 though that this will work only when the C<push.default> Git configuration
 option is set to either C<upstream> or C<simple> (which will be the default in
 Git 2.0).
+
+If C<push.default> is set to C<matching>, or is unset and the git version is
+older than C<2.0>, then the current branch will get pushed to GitHub on repo
+creation by default (generally this is the initial commit created by
+L<Dist::Zilla::Plugin::Git::Init>) and L<Dist::Zilla::Plugin::Git::Push> will
+also work as intended. If the L</push> config value is set to anything, it will
+override this behavior.
 
 =head1 AUTHOR
 
