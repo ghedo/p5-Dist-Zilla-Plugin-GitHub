@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.30      2013-01-13 16:29:12 Europe/Rome
+
  - Meta and Update now try to extract the GitHub repository name from the URL
    of the remote pointing to the repository
  - Set the remote tracking for the current branch to the GitHub remote on
