@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+ - Silence warnings in Create when the repository has no commits
+   (GH#19) (thanks, @rkitover!)
+
 0.30      2013-01-13 16:29:12 Europe/Rome
 
  - Meta and Update now try to extract the GitHub repository name from the URL
