@@ -130,9 +130,9 @@ sub after_mint {
 		$self -> log("Setting GitHub remote '".$self -> remote."'");
 		$git -> remote("add", $self -> remote, $repo -> {'ssh_url'});
 
-		my ($branch) = $git -> rev_parse(
+		my ($branch) = try { $git -> rev_parse(
 			{ abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'
-		);
+		) };
 
 		if ($branch) {
 			try {
