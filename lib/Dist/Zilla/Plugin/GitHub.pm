@@ -116,7 +116,7 @@ sub _get_repo_name {
 	$repo = $self -> repo if $self -> repo;
 
 	my ($url) = map /Fetch URL: (.*)/, $git -> remote('show', '-n', $self -> remote);
-	$url =~ /github\.com.*\/(.*)\.git$/;
+	$url =~ /github\.com.*?[:\/](.*)\.git$/;
 	$repo = $1 unless $repo and not $1;
 
 	$repo = $self -> zilla -> name unless $repo;
