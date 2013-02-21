@@ -118,10 +118,8 @@ sub metadata {
 	my ($opts)	= @_;
 	my $offline	= 0;
 
-	my ($login, undef, undef) = $self -> _get_credentials(1);
-	return {} if (!$login);
-
-	my $repo_name = $self -> _get_repo_name($login);
+	my $repo_name = $self -> _get_repo_name;
+	return {} if (!$repo_name);
 
 	my $http = HTTP::Tiny -> new;
 

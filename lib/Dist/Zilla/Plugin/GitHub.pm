@@ -121,6 +121,9 @@ sub _get_repo_name {
 
 	$repo = $self -> zilla -> name unless $repo;
 
+	($login, undef, undef) = $self -> _get_credentials(1)
+		unless $login;
+
 	return ($repo =~ /.*\/.*/ ? $repo : "$login/$repo");
 }
 
