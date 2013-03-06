@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.31      2013-03-06 15:54:19 Europe/Rome
+
  - Silence warnings in Create when the repository has no commits (GH#19)
    (thanks, @rkitover!)
  - Improve repository name extraction from remote URL (GH#21)
