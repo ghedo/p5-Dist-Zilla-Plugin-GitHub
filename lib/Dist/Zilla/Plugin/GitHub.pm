@@ -115,16 +115,21 @@ sub _get_repo_name {
 
 	$repo = $self -> repo if $self -> repo;
 
-	my ($url) = map /Fetch URL: (.*)/, $git -> remote('show', '-n', $self -> remote);
+	my ($url) = map /Fetch URL: (.*)/,
+		$git -> remote('show', '-n', $self -> remote);
+
 	$url =~ /github\.com.*?[:\/](.*)\.git$/;
 	$repo = $1 unless $repo and not $1;
 
 	$repo = $self -> zilla -> name unless $repo;
 
-	($login, undef, undef) = $self -> _get_credentials(1)
-		unless $login;
+	if ($repo !~ /.*\/.*/) {
+		($login, undef, undef) = $self -> _get_credentials(1);
 
-	return ($repo =~ /.*\/.*/ ? $repo : "$login/$repo");
+		$repo = "$login/$repo";
+	}
+
+	return $repo;
 }
 
 sub _check_response {
