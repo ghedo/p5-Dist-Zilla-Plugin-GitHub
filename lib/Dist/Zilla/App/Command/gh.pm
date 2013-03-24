@@ -25,6 +25,14 @@ sub abstract    { 'use the GitHub plugins from the command-line' }
 sub description { 'Use the GitHub plugins from the command-line' }
 sub usage_desc  { '%c %o [ update | create [<repository>] ]' }
 
+sub opt_spec {
+	[ 'profile|p=s',  'name of the profile to use',
+		{ default => 'default' }  ],
+
+	[ 'provider|P=s', 'name of the profile provider to use',
+		{ default => 'Default' }  ],
+}
+
 sub execute {
 	my ($self, $opt, $arg) = @_;
 
@@ -39,7 +47,7 @@ sub execute {
 
 			my $minter = Dist::Zilla::Dist::Minter
 				-> _new_from_profile(
-				[ 'Default', 'default' ], {
+				[ $opt -> provider, $opt -> profile ], {
 					chrome => $self -> app -> chrome,
 					name   => $zilla -> name,
 				},
