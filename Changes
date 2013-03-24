@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.32      2013-03-24 23:50:12 Europe/Rome
+
  - Support custom provider and profile in the "dzil gh create"
 
 0.31      2013-03-06 15:54:19 Europe/Rome
