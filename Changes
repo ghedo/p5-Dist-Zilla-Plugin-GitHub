@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+ - Do not use given when anymore to avoid new experimental::smartmatch
+   warnings (GH#22)
+
 0.32      2013-03-24 23:50:12 Europe/Rome
 
  - Support custom provider and profile in the "dzil gh create"
