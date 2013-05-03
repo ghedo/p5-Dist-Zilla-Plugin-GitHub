@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.34      2013-05-03 22:17:26 Europe/Rome
+
  - Fix if/elsif in gh command (GH#26) (thanks, @karenetheridge!)
 
 0.33      2013-05-03 20:17:46 Europe/Rome
