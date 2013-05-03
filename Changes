@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.33      2013-05-03 20:17:46 Europe/Rome
+
  - Do not use given when anymore to avoid new experimental::smartmatch
    warnings (GH#22)
 
