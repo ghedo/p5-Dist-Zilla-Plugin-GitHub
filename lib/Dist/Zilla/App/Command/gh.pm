@@ -59,7 +59,7 @@ sub execute {
 			repo      => $repo,
 			descr     => $zilla -> abstract
 		});
-	} elsif ($arg -> [0] eq 'create') {
+	} elsif ($arg -> [0] eq 'update') {
 		_find_plug($zilla, 'GitHub::Update') -> release;
 	}
 }
