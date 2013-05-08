@@ -60,7 +60,7 @@ sub execute {
 			descr     => $zilla -> abstract
 		});
 	} elsif ($arg -> [0] eq 'update') {
-		_find_plug($zilla, 'GitHub::Update') -> release;
+		_find_plug($zilla, 'GitHub::Update') -> after_release;
 	}
 }
 
