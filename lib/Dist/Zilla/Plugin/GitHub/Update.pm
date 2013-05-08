@@ -8,7 +8,7 @@ use Moose;
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
-with 'Dist::Zilla::Role::Releaser';
+with 'Dist::Zilla::Role::AfterRelease';
 
 has 'cpan' => (
 	is	=> 'ro',
@@ -71,7 +71,7 @@ when C<dzil release> is run.
 
 =cut
 
-sub release {
+sub after_release {
 	my $self	= shift;
 	my ($opts)	= @_;
 	my $dist_name	= $self -> zilla -> name;
