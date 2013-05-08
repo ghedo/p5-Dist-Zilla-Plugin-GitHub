@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+ - Change phase for [Github::Update] from Releaser to AfterRelease (GH#27)
+   (thanks, @karenetheridge!)
+
 0.34      2013-05-03 22:17:26 Europe/Rome
 
  - Fix if/elsif in gh command (GH#26) (thanks, @karenetheridge!)
