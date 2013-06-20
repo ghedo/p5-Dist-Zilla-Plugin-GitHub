@@ -26,6 +26,24 @@ has 'prompt' => (
 	default	=> 0
 );
 
+has 'has_issues' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 1
+);
+
+has 'has_wiki' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 1
+);
+
+has 'has_downloads' => (
+	is	=> 'ro',
+	isa	=> 'Bool',
+	default	=> 1
+);
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub::Create - Create a new GitHub repo on dzil new
@@ -101,6 +119,9 @@ sub after_mint {
 	$params -> {'name'}   = $repo_name;
 	$params -> {'public'} = $self -> public;
 	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
+	$params -> {'has_issues'} = $self -> has_issues;
+	$params -> {'has_wiki'} = $self -> has_wiki;
+	$params -> {'has_downloads'} = $self -> has_downloads;
 
 	my $url = $self -> api.'/user/repos';
 
@@ -184,6 +205,18 @@ create a private repository.
 Specifies the git remote name to be added (default 'origin'). This will point to
 the newly created GitHub repository's private URL. See L</"ADDING REMOTE"> for
 more info.
+
+=item C<has_issues>
+
+Enable issues for the new repository if this option is set to true (default).
+
+=item C<has_wiki>
+
+Enable the wiki for the new repository if this option is set to true (default).
+
+=item C<has_downloads>
+
+Enable downloads for the new repository if this option is set to true (default).
 
 =back
 
