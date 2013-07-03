@@ -121,19 +121,19 @@ sub after_mint {
 	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
 
 	$params -> {'has_issues'} = $self -> has_issues;
-	$self -> log_debug($params -> {'has_issues'}   ?
+	$self -> log([ $params -> {'has_issues'}   ?
 				"Issues enabled" :
-				"Issues disabled");
+				"Issues disabled" ]);
 
 	$params -> {'has_wiki'} = $self -> has_wiki;
-	$self -> log_debug($params -> {'has_wiki'}   ?
+	$self -> log([ $params -> {'has_wiki'}   ?
 				"Wiki enabled" :
-				"Wiki disabled");
+				"Wiki disabled" ]);
 
 	$params -> {'has_downloads'} = $self -> has_downloads;
-	$self -> log_debug($params -> {'has_downloads'}   ?
+	$self -> log([ $params -> {'has_downloads'}   ?
 				"Downloads enabled" :
-				"Downloads disabled");
+				"Downloads disabled" ]);
 
 	my $url = $self -> api.'/user/repos';
 
