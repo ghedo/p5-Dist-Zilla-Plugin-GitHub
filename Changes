@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.35      2013-07-27 14:58:49 Europe/Rome
+
  - Change phase for [Github::Update] from Releaser to AfterRelease (GH#27)
    (thanks, @karenetheridge!)
  - Add options to enable/disable issues, wiki and downloads when creating a
