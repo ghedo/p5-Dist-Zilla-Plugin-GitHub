@@ -145,6 +145,12 @@ sub _check_response {
 
 		return $json_text;
 	} catch {
+		if ($response and !$response -> {'success'} and $response -> {'status'} eq '599') {
+		    #possibly HTTP::Tiny error
+			$self -> log("Err: ", $response -> {'content'});
+			return;
+		}
+
 		$self -> log("Err: Can't connect to GitHub");
 
 		return;
