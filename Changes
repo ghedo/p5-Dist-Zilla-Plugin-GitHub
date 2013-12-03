@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.36      2013-12-03 19:25:55 Europe/Rome
+
  - Require Net::SSLeay for HTTP::Tiny SSL support and check HTTP::Tiny
    exceptions (GH#33) (thanks, @chorny!)
 
