@@ -11,27 +11,27 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::AfterRelease';
 
 has 'cpan' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'p3rl' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 has 'metacpan' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 has 'meta_home' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 =head1 NAME
@@ -72,9 +72,9 @@ when C<dzil release> is run.
 =cut
 
 sub after_release {
-	my $self	= shift;
-	my ($opts)	= @_;
-	my $dist_name	= $self -> zilla -> name;
+	my $self      = shift;
+	my ($opts)    = @_;
+	my $dist_name = $self -> zilla -> name;
 
 	my ($login, $pass)  = $self -> _get_credentials(0);
 	return if (!$login);
@@ -126,7 +126,7 @@ sub after_release {
 
 	$content = to_json $params;
 
-	my $response	= $http -> request('PATCH', $url, {
+	my $response = $http -> request('PATCH', $url, {
 		content => $content,
 		headers => $headers
 	});

@@ -15,33 +15,33 @@ with 'Dist::Zilla::Role::AfterMint';
 with 'Dist::Zilla::Role::TextTemplate';
 
 has 'public' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'prompt' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 has 'has_issues' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'has_wiki' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'has_downloads' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 =head1 NAME
@@ -89,8 +89,8 @@ repository's private URL. See L</"ADDING REMOTE"> for more info.
 =cut
 
 sub after_mint {
-	my $self	= shift;
-	my ($opts)	= @_;
+	my $self   = shift;
+	my ($opts) = @_;
 
 	return if $self -> prompt and not $self -> _confirm;
 
@@ -121,15 +121,15 @@ sub after_mint {
 	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
 
 	$params -> {'has_issues'} = $self -> has_issues;
-	$self -> log([ 'Issues are %s', $params -> {'has_issues'}   ?
+	$self -> log([ 'Issues are %s', $params -> {'has_issues'} ?
 				'enabled' : 'disabled' ]);
 
 	$params -> {'has_wiki'} = $self -> has_wiki;
-	$self -> log([ 'Wiki is %s', $params -> {'has_wiki'}   ?
+	$self -> log([ 'Wiki is %s', $params -> {'has_wiki'} ?
 				'enabled' : 'disabled' ]);
 
 	$params -> {'has_downloads'} = $self -> has_downloads;
-	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'}   ?
+	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'} ?
 				'enabled' : 'disabled' ]);
 
 	my $url = $self -> api.'/user/repos';

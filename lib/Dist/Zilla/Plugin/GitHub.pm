@@ -87,8 +87,7 @@ sub _get_credentials {
 
 			# modern "tokens" can be used as passwords with basic auth, so...
 			# see https://help.github.com/articles/creating-an-access-token-for-command-line-use
-			$pass ||= $token
-				if $token;
+			$pass ||= $token if $token;
 		}
 
 		$self -> log("Err: Login with GitHub token is deprecated")
@@ -98,12 +97,10 @@ sub _get_credentials {
 			require Term::ReadKey;
 
 			Term::ReadKey::ReadMode('noecho');
-			$pass = $self -> zilla -> chrome
-					-> term_ui -> get_reply(
+			$pass = $self -> zilla -> chrome > term_ui -> get_reply(
 				prompt => "GitHub password for '$login'",
-				allow  => sub {
-					defined $_[0] and length $_[0]
-				});
+				allow  => sub { defined $_[0] and length $_[0] }
+			);
 			Term::ReadKey::ReadMode('normal');
 			print "\n";
 		}
@@ -150,8 +147,9 @@ sub _check_response {
 
 		return $json_text;
 	} catch {
-		if ($response and !$response -> {'success'} and $response -> {'status'} eq '599') {
-		    #possibly HTTP::Tiny error
+		if ($response and !$response -> {'success'} and
+		    $response -> {'status'} eq '599') {
+			#possibly HTTP::Tiny error
 			$self -> log("Err: ", $response -> {'content'});
 			return;
 		}

@@ -11,27 +11,27 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::MetaProvider';
 
 has 'homepage' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'bugs' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'wiki' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 has 'fork' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 =head1 NAME
@@ -114,9 +114,9 @@ When offline, this is not set.
 =cut
 
 sub metadata {
-	my $self	= shift;
-	my ($opts)	= @_;
-	my $offline	= 0;
+	my $self    = shift;
+	my ($opts)  = @_;
+	my $offline = 0;
 
 	my $repo_name = $self -> _get_repo_name;
 	return {} if (!$repo_name);
@@ -125,8 +125,8 @@ sub metadata {
 
 	$self -> log("Getting GitHub repository info");
 
-	my $url		= $self -> api."/repos/$repo_name";
-	my $response	= $http -> request('GET', $url);
+	my $url      = $self -> api."/repos/$repo_name";
+	my $response = $http -> request('GET', $url);
 
 	my $repo = $self -> _check_response($response);
 	$offline = 1 if not $repo;
@@ -134,9 +134,9 @@ sub metadata {
 	$self -> log("Using offline repository information") if $offline;
 
 	if (!$offline && $repo->{'fork'} == JSON::true() && $self->fork == 1) {
-		my $parent	= $repo -> {'parent'} -> {'full_name'};
-		my $url		= $self -> api.'/repos/'.$parent;
-		my $response	= $http -> request('GET', $url);
+		my $parent   = $repo -> {'parent'} -> {'full_name'};
+		my $url      = $self -> api.'/repos/'.$parent;
+		my $response = $http -> request('GET', $url);
 
 		$repo = $self -> _check_response($response);
 		return if not $repo;
@@ -144,17 +144,15 @@ sub metadata {
 
 	my ($html_url, $git_url, $homepage, $bugtracker, $wiki);
 
-	$html_url = $offline			?
-		"https://github.com/$repo_name"   :
+	$html_url = $offline ?
+		"https://github.com/$repo_name" :
 		$repo -> {'html_url'};
 
-	$git_url = $offline			?
+	$git_url = $offline ?
 		"git://github.com/$repo_name.git" :
 		$repo -> {'git_url'};
 
-	$homepage = $offline	?
-		undef		:
-		$repo -> {'homepage'};
+	$homepage = $offline ? undef : $repo -> {'homepage'};
 
 	if (!$offline && $repo -> {'has_issues'} == JSON::true()) {
 		$bugtracker = "$html_url/issues";
