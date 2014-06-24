@@ -14,34 +14,39 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::AfterMint';
 with 'Dist::Zilla::Role::TextTemplate';
 
+has 'org' => (
+	is      => 'ro',
+	isa     => 'Maybe[Str]'
+);
+
 has 'public' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'prompt' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 0
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 0
 );
 
 has 'has_issues' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'has_wiki' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 has 'has_downloads' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	default	=> 1
+	is      => 'ro',
+	isa     => 'Bool',
+	default => 1
 );
 
 =head1 NAME
@@ -89,8 +94,8 @@ repository's private URL. See L</"ADDING REMOTE"> for more info.
 =cut
 
 sub after_mint {
-	my $self	= shift;
-	my ($opts)	= @_;
+	my $self   = shift;
+	my ($opts) = @_;
 
 	return if $self -> prompt and not $self -> _confirm;
 
@@ -121,18 +126,20 @@ sub after_mint {
 	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
 
 	$params -> {'has_issues'} = $self -> has_issues;
-	$self -> log([ 'Issues are %s', $params -> {'has_issues'}   ?
+	$self -> log([ 'Issues are %s', $params -> {'has_issues'} ?
 				'enabled' : 'disabled' ]);
 
 	$params -> {'has_wiki'} = $self -> has_wiki;
-	$self -> log([ 'Wiki is %s', $params -> {'has_wiki'}   ?
+	$self -> log([ 'Wiki is %s', $params -> {'has_wiki'} ?
 				'enabled' : 'disabled' ]);
 
 	$params -> {'has_downloads'} = $self -> has_downloads;
-	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'}   ?
+	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'} ?
 				'enabled' : 'disabled' ]);
 
-	my $url = $self -> api.'/user/repos';
+	my $url = $self -> api;
+	$url .= $self -> org ? '/orgs/' . $self -> org . '/' : '/user/';
+	$url .= 'repos';
 
 	if ($pass) {
 		require MIME::Base64;
@@ -141,8 +148,9 @@ sub after_mint {
 		$headers -> {'authorization'} = "Basic $basic";
 	}
 
-	if ( $self->prompt_2fa ) {
+	if ($self -> prompt_2fa) {
 		$headers -> { 'X-GitHub-OTP' } = $otp;
+		$self -> log([ "Using 2-factor authentication" ]);
 	}
 
 	$content = to_json $params;
@@ -153,6 +161,13 @@ sub after_mint {
 	});
 
 	my $repo = $self -> _check_response($response);
+
+	if ($repo eq 'redo') {
+		$self -> log("2-factor auth required, retrying...");
+		$self -> prompt_2fa(1);
+		$repo = after_release($self, @$opts);
+	}
+
 	return if not $repo;
 
 	my $git_dir = "$root/.git";
@@ -203,6 +218,11 @@ will work:
 
     repo = {{ lc $dist -> name }}
 
+=item C<org>
+
+Specifies the name of a GitHub organization in which to create the repository
+(by default the repository is created in the user's account).
+
 =item C<prompt>
 
 Prompt for confirmation before creating a GitHub repository if this option is
@@ -234,7 +254,7 @@ Enable downloads for the new repository if this option is set to true (default).
 =item C<prompt_2fa>
 
 Prompt for GitHub two-factor authentication code if this option is set to true
-(default false). 
+(default is false).
 
 =back
 

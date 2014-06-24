@@ -14,43 +14,48 @@ has '+repo' => (
 	default => sub { $_[0] -> payload -> {repo} }
 );
 
+has '+prompt_2fa' => (
+	lazy    => 1,
+	default => sub { $_[0] -> payload -> {prompt_2fa} }
+);
+
 # GitHub::Meta
 
 has 'homepage' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {homepage} ?
 				$_[0] -> payload -> {homepage} : 1
 		}
 );
 
 has 'bugs' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {bugs} ?
 				$_[0] -> payload -> {bugs} : 1
 		}
 );
 
 has 'wiki' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {wiki} ?
 				$_[0] -> payload -> {wiki} : 0
 		}
 );
 
 has 'fork' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {fork} ?
 				$_[0] -> payload -> {fork} : 1
 		}
@@ -59,40 +64,40 @@ has 'fork' => (
 # GitHub::Update
 
 has 'cpan' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {cpan} ?
 				$_[0] -> payload -> {cpan} : 1
 		}
 );
 
 has 'p3rl' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {p3rl} ?
 				$_[0] -> payload -> {p3rl} : 0
 		}
 );
 
 has 'metacpan' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {metacpan} ?
 				$_[0] -> payload -> {metacpan} : 0
 		}
 );
 
 has 'meta_home' => (
-	is	=> 'ro',
-	isa	=> 'Bool',
-	lazy	=> 1,
-	default	=> sub {
+	is      => 'ro',
+	isa     => 'Bool',
+	lazy    => 1,
+	default => sub {
 			defined $_[0] -> payload -> {meta_home} ?
 				$_[0] -> payload -> {meta_home} : 0
 		}
@@ -145,7 +150,8 @@ sub configure {
 			cpan => $self -> cpan,
 			p3rl => $self -> p3rl,
 			metacpan  => $self -> metacpan,
-			meta_home => $self -> meta_home
+			meta_home => $self -> meta_home,
+			prompt_2fa => $self -> prompt_2fa
 		}]
 	);
 }
@@ -220,6 +226,11 @@ false). If no value is present in the dist meta, this option is ignored.
 
 This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all
 four are true, meta_home will be used).
+
+=item C<prompt_2fa>
+
+Prompt for GitHub two-factor authentication code if this option is set to true
+(default is false).
 
 =back
 
