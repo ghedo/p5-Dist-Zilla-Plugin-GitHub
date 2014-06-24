@@ -161,6 +161,13 @@ sub after_mint {
 	});
 
 	my $repo = $self -> _check_response($response);
+
+	if ($repo eq 'redo') {
+		$self -> log("2-factor auth required, retrying...");
+		$self -> prompt_2fa(1);
+		$repo = after_release($self, @$opts);
+	}
+
 	return if not $repo;
 
 	my $git_dir = "$root/.git";

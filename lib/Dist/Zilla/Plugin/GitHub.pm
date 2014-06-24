@@ -28,7 +28,7 @@ has 'api'  => (
 );
 
 has 'prompt_2fa' => (
-	is  => 'ro',
+	is  => 'rw',
 	isa => 'Bool',
 	default => 0
 );
@@ -147,6 +147,10 @@ sub _check_response {
 		my $json_text = from_json $response -> {'content'};
 
 		if (!$response -> {'success'}) {
+			return 'redo' if (($response -> {'status'} eq '401') and
+			                  ($response -> {'headers'} ->
+			                     {'x-github-otp'} =~ /^required/));
+
 			$self -> log("Err: ", $json_text -> {'message'});
 			return;
 		}
