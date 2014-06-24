@@ -141,7 +141,7 @@ sub after_release {
 	if ($repo eq 'redo') {
 		$self -> log("2-factor auth required, retrying...");
 		$self -> prompt_2fa(1);
-		$repo = after_release($self, @$opts);
+		$repo = $self -> after_release(@$opts);
 	}
 
 	return if not $repo;
