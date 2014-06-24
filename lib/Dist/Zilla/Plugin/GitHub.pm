@@ -100,15 +100,9 @@ sub _get_credentials {
 			if $token && !$pass;
 
 		if (!$pass) {
-			require Term::ReadKey;
-
-			Term::ReadKey::ReadMode('noecho');
-			$pass = $self -> zilla -> chrome > term_ui -> get_reply(
-				prompt => "GitHub password for '$login'",
-				allow  => sub { defined $_[0] and length $_[0] }
+			$pass = $self -> zilla -> chrome -> prompt_str(
+				"GitHub password for '$login'", { noecho => 1 },
 			);
-			Term::ReadKey::ReadMode('normal');
-			print "\n";
 		}
 
 		if ($self -> prompt_2fa) {
