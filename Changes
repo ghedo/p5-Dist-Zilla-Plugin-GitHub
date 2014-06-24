@@ -5,6 +5,7 @@ Revision history for Dist-Zilla-Plugin-GitHub
  - Support using tokens with HTTP Basic Auth (GH#36) (thanks, @RsrchBoy!)
  - Support 2-factor authentication (GH#38) (GH#39) (thanks, @friedo!)
  - Fix password prompt
+ - Support for creating repos within an organization (GH#40) (thanks, @friedo!)
 
 0.36      2013-12-03 19:25:55 Europe/Rome
 
