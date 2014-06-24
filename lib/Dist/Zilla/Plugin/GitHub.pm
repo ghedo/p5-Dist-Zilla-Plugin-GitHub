@@ -21,6 +21,11 @@ has 'repo' => (
 	isa     => 'Maybe[Str]'
 );
 
+has 'org' => (
+    is      => 'ro',
+	isa     => 'Maybe[Str]'
+);
+
 has 'api'  => (
 	is      => 'ro',
 	isa     => 'Str',

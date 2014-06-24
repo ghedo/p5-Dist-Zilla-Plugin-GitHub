@@ -132,7 +132,10 @@ sub after_mint {
 	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'}   ?
 				'enabled' : 'disabled' ]);
 
-	my $url = $self -> api.'/user/repos';
+	my $url = $self -> api;
+	$url .= $self->org ? '/orgs/' . $self->org . '/'
+	                   : '/user/';
+	$url .= 'repos';
 
 	if ($pass) {
 		require MIME::Base64;
@@ -198,6 +201,11 @@ of the dist is used). This can be a template, so something like the following
 will work:
 
     repo = {{ lc $dist -> name }}
+
+=item C<org>
+
+Specifies the name of a GitHub organization in which to create the repository
+(by default the repository is created in the user's account).
 
 =item C<prompt>
 
