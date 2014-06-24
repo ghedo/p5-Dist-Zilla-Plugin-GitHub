@@ -14,6 +14,11 @@ has '+repo' => (
 	default => sub { $_[0] -> payload -> {repo} }
 );
 
+has '+prompt_2fa' => (
+	lazy    => 1,
+	default => sub { $_[0] -> payload -> {prompt_2fa} }
+);
+
 # GitHub::Meta
 
 has 'homepage' => (
@@ -145,7 +150,8 @@ sub configure {
 			cpan => $self -> cpan,
 			p3rl => $self -> p3rl,
 			metacpan  => $self -> metacpan,
-			meta_home => $self -> meta_home
+			meta_home => $self -> meta_home,
+			prompt_2fa => $self -> prompt_2fa
 		}]
 	);
 }
@@ -220,6 +226,11 @@ false). If no value is present in the dist meta, this option is ignored.
 
 This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all
 four are true, meta_home will be used).
+
+=item C<prompt_2fa>
+
+Prompt for GitHub two-factor authentication code if this option is set to true
+(default is false).
 
 =back
 

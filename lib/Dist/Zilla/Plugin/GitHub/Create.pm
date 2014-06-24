@@ -108,7 +108,7 @@ sub after_mint {
 		$repo_name = $self -> zilla -> name;
 	}
 
-	my ($login, $pass)  = $self -> _get_credentials(0);
+	my ($login, $pass, $otp)  = $self -> _get_credentials(0);
 
 	my $http = HTTP::Tiny -> new;
 
@@ -139,6 +139,11 @@ sub after_mint {
 
 		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
 		$headers -> {'authorization'} = "Basic $basic";
+	}
+
+	if ($self -> prompt_2fa) {
+		$headers -> { 'X-GitHub-OTP' } = $otp;
+		$self -> log([ "Using 2-factor authentication" ]);
 	}
 
 	$content = to_json $params;
@@ -226,6 +231,11 @@ Enable the wiki for the new repository if this option is set to true (default).
 =item C<has_downloads>
 
 Enable downloads for the new repository if this option is set to true (default).
+
+=item C<prompt_2fa>
+
+Prompt for GitHub two-factor authentication code if this option is set to true
+(default is false).
 
 =back
 

@@ -76,7 +76,7 @@ sub after_release {
 	my ($opts)    = @_;
 	my $dist_name = $self -> zilla -> name;
 
-	my ($login, $pass)  = $self -> _get_credentials(0);
+	my ($login, $pass, $otp)  = $self -> _get_credentials(0);
 	return if (!$login);
 
 	my $repo_name = $self -> _get_repo_name($login);
@@ -122,6 +122,11 @@ sub after_release {
 
 		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
 		$headers -> {'Authorization'} = "Basic $basic";
+	}
+
+	if ($self -> prompt_2fa) {
+		$headers -> { 'X-GitHub-OTP' } = $otp;
+		$self -> log([ "Using 2-factor authentication" ]);
 	}
 
 	$content = to_json $params;
@@ -182,6 +187,11 @@ false). If no value is present in the dist meta, this option is ignored.
 
 This takes precedence over the C<metacpan>, C<cpan> and C<p3rl> options (if all
 four are true, meta_home will be used).
+
+=item C<prompt_2fa>
+
+Prompt for GitHub two-factor authentication code if this option is set to true
+(default is false).
 
 =back
 
