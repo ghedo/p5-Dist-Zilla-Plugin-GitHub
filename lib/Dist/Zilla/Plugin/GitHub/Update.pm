@@ -126,7 +126,7 @@ sub after_release {
 
 	if ($self -> prompt_2fa) {
 		$headers -> { 'X-GitHub-OTP' } = $otp;
-		$self -> log([ "Using 2-factor authentication" ]);
+		$self -> log([ "Using two-factor authentication" ]);
 	}
 
 	$content = to_json $params;
@@ -139,7 +139,7 @@ sub after_release {
 	my $repo = $self -> _check_response($response);
 
 	if ($repo eq 'redo') {
-		$self -> log("2-factor auth required, retrying...");
+		$self -> log("Retrying with two-factor authentication");
 		$self -> prompt_2fa(1);
 		$repo = $self -> after_release(@$opts);
 	}
@@ -198,7 +198,8 @@ four are true, meta_home will be used).
 =item C<prompt_2fa>
 
 Prompt for GitHub two-factor authentication code if this option is set to true
-(default is false).
+(default is false). If this option is set to false but GitHub requires 2fa for
+the login, it'll be automatically enabled.
 
 =back
 
