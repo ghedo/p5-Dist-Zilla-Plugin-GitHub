@@ -111,6 +111,12 @@ sub _get_credentials {
 				{ noecho => 1 },
 			);
 		}
+
+		if ( $self -> prompt_2fa ) {
+			$otp = $self -> zilla -> chrome -> prompt_str(
+				"GitHub 2FA code for '$login'", { noecho => 1 }
+			);
+		}
 	}
 
 	return ($login, $pass, $otp);
