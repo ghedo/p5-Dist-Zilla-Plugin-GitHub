@@ -27,6 +27,13 @@ has 'api'  => (
 	default => 'https://api.github.com'
 );
 
+has 'prompt_2fa' => (
+	is  => 'ro',
+	isa => 'Bool',
+	default => 0
+);
+
+
 =head1 NAME
 
 Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
@@ -57,7 +64,7 @@ bundle|Dist::Zilla::PluginBundle::GitHub>.
 sub _get_credentials {
 	my ($self, $nopass) = @_;
 
-	my ($login, $pass, $token);
+	my ($login, $pass, $token, $otp);
 
 	my %identity = Config::Identity::GitHub -> load
 		if try_load_class('Config::Identity::GitHub');
@@ -107,9 +114,15 @@ sub _get_credentials {
 			Term::ReadKey::ReadMode('normal');
 			print "\n";
 		}
+
+		if ( $self -> prompt_2fa ) {
+			$otp = $self -> zilla -> chrome -> prompt_str(
+				"GitHub 2FA code for '$login'", { noecho => 1 }
+			);
+		}
 	}
 
-	return ($login, $pass);
+	return ($login, $pass, $otp);
 }
 
 sub _get_repo_name {
