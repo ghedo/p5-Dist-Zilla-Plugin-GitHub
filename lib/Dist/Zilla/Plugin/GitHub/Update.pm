@@ -138,13 +138,14 @@ sub after_release {
 
 	my $repo = $self -> _check_response($response);
 
+	return if not $repo;
+
 	if ($repo eq 'redo') {
 		$self -> log("Retrying with two-factor authentication");
 		$self -> prompt_2fa(1);
 		$repo = $self -> after_release($opts);
+		return if not $repo;
 	}
-
-	return if not $repo;
 }
 
 =head1 ATTRIBUTES

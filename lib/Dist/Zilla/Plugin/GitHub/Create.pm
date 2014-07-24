@@ -162,13 +162,14 @@ sub after_mint {
 
 	my $repo = $self -> _check_response($response);
 
+	return if not $repo;
+
 	if ($repo eq 'redo') {
 		$self -> log("Retrying with two-factor authentication");
 		$self -> prompt_2fa(1);
 		$repo = $self -> after_mint($opts);
+		return if not $repo;
 	}
-
-	return if not $repo;
 
 	my $git_dir = "$root/.git";
 	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
