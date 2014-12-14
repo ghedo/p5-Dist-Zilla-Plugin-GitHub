@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::GitHub::Create;
 use strict;
 use warnings;
 
-use JSON;
+use JSON::MaybeXS;
 use Moose;
 use Try::Tiny;
 use Git::Wrapper;
@@ -153,7 +153,7 @@ sub after_mint {
 		$self -> log([ "Using two-factor authentication" ]);
 	}
 
-	$content = to_json $params;
+	$content = encode_json($params);
 
 	my $response = $http -> request('POST', $url, {
 		content => $content,

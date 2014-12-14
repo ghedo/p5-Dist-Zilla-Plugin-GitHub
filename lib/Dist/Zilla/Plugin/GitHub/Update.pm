@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::GitHub::Update;
 use strict;
 use warnings;
 
-use JSON;
+use JSON::MaybeXS;
 use Moose;
 
 extends 'Dist::Zilla::Plugin::GitHub';
@@ -129,7 +129,7 @@ sub after_release {
 		$self -> log([ "Using two-factor authentication" ]);
 	}
 
-	$content = to_json $params;
+	$content = encode_json($params);
 
 	my $response = $http -> request('PATCH', $url, {
 		content => $content,

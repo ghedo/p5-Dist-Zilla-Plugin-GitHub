@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::GitHub;
 use strict;
 use warnings;
 
-use JSON;
+use JSON::MaybeXS;
 use Moose;
 use Try::Tiny;
 use HTTP::Tiny;
@@ -145,7 +145,7 @@ sub _check_response {
 	my ($self, $response) = @_;
 
 	try {
-		my $json_text = from_json $response -> {'content'};
+		my $json_text = decode_json($response) -> {'content'};
 
 		if (!$response -> {'success'}) {
 			return 'redo' if (($response -> {'status'} eq '401') and

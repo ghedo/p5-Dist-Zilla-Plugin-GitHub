@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::GitHub::Meta;
 use strict;
 use warnings;
 
-use JSON;
+use JSON::MaybeXS;
 use Moose;
 
 extends 'Dist::Zilla::Plugin::GitHub';
@@ -133,7 +133,7 @@ sub metadata {
 
 	$self -> log("Using offline repository information") if $offline;
 
-	if (!$offline && $repo->{'fork'} == JSON::true() && $self->fork == 1) {
+	if (!$offline && $repo->{'fork'} == JSON->true() && $self->fork == 1) {
 		my $parent   = $repo -> {'parent'} -> {'full_name'};
 		my $url      = $self -> api.'/repos/'.$parent;
 		my $response = $http -> request('GET', $url);
@@ -154,11 +154,11 @@ sub metadata {
 
 	$homepage = $offline ? undef : $repo -> {'homepage'};
 
-	if (!$offline && $repo -> {'has_issues'} == JSON::true()) {
+	if (!$offline && $repo -> {'has_issues'} == JSON->true()) {
 		$bugtracker = "$html_url/issues";
 	}
 
-	if (!$offline && $repo -> {'has_wiki'} == JSON::true()) {
+	if (!$offline && $repo -> {'has_wiki'} == JSON->true()) {
 		$wiki = "$html_url/wiki";
 	}
 
