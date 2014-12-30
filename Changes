@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+ - Check for _check_response() return value before using it
+ - Switch from JSON.pm to JSON::MaybeXS (GH#44) (thanks, @karenetheridge!)
+
 0.38      2014-06-28 12:38:24+02:00 Europe/Rome
 
  - Support using tokens with HTTP Basic Auth (GH#36) (thanks, @RsrchBoy!)
