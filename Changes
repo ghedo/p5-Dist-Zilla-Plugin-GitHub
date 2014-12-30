@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+0.39      2014-12-30 19:44:24+01:00 Europe/Rome
+
  - Check for _check_response() return value before using it
  - Switch from JSON.pm to JSON::MaybeXS (GH#44) (thanks, @karenetheridge!)
 
