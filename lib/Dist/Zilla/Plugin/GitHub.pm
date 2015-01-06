@@ -145,7 +145,7 @@ sub _check_response {
 	my ($self, $response) = @_;
 
 	try {
-		my $json_text = decode_json($response) -> {'content'};
+		my $json_text = decode_json($response -> {'content'});
 
 		if (!$response -> {'success'}) {
 			return 'redo' if (($response -> {'status'} eq '401') and
