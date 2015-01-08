@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+ - fix error in JSON conversion in 0.39 that caused all requests to fail
+   (thanks, Dave Rolsky!)
+
 0.39      2014-12-30 19:44:24+01:00 Europe/Rome
 
  - Check for _check_response() return value before using it
