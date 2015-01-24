@@ -1,0 +1,5 @@
+/.ackrc
+/.build/
+!/.gitignore
+/Dist-Zilla-Plugin-GitHub-*/
+/Dist-Zilla-Plugin-GitHub-*.tar.gz
