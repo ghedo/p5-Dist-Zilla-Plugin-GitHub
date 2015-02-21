@@ -93,7 +93,7 @@ sub after_release {
     $params->{name} = $repo_name_only;
     $params->{description} = $self->zilla->abstract;
 
-    my $meta_home = $self->zilla->distmeta->{resources}->{homepage};
+    my $meta_home = $self->zilla->distmeta->{resources}{homepage};
 
     if ($meta_home && $self->meta_home) {
         $self->log("Using distmeta URL");

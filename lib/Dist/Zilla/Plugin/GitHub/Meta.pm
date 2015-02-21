@@ -134,7 +134,7 @@ sub metadata {
     $self->log("Using offline repository information") if $offline;
 
     if (!$offline && $repo->{fork} == JSON->true() && $self->fork == 1) {
-        my $parent   = $repo->{parent}->{full_name};
+        my $parent   = $repo->{parent}{full_name};
         my $url      = $self->api.'/repos/'.$parent;
         my $response = $http->request('GET', $url);
 
@@ -172,14 +172,14 @@ sub metadata {
     };
 
     if ($self->wiki && $self->wiki == 1 && $wiki) {
-        $meta->{resources}->{homepage} = $wiki;
+        $meta->{resources}{homepage} = $wiki;
     } elsif ($self->homepage && $self->homepage == 1 && $homepage) {
-        $meta->{resources}->{homepage} = $homepage;
+        $meta->{resources}{homepage} = $homepage;
 
     }
 
     if ($self->bugs && $self->bugs == 1 && $bugtracker) {
-        $meta->{resources}->{bugtracker} =
+        $meta->{resources}{bugtracker} =
             { web => $bugtracker };
     }
 
