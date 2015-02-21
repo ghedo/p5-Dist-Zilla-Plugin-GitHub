@@ -10,25 +10,25 @@ extends 'Dist::Zilla::Plugin::GitHub';
 
 with 'Dist::Zilla::Role::AfterRelease';
 
-has 'cpan' => (
+has cpan => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'p3rl' => (
+has p3rl => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0
 );
 
-has 'metacpan' => (
+has metacpan => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0
 );
 
-has 'meta_home' => (
+has meta_home => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0
@@ -90,27 +90,27 @@ sub after_release {
     $repo_name =~ /\/(.*)$/;
     my $repo_name_only = $1;
 
-    $params->{'name'} = $repo_name_only;
-    $params->{'description'} = $self->zilla->abstract;
+    $params->{name} = $repo_name_only;
+    $params->{description} = $self->zilla->abstract;
 
-    my $meta_home = $self->zilla->distmeta->{'resources'}->{'homepage'};
+    my $meta_home = $self->zilla->distmeta->{resources}->{homepage};
 
     if ($meta_home && $self->meta_home) {
         $self->log("Using distmeta URL");
-        $params->{'homepage'} = $meta_home;
+        $params->{homepage} = $meta_home;
     } elsif ($self->metacpan == 1) {
         $self->log("Using MetaCPAN URL");
-        $params->{'homepage'} =
+        $params->{homepage} =
             "http://metacpan.org/release/$dist_name/"
     } elsif ($self->p3rl == 1) {
         my $guess_name = $dist_name;
         $guess_name =~ s/\-/\:\:/g;
 
         $self->log("Using P3rl URL");
-        $params->{'homepage'} = "http://p3rl.org/$guess_name"
+        $params->{homepage} = "http://p3rl.org/$guess_name"
     } elsif ($self->cpan == 1) {
         $self->log("Using CPAN URL");
-        $params->{'homepage'} =
+        $params->{homepage} =
             "http://search.cpan.org/dist/$dist_name/"
     }
 
@@ -120,11 +120,11 @@ sub after_release {
         require MIME::Base64;
 
         my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-        $headers->{'Authorization'} = "Basic $basic";
+        $headers->{Authorization} = "Basic $basic";
     }
 
     if ($self->prompt_2fa) {
-        $headers->{ 'X-GitHub-OTP' } = $otp;
+        $headers->{'X-GitHub-OTP'} = $otp;
         $self->log([ "Using two-factor authentication" ]);
     }
 

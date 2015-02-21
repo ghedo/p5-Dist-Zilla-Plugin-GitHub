@@ -21,7 +21,7 @@ has '+prompt_2fa' => (
 
 # GitHub::Meta
 
-has 'homepage' => (
+has homepage => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -31,7 +31,7 @@ has 'homepage' => (
         }
 );
 
-has 'bugs' => (
+has bugs => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -41,7 +41,7 @@ has 'bugs' => (
         }
 );
 
-has 'wiki' => (
+has wiki => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -51,7 +51,7 @@ has 'wiki' => (
         }
 );
 
-has 'fork' => (
+has fork => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -63,7 +63,7 @@ has 'fork' => (
 
 # GitHub::Update
 
-has 'cpan' => (
+has cpan => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -73,7 +73,7 @@ has 'cpan' => (
         }
 );
 
-has 'p3rl' => (
+has p3rl => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -83,7 +83,7 @@ has 'p3rl' => (
         }
 );
 
-has 'metacpan' => (
+has metacpan => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,
@@ -93,7 +93,7 @@ has 'metacpan' => (
         }
 );
 
-has 'meta_home' => (
+has meta_home => (
     is      => 'ro',
     isa     => 'Bool',
     lazy    => 1,

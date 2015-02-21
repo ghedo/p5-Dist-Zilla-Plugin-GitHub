@@ -14,36 +14,36 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::AfterMint';
 with 'Dist::Zilla::Role::TextTemplate';
 
-has 'org' => (
+has org => (
     is      => 'ro',
     isa     => 'Maybe[Str]'
 );
 
-has 'public' => (
+has public => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'prompt' => (
+has prompt => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0
 );
 
-has 'has_issues' => (
+has has_issues => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'has_wiki' => (
+has has_wiki => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'has_downloads' => (
+has has_downloads => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
@@ -99,12 +99,12 @@ sub after_mint {
 
     return if $self->prompt and not $self->_confirm;
 
-    my $root = $opts->{'mint_root'};
+    my $root = $opts->{mint_root};
 
     my $repo_name;
 
-    if ($opts->{'repo'}) {
-        $repo_name = $opts->{'repo'};
+    if ($opts->{repo}) {
+        $repo_name = $opts->{repo};
     } elsif ($self->repo) {
         $repo_name = $self->fill_in_string(
             $self->repo, { dist => \($self->zilla) },
@@ -121,20 +121,20 @@ sub after_mint {
 
     my ($params, $headers, $content);
 
-    $params->{'name'}   = $repo_name;
-    $params->{'public'} = $self->public;
-    $params->{'description'} = $opts->{'descr'} if $opts->{'descr'};
+    $params->{name}   = $repo_name;
+    $params->{public} = $self->public;
+    $params->{description} = $opts->{descr} if $opts->{descr};
 
-    $params->{'has_issues'} = $self->has_issues;
-    $self->log([ 'Issues are %s', $params->{'has_issues'} ?
+    $params->{has_issues} = $self->has_issues;
+    $self->log([ 'Issues are %s', $params->{has_issues} ?
                 'enabled' : 'disabled' ]);
 
-    $params->{'has_wiki'} = $self->has_wiki;
-    $self->log([ 'Wiki is %s', $params->{'has_wiki'} ?
+    $params->{has_wiki} = $self->has_wiki;
+    $self->log([ 'Wiki is %s', $params->{has_wiki} ?
                 'enabled' : 'disabled' ]);
 
-    $params->{'has_downloads'} = $self->has_downloads;
-    $self->log([ 'Downloads are %s', $params->{'has_downloads'} ?
+    $params->{has_downloads} = $self->has_downloads;
+    $self->log([ 'Downloads are %s', $params->{has_downloads} ?
                 'enabled' : 'disabled' ]);
 
     my $url = $self->api;
@@ -145,11 +145,11 @@ sub after_mint {
         require MIME::Base64;
 
         my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-        $headers->{'authorization'} = "Basic $basic";
+        $headers->{authorization} = "Basic $basic";
     }
 
     if ($self->prompt_2fa) {
-        $headers->{ 'X-GitHub-OTP' } = $otp;
+        $headers->{'X-GitHub-OTP'} = $otp;
         $self->log([ "Using two-factor authentication" ]);
     }
 
@@ -178,7 +178,7 @@ sub after_mint {
         my $git = Git::Wrapper->new($root);
 
         $self->log([ "Setting GitHub remote '%s'", $self->remote ]);
-        $git->remote("add", $self->remote, $repo->{'ssh_url'});
+        $git->remote("add", $self->remote, $repo->{ssh_url});
 
         my ($branch) = try { $git->rev_parse(
             { abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'

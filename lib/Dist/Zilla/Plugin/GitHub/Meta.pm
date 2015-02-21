@@ -10,25 +10,25 @@ extends 'Dist::Zilla::Plugin::GitHub';
 
 with 'Dist::Zilla::Role::MetaProvider';
 
-has 'homepage' => (
+has homepage => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'bugs' => (
+has bugs => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
 );
 
-has 'wiki' => (
+has wiki => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0
 );
 
-has 'fork' => (
+has fork => (
     is      => 'ro',
     isa     => 'Bool',
     default => 1
@@ -133,8 +133,8 @@ sub metadata {
 
     $self->log("Using offline repository information") if $offline;
 
-    if (!$offline && $repo->{'fork'} == JSON->true() && $self->fork == 1) {
-        my $parent   = $repo->{'parent'}->{'full_name'};
+    if (!$offline && $repo->{fork} == JSON->true() && $self->fork == 1) {
+        my $parent   = $repo->{parent}->{full_name};
         my $url      = $self->api.'/repos/'.$parent;
         my $response = $http->request('GET', $url);
 
@@ -146,41 +146,41 @@ sub metadata {
 
     $html_url = $offline ?
         "https://github.com/$repo_name" :
-        $repo->{'html_url'};
+        $repo->{html_url};
 
     $git_url = $offline ?
         "git://github.com/$repo_name.git" :
-        $repo->{'git_url'};
+        $repo->{git_url};
 
-    $homepage = $offline ? undef : $repo->{'homepage'};
+    $homepage = $offline ? undef : $repo->{homepage};
 
-    if (!$offline && $repo->{'has_issues'} == JSON->true()) {
+    if (!$offline && $repo->{has_issues} == JSON->true()) {
         $bugtracker = "$html_url/issues";
     }
 
-    if (!$offline && $repo->{'has_wiki'} == JSON->true()) {
+    if (!$offline && $repo->{has_wiki} == JSON->true()) {
         $wiki = "$html_url/wiki";
     }
 
     my $meta;
-    $meta->{'resources'} = {
-        'repository' => {
-            'web'  => $html_url,
-            'url'  => $git_url,
-            'type' => 'git'
+    $meta->{resources} = {
+        repository => {
+            web  => $html_url,
+            url  => $git_url,
+            type => 'git'
         }
     };
 
     if ($self->wiki && $self->wiki == 1 && $wiki) {
-        $meta->{'resources'}->{'homepage'} = $wiki;
+        $meta->{resources}->{homepage} = $wiki;
     } elsif ($self->homepage && $self->homepage == 1 && $homepage) {
-        $meta->{'resources'}->{'homepage'} = $homepage;
+        $meta->{resources}->{homepage} = $homepage;
 
     }
 
     if ($self->bugs && $self->bugs == 1 && $bugtracker) {
-        $meta->{'resources'}->{'bugtracker'} =
-            { 'web' => $bugtracker };
+        $meta->{resources}->{bugtracker} =
+            { web => $bugtracker };
     }
 
     return $meta;

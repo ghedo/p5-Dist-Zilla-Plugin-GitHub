@@ -10,24 +10,24 @@ use HTTP::Tiny;
 use Git::Wrapper;
 use Class::Load qw(try_load_class);
 
-has 'remote' => (
+has remote => (
     is      => 'ro',
     isa     => 'Maybe[Str]',
     default => 'origin'
 );
 
-has 'repo' => (
+has repo => (
     is      => 'ro',
     isa     => 'Maybe[Str]'
 );
 
-has 'api'  => (
+has api  => (
     is      => 'ro',
     isa     => 'Str',
     default => 'https://api.github.com'
 );
 
-has 'prompt_2fa' => (
+has prompt_2fa => (
     is  => 'rw',
     isa => 'Bool',
     default => 0
@@ -69,7 +69,7 @@ sub _get_credentials {
         if try_load_class('Config::Identity::GitHub');
 
     if (%identity) {
-        $login = $identity{'login'};
+        $login = $identity{login};
     } else {
         $login = `git config github.user`;  chomp $login;
     }
@@ -85,8 +85,8 @@ sub _get_credentials {
 
     if (!$nopass) {
         if (%identity) {
-            $token = $identity{'token'};
-            $pass  = $identity{'password'};
+            $token = $identity{token};
+            $pass  = $identity{password};
         } else {
             $token = `git config github.token`;    chomp $token;
             $pass  = `git config github.password`; chomp $pass;
@@ -145,22 +145,22 @@ sub _check_response {
     my ($self, $response) = @_;
 
     try {
-        my $json_text = decode_json($response->{'content'});
+        my $json_text = decode_json($response->{content});
 
-        if (!$response->{'success'}) {
-            return 'redo' if (($response->{'status'} eq '401') and
-                              ($response->{'headers'}->{'x-github-otp'} =~ /^required/));
+        if (!$response->{success}) {
+            return 'redo' if (($response->{status} eq '401') and
+                              ($response->{headers}->{'x-github-otp'} =~ /^required/));
 
-            $self->log("Err: ", $json_text->{'message'});
+            $self->log("Err: ", $json_text->{message});
             return;
         }
 
         return $json_text;
     } catch {
-        if ($response and !$response->{'success'} and
-            $response->{'status'} eq '599') {
+        if ($response and !$response->{success} and
+            $response->{status} eq '599') {
             #possibly HTTP::Tiny error
-            $self->log("Err: ", $response->{'content'});
+            $self->log("Err: ", $response->{content});
             return;
         }
 
