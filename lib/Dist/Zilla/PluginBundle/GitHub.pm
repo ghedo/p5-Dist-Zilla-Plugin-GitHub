@@ -10,97 +10,97 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::PluginBundle::Easy';
 
 has '+repo' => (
-	lazy    => 1,
-	default => sub { $_[0] -> payload -> {repo} }
+    lazy    => 1,
+    default => sub { $_[0]->payload->{repo} }
 );
 
 has '+prompt_2fa' => (
-	lazy    => 1,
-	default => sub { $_[0] -> payload -> {prompt_2fa} }
+    lazy    => 1,
+    default => sub { $_[0]->payload->{prompt_2fa} }
 );
 
 # GitHub::Meta
 
 has 'homepage' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {homepage} ?
-				$_[0] -> payload -> {homepage} : 1
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{homepage} ?
+                $_[0]->payload->{homepage} : 1
+        }
 );
 
 has 'bugs' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {bugs} ?
-				$_[0] -> payload -> {bugs} : 1
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{bugs} ?
+                $_[0]->payload->{bugs} : 1
+        }
 );
 
 has 'wiki' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {wiki} ?
-				$_[0] -> payload -> {wiki} : 0
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{wiki} ?
+                $_[0]->payload->{wiki} : 0
+        }
 );
 
 has 'fork' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {fork} ?
-				$_[0] -> payload -> {fork} : 1
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{fork} ?
+                $_[0]->payload->{fork} : 1
+        }
 );
 
 # GitHub::Update
 
 has 'cpan' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {cpan} ?
-				$_[0] -> payload -> {cpan} : 1
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{cpan} ?
+                $_[0]->payload->{cpan} : 1
+        }
 );
 
 has 'p3rl' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {p3rl} ?
-				$_[0] -> payload -> {p3rl} : 0
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{p3rl} ?
+                $_[0]->payload->{p3rl} : 0
+        }
 );
 
 has 'metacpan' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {metacpan} ?
-				$_[0] -> payload -> {metacpan} : 0
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{metacpan} ?
+                $_[0]->payload->{metacpan} : 0
+        }
 );
 
 has 'meta_home' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	lazy    => 1,
-	default => sub {
-			defined $_[0] -> payload -> {meta_home} ?
-				$_[0] -> payload -> {meta_home} : 0
-		}
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub {
+            defined $_[0]->payload->{meta_home} ?
+                $_[0]->payload->{meta_home} : 0
+        }
 );
 
 =head1 NAME
@@ -134,26 +134,26 @@ This bundle automatically adds all the GitHub plugins.
 =cut
 
 sub configure {
-	my $self = shift;
+    my $self = shift;
 
-	$self -> add_plugins(
-		['GitHub::Meta' => {
-			repo => $self -> repo,
-			homepage => $self -> homepage,
-			bugs => $self -> bugs,
-			wiki => $self -> wiki,
-			fork => $self -> fork
-		}],
+    $self->add_plugins(
+        ['GitHub::Meta' => {
+            repo => $self->repo,
+            homepage => $self->homepage,
+            bugs => $self->bugs,
+            wiki => $self->wiki,
+            fork => $self->fork
+        }],
 
-		['GitHub::Update' => {
-			repo => $self -> repo,
-			cpan => $self -> cpan,
-			p3rl => $self -> p3rl,
-			metacpan  => $self -> metacpan,
-			meta_home => $self -> meta_home,
-			prompt_2fa => $self -> prompt_2fa
-		}]
-	);
+        ['GitHub::Update' => {
+            repo => $self->repo,
+            cpan => $self->cpan,
+            p3rl => $self->p3rl,
+            metacpan  => $self->metacpan,
+            meta_home => $self->meta_home,
+            prompt_2fa => $self->prompt_2fa
+        }]
+    );
 }
 
 =head1 ATTRIBUTES
@@ -256,6 +256,6 @@ See http://dev.perl.org/licenses/ for more information.
 
 no Moose;
 
-__PACKAGE__ -> meta -> make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1; # End of Dist::Zilla::PluginBundle::GitHub

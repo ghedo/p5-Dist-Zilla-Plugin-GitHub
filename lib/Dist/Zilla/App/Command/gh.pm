@@ -24,52 +24,51 @@ sub description { 'Use the GitHub plugins from the command-line' }
 sub usage_desc  { '%c %o [ update | create [<repository>] ]' }
 
 sub opt_spec {
-	[ 'profile|p=s',  'name of the profile to use',
-		{ default => 'default' }  ],
+    [ 'profile|p=s',  'name of the profile to use',
+        { default => 'default' }  ],
 
-	[ 'provider|P=s', 'name of the profile provider to use',
-		{ default => 'Default' }  ],
+    [ 'provider|P=s', 'name of the profile provider to use',
+        { default => 'Default' }  ],
 }
 
 sub execute {
-	my ($self, $opt, $arg) = @_;
+    my ($self, $opt, $arg) = @_;
 
-	my $zilla = $self -> zilla;
+    my $zilla = $self->zilla;
 
-	$_ -> gather_files for
-		@{ $zilla -> plugins_with(-FileGatherer) };
+    $_->gather_files for
+        @{ $zilla->plugins_with(-FileGatherer) };
 
-	if ($arg -> [0] eq 'create') {
-		require Dist::Zilla::Dist::Minter;
+    if ($arg->[0] eq 'create') {
+        require Dist::Zilla::Dist::Minter;
 
-		my $minter = Dist::Zilla::Dist::Minter
-			-> _new_from_profile(
-			[ $opt -> provider, $opt -> profile ], {
-				chrome => $self -> app -> chrome,
-				name   => $zilla -> name,
-			},
-		);
+        my $minter = Dist::Zilla::Dist::Minter->_new_from_profile(
+            [ $opt->provider, $opt->profile ], {
+                chrome => $self->app->chrome,
+                name   => $zilla->name,
+            },
+        );
 
-		my $create = _find_plug($minter, 'GitHub::Create');
-		my $root   = `pwd`; chomp $root;
-		my $repo   = $arg -> [1];
+        my $create = _find_plug($minter, 'GitHub::Create');
+        my $root   = `pwd`; chomp $root;
+        my $repo   = $arg->[1];
 
-		$create -> after_mint({
-			mint_root => $root,
-			repo      => $repo,
-			descr     => $zilla -> abstract
-		});
-	} elsif ($arg -> [0] eq 'update') {
-		_find_plug($zilla, 'GitHub::Update') -> after_release;
-	}
+        $create->after_mint({
+            mint_root => $root,
+            repo      => $repo,
+            descr     => $zilla->abstract
+        });
+    } elsif ($arg->[0] eq 'update') {
+        _find_plug($zilla, 'GitHub::Update')->after_release;
+    }
 }
 
 sub _find_plug {
-	my ($self, $name) = @_;
+    my ($self, $name) = @_;
 
-	foreach (@{ $self -> plugins }) {
-		return $_ if $_ -> plugin_name =~ /$name/;
-	}
+    foreach (@{ $self->plugins }) {
+        return $_ if $_->plugin_name =~ /$name/;
+    }
 }
 
 =head1 AUTHOR

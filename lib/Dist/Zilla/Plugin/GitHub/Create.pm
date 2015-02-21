@@ -15,38 +15,38 @@ with 'Dist::Zilla::Role::AfterMint';
 with 'Dist::Zilla::Role::TextTemplate';
 
 has 'org' => (
-	is      => 'ro',
-	isa     => 'Maybe[Str]'
+    is      => 'ro',
+    isa     => 'Maybe[Str]'
 );
 
 has 'public' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 1
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1
 );
 
 has 'prompt' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 0
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0
 );
 
 has 'has_issues' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 1
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1
 );
 
 has 'has_wiki' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 1
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1
 );
 
 has 'has_downloads' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 1
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1
 );
 
 =head1 NAME
@@ -79,7 +79,7 @@ then, in your F<profile.ini>:
 
     # use a template for the repository name
     [GitHub::Create]
-    repo = {{ lc $dist -> name }}
+    repo = {{ lc $dist->name }}
 
 See L</ATTRIBUTES> for more options.
 
@@ -94,117 +94,117 @@ repository's private URL. See L</"ADDING REMOTE"> for more info.
 =cut
 
 sub after_mint {
-	my $self   = shift;
-	my ($opts) = @_;
+    my $self   = shift;
+    my ($opts) = @_;
 
-	return if $self -> prompt and not $self -> _confirm;
+    return if $self->prompt and not $self->_confirm;
 
-	my $root = $opts -> {'mint_root'};
+    my $root = $opts->{'mint_root'};
 
-	my $repo_name;
+    my $repo_name;
 
-	if ($opts -> {'repo'}) {
-		$repo_name = $opts -> {'repo'};
-	} elsif ($self -> repo) {
-		$repo_name = $self -> fill_in_string(
-			$self -> repo, { dist => \($self->zilla) },
-		);
-	} else {
-		$repo_name = $self -> zilla -> name;
-	}
+    if ($opts->{'repo'}) {
+        $repo_name = $opts->{'repo'};
+    } elsif ($self->repo) {
+        $repo_name = $self->fill_in_string(
+            $self->repo, { dist => \($self->zilla) },
+        );
+    } else {
+        $repo_name = $self->zilla->name;
+    }
 
-	my ($login, $pass, $otp)  = $self -> _get_credentials(0);
+    my ($login, $pass, $otp)  = $self->_get_credentials(0);
 
-	my $http = HTTP::Tiny -> new;
+    my $http = HTTP::Tiny->new;
 
-	$self -> log([ "Creating new GitHub repository '%s'", $repo_name ]);
+    $self->log([ "Creating new GitHub repository '%s'", $repo_name ]);
 
-	my ($params, $headers, $content);
+    my ($params, $headers, $content);
 
-	$params -> {'name'}   = $repo_name;
-	$params -> {'public'} = $self -> public;
-	$params -> {'description'} = $opts -> {'descr'} if $opts -> {'descr'};
+    $params->{'name'}   = $repo_name;
+    $params->{'public'} = $self->public;
+    $params->{'description'} = $opts->{'descr'} if $opts->{'descr'};
 
-	$params -> {'has_issues'} = $self -> has_issues;
-	$self -> log([ 'Issues are %s', $params -> {'has_issues'} ?
-				'enabled' : 'disabled' ]);
+    $params->{'has_issues'} = $self->has_issues;
+    $self->log([ 'Issues are %s', $params->{'has_issues'} ?
+                'enabled' : 'disabled' ]);
 
-	$params -> {'has_wiki'} = $self -> has_wiki;
-	$self -> log([ 'Wiki is %s', $params -> {'has_wiki'} ?
-				'enabled' : 'disabled' ]);
+    $params->{'has_wiki'} = $self->has_wiki;
+    $self->log([ 'Wiki is %s', $params->{'has_wiki'} ?
+                'enabled' : 'disabled' ]);
 
-	$params -> {'has_downloads'} = $self -> has_downloads;
-	$self -> log([ 'Downloads are %s', $params -> {'has_downloads'} ?
-				'enabled' : 'disabled' ]);
+    $params->{'has_downloads'} = $self->has_downloads;
+    $self->log([ 'Downloads are %s', $params->{'has_downloads'} ?
+                'enabled' : 'disabled' ]);
 
-	my $url = $self -> api;
-	$url .= $self -> org ? '/orgs/' . $self -> org . '/' : '/user/';
-	$url .= 'repos';
+    my $url = $self->api;
+    $url .= $self->org ? '/orgs/' . $self->org . '/' : '/user/';
+    $url .= 'repos';
 
-	if ($pass) {
-		require MIME::Base64;
+    if ($pass) {
+        require MIME::Base64;
 
-		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-		$headers -> {'authorization'} = "Basic $basic";
-	}
+        my $basic = MIME::Base64::encode_base64("$login:$pass", '');
+        $headers->{'authorization'} = "Basic $basic";
+    }
 
-	if ($self -> prompt_2fa) {
-		$headers -> { 'X-GitHub-OTP' } = $otp;
-		$self -> log([ "Using two-factor authentication" ]);
-	}
+    if ($self->prompt_2fa) {
+        $headers->{ 'X-GitHub-OTP' } = $otp;
+        $self->log([ "Using two-factor authentication" ]);
+    }
 
-	$content = encode_json($params);
+    $content = encode_json($params);
 
-	my $response = $http -> request('POST', $url, {
-		content => $content,
-		headers => $headers
-	});
+    my $response = $http->request('POST', $url, {
+        content => $content,
+        headers => $headers
+    });
 
-	my $repo = $self -> _check_response($response);
+    my $repo = $self->_check_response($response);
 
-	return if not $repo;
+    return if not $repo;
 
-	if ($repo eq 'redo') {
-		$self -> log("Retrying with two-factor authentication");
-		$self -> prompt_2fa(1);
-		$repo = $self -> after_mint($opts);
-		return if not $repo;
-	}
+    if ($repo eq 'redo') {
+        $self->log("Retrying with two-factor authentication");
+        $self->prompt_2fa(1);
+        $repo = $self->after_mint($opts);
+        return if not $repo;
+    }
 
-	my $git_dir = "$root/.git";
-	my $rem_ref = $git_dir."/refs/remotes/".$self -> remote;
+    my $git_dir = "$root/.git";
+    my $rem_ref = $git_dir."/refs/remotes/".$self->remote;
 
-	if ((-d $git_dir) && (not -d $rem_ref)) {
-		my $git = Git::Wrapper -> new($root);
+    if ((-d $git_dir) && (not -d $rem_ref)) {
+        my $git = Git::Wrapper->new($root);
 
-		$self -> log([ "Setting GitHub remote '%s'", $self -> remote ]);
-		$git -> remote("add", $self -> remote, $repo -> {'ssh_url'});
+        $self->log([ "Setting GitHub remote '%s'", $self->remote ]);
+        $git->remote("add", $self->remote, $repo->{'ssh_url'});
 
-		my ($branch) = try { $git -> rev_parse(
-			{ abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'
-		) };
+        my ($branch) = try { $git->rev_parse(
+            { abbrev_ref => 1, symbolic_full_name => 1 }, 'HEAD'
+        ) };
 
-		if ($branch) {
-			try {
-				$git -> config("branch.$branch.merge");
-				$git -> config("branch.$branch.remote");
-			} catch {
-				$self -> log([ "Setting up remote tracking for branch '%s'", $branch ]);
+        if ($branch) {
+            try {
+                $git->config("branch.$branch.merge");
+                $git->config("branch.$branch.remote");
+            } catch {
+                $self->log([ "Setting up remote tracking for branch '%s'", $branch ]);
 
-				$git -> config("branch.$branch.merge", "refs/heads/$branch");
-				$git -> config("branch.$branch.remote", $self -> remote);
-			};
-		}
-	}
+                $git->config("branch.$branch.merge", "refs/heads/$branch");
+                $git->config("branch.$branch.remote", $self->remote);
+            };
+        }
+    }
 }
 
 sub _confirm {
-	my ($self) = @_;
+    my ($self) = @_;
 
-	my $dist = $self -> zilla -> name;
-	my $prompt = "Shall I create a GitHub repository for $dist?";
+    my $dist = $self->zilla->name;
+    my $prompt = "Shall I create a GitHub repository for $dist?";
 
-	return $self -> zilla -> chrome -> prompt_yn($prompt, {default => 1} );
+    return $self->zilla->chrome->prompt_yn($prompt, {default => 1} );
 }
 
 =head1 ATTRIBUTES
@@ -217,7 +217,7 @@ Specifies the name of the GitHub repository to be created (by default the name
 of the dist is used). This can be a template, so something like the following
 will work:
 
-    repo = {{ lc $dist -> name }}
+    repo = {{ lc $dist->name }}
 
 =item C<org>
 
@@ -311,6 +311,6 @@ See http://dev.perl.org/licenses/ for more information.
 
 no Moose;
 
-__PACKAGE__ -> meta -> make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1; # End of Dist::Zilla::Plugin::GitHub::Create

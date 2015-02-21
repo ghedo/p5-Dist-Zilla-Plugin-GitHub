@@ -11,27 +11,27 @@ extends 'Dist::Zilla::Plugin::GitHub';
 with 'Dist::Zilla::Role::AfterRelease';
 
 has 'cpan' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 1
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 1
 );
 
 has 'p3rl' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 0
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0
 );
 
 has 'metacpan' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 0
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0
 );
 
 has 'meta_home' => (
-	is      => 'ro',
-	isa     => 'Bool',
-	default => 0
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0
 );
 
 =head1 NAME
@@ -72,80 +72,79 @@ when C<dzil release> is run.
 =cut
 
 sub after_release {
-	my $self      = shift;
-	my ($opts)    = @_;
-	my $dist_name = $self -> zilla -> name;
+    my $self      = shift;
+    my ($opts)    = @_;
+    my $dist_name = $self->zilla->name;
 
-	my ($login, $pass, $otp)  = $self -> _get_credentials(0);
-	return if (!$login);
+    my ($login, $pass, $otp)  = $self->_get_credentials(0);
+    return if (!$login);
 
-	my $repo_name = $self -> _get_repo_name($login);
+    my $repo_name = $self->_get_repo_name($login);
 
-	my $http = HTTP::Tiny -> new;
+    my $http = HTTP::Tiny->new;
 
-	$self -> log("Updating GitHub repository info");
+    $self->log("Updating GitHub repository info");
 
-	my ($params, $headers, $content);
+    my ($params, $headers, $content);
 
-	$repo_name =~ /\/(.*)$/;
-	my $repo_name_only = $1;
+    $repo_name =~ /\/(.*)$/;
+    my $repo_name_only = $1;
 
-	$params -> {'name'} = $repo_name_only;
-	$params -> {'description'} = $self -> zilla -> abstract;
+    $params->{'name'} = $repo_name_only;
+    $params->{'description'} = $self->zilla->abstract;
 
-	my $meta_home = $self -> zilla -> distmeta
-		-> {'resources'} -> {'homepage'};
+    my $meta_home = $self->zilla->distmeta->{'resources'}->{'homepage'};
 
-	if ($meta_home && $self -> meta_home) {
-		$self -> log("Using distmeta URL");
-		$params -> {'homepage'} = $meta_home;
-	} elsif ($self -> metacpan == 1) {
-		$self -> log("Using MetaCPAN URL");
-		$params -> {'homepage'} =
-			"http://metacpan.org/release/$dist_name/"
-	} elsif ($self -> p3rl == 1) {
-		my $guess_name = $dist_name;
-		$guess_name =~ s/\-/\:\:/g;
+    if ($meta_home && $self->meta_home) {
+        $self->log("Using distmeta URL");
+        $params->{'homepage'} = $meta_home;
+    } elsif ($self->metacpan == 1) {
+        $self->log("Using MetaCPAN URL");
+        $params->{'homepage'} =
+            "http://metacpan.org/release/$dist_name/"
+    } elsif ($self->p3rl == 1) {
+        my $guess_name = $dist_name;
+        $guess_name =~ s/\-/\:\:/g;
 
-		$self -> log("Using P3rl URL");
-		$params -> {'homepage'} = "http://p3rl.org/$guess_name"
-	} elsif ($self -> cpan == 1) {
-		$self -> log("Using CPAN URL");
-		$params -> {'homepage'} =
-			"http://search.cpan.org/dist/$dist_name/"
-	}
+        $self->log("Using P3rl URL");
+        $params->{'homepage'} = "http://p3rl.org/$guess_name"
+    } elsif ($self->cpan == 1) {
+        $self->log("Using CPAN URL");
+        $params->{'homepage'} =
+            "http://search.cpan.org/dist/$dist_name/"
+    }
 
-	my $url = $self -> api."/repos/$repo_name";
+    my $url = $self->api."/repos/$repo_name";
 
-	if ($pass) {
-		require MIME::Base64;
+    if ($pass) {
+        require MIME::Base64;
 
-		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-		$headers -> {'Authorization'} = "Basic $basic";
-	}
+        my $basic = MIME::Base64::encode_base64("$login:$pass", '');
+        $headers->{'Authorization'} = "Basic $basic";
+    }
 
-	if ($self -> prompt_2fa) {
-		$headers -> { 'X-GitHub-OTP' } = $otp;
-		$self -> log([ "Using two-factor authentication" ]);
-	}
+    if ($self->prompt_2fa) {
+        $headers->{ 'X-GitHub-OTP' } = $otp;
+        $self->log([ "Using two-factor authentication" ]);
+    }
 
-	$content = encode_json($params);
+    $content = encode_json($params);
 
-	my $response = $http -> request('PATCH', $url, {
-		content => $content,
-		headers => $headers
-	});
+    my $response = $http->request('PATCH', $url, {
+        content => $content,
+        headers => $headers
+    });
 
-	my $repo = $self -> _check_response($response);
+    my $repo = $self->_check_response($response);
 
-	return if not $repo;
+    return if not $repo;
 
-	if ($repo eq 'redo') {
-		$self -> log("Retrying with two-factor authentication");
-		$self -> prompt_2fa(1);
-		$repo = $self -> after_release($opts);
-		return if not $repo;
-	}
+    if ($repo eq 'redo') {
+        $self->log("Retrying with two-factor authentication");
+        $self->prompt_2fa(1);
+        $repo = $self->after_release($opts);
+        return if not $repo;
+    }
 }
 
 =head1 ATTRIBUTES
@@ -222,6 +221,6 @@ See http://dev.perl.org/licenses/ for more information.
 
 no Moose;
 
-__PACKAGE__ -> meta -> make_immutable;
+__PACKAGE__->meta->make_immutable;
 
 1; # End of Dist::Zilla::Plugin::GitHub::Update
