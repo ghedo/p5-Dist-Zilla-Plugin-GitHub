@@ -113,7 +113,7 @@ sub after_mint {
 		$repo_name = $self -> zilla -> name;
 	}
 
-	my ($login, $pass, $otp)  = $self -> _get_credentials(0);
+	my $credentials = $self -> _get_credentials(0);
 
 	my $http = HTTP::Tiny -> new;
 
@@ -141,15 +141,24 @@ sub after_mint {
 	$url .= $self -> org ? '/orgs/' . $self -> org . '/' : '/user/';
 	$url .= 'repos';
 
-	if ($pass) {
+	if ($credentials -> {'pass'}) {
 		require MIME::Base64;
+		my $login = $credentials -> {'login'};
+		my $pass = $credentials -> {'pass'};
 
 		my $basic = MIME::Base64::encode_base64("$login:$pass", '');
 		$headers -> {'authorization'} = "Basic $basic";
 	}
+	elsif (my $token = $credentials -> {'token'}) {
+		$headers -> {'authorization'} = "token $token";
+	}
+	else {
+		$self -> log("Err: No authorization set up. Use github.password or github.token config settings");
+		return;
+	}
 
 	if ($self -> prompt_2fa) {
-		$headers -> { 'X-GitHub-OTP' } = $otp;
+		$headers -> { 'X-GitHub-OTP' } = $credentials -> {'otp'};
 		$self -> log([ "Using two-factor authentication" ]);
 	}
 
