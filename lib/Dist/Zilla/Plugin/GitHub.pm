@@ -90,16 +90,9 @@ sub _get_credentials {
 		} else {
 			$token = `git config github.token`;    chomp $token;
 			$pass  = `git config github.password`; chomp $pass;
-
-			# modern "tokens" can be used as passwords with basic auth, so...
-			# see https://help.github.com/articles/creating-an-access-token-for-command-line-use
-			$pass ||= $token if $token;
 		}
 
-		$self -> log("Err: Login with GitHub token is deprecated")
-			if $token && !$pass;
-
-		if (!$pass) {
+		if (!$pass and ! $token) {
 			$pass = $self -> zilla -> chrome -> prompt_str(
 				"GitHub password for '$login'", { noecho => 1 },
 			);
@@ -113,7 +106,12 @@ sub _get_credentials {
 		}
 	}
 
-	return ($login, $pass, $otp);
+	return {
+		login => $login,
+		pass => $pass,
+		otp => $otp,
+		token => $token,
+	};
 }
 
 sub _get_repo_name {
@@ -133,8 +131,8 @@ sub _get_repo_name {
 	$repo = $self -> zilla -> name unless $repo;
 
 	if ($repo !~ /.*\/.*/) {
-		($login, undef, undef) = $self -> _get_credentials(1);
-
+		my $credentials = $self -> _get_credentials(1);
+		$login = $credentials -> {'login'};
 		$repo = "$login/$repo";
 	}
 
