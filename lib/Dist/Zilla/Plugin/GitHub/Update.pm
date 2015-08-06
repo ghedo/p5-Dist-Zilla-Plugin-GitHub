@@ -117,6 +117,16 @@ sub after_release {
 
 	my $url = $self -> api."/repos/$repo_name";
 
+	my $current = $self -> _current_params($url);
+	if ($current &&
+		$current -> {'name'} eq $params -> {'name'} &&
+		$current -> {'description'} eq $params -> {'description'} &&
+		$current -> {'homepage'} eq $params -> {'homepage'}) {
+
+		$self -> log("GitHub repo info is up to date");
+		return;
+	}
+
 	if ($pass) {
 		require MIME::Base64;
 
@@ -146,6 +156,17 @@ sub after_release {
 		$repo = $self -> after_release($opts);
 		return if not $repo;
 	}
+}
+
+sub _current_params {
+	my $self  = shift;
+	my ($url) = @_;
+
+	my $http = HTTP::Tiny -> new;
+
+	my $response = $http -> request('GET', $url);
+
+	return $self -> _check_response($response);
 }
 
 =head1 ATTRIBUTES
