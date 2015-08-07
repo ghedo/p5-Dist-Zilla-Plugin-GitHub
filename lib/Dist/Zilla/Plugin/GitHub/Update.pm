@@ -93,15 +93,15 @@ sub after_release {
     if ($meta_home && $self->meta_home) {
         $self->log("Using distmeta URL");
         $params->{homepage} = $meta_home;
-    } elsif ($self->metacpan == 1) {
+    } elsif ($self->metacpan) {
         $self->log("Using MetaCPAN URL");
         $params->{homepage} = "http://metacpan.org/release/$dist_name/";
-    } elsif ($self->p3rl == 1) {
+    } elsif ($self->p3rl) {
         $self->log("Using P3rl URL");
         my $guess_name = $dist_name;
         $guess_name =~ s/\-/\:\:/g;
         $params->{homepage} = "http://p3rl.org/$guess_name";
-    } elsif ($self->cpan == 1) {
+    } elsif ($self->cpan) {
         $self->log("Using CPAN URL");
         $params->{homepage} = "http://search.cpan.org/dist/$dist_name/";
     }
