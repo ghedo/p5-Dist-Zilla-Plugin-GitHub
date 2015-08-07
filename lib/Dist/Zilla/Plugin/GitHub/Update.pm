@@ -81,17 +81,12 @@ sub after_release {
 
     my $repo_name = $self->_get_repo_name($login);
 
-    my $http = HTTP::Tiny->new;
-
     $self->log("Updating GitHub repository info");
 
-    my ($params, $headers, $content);
-
-    $repo_name =~ /\/(.*)$/;
-    my $repo_name_only = $1;
-
-    $params->{name} = $repo_name_only;
-    $params->{description} = $self->zilla->abstract;
+    my $params = {
+        name => ($repo_name =~ /\/(.*)$/)[0],
+        description => $self->zilla->abstract,
+    };
 
     my $meta_home = $self->zilla->distmeta->{resources}{homepage};
 
@@ -113,10 +108,10 @@ sub after_release {
     }
 
     my $url = $self->api."/repos/$repo_name";
+    my $headers;
 
     if ($pass) {
         require MIME::Base64;
-
         my $basic = MIME::Base64::encode_base64("$login:$pass", '');
         $headers->{Authorization} = "Basic $basic";
     }
@@ -126,10 +121,8 @@ sub after_release {
         $self->log([ "Using two-factor authentication" ]);
     }
 
-    $content = encode_json($params);
-
-    my $response = $http->request('PATCH', $url, {
-        content => $content,
+    my $response = HTTP::Tiny->new->request('PATCH', $url, {
+        content => encode_json($params),
         headers => $headers
     });
 
