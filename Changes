@@ -3,6 +3,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 {{$NEXT}}
 
   - add configs to metadata in [GitHub::Update]
+  - avoid needless authentication and network calls when no information is
+    being changed (Dave Rolsky, #47)
 
 0.40      2015-01-08 15:00:01-08:00 America/Vancouver
 
