@@ -1,5 +1,5 @@
 package Dist::Zilla::PluginBundle::GitHub;
-
+our $VERSION = '0.42';
 use strict;
 use warnings;
 

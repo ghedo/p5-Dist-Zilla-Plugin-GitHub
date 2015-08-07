@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
+{{$NEXT}}
+
 0.41      2015-08-07 03:36:05Z
 
   - add configs to metadata in [GitHub::Update]

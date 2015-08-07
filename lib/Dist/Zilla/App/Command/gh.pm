@@ -1,5 +1,5 @@
 package Dist::Zilla::App::Command::gh;
-
+our $VERSION = '0.42';
 use strict;
 use warnings;
 
