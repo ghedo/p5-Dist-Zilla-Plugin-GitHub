@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+  - add configs to metadata in [GitHub::Update]
+
 0.40      2015-01-08 15:00:01-08:00 America/Vancouver
 
  - fix error in JSON conversion in 0.39 that caused all requests to fail

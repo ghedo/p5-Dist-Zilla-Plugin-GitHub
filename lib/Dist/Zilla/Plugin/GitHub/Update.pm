@@ -5,6 +5,7 @@ use warnings;
 
 use JSON::MaybeXS;
 use Moose;
+use List::Util 'first';
 
 extends 'Dist::Zilla::Plugin::GitHub';
 
@@ -70,6 +71,19 @@ This Dist::Zilla plugin updates the information of the GitHub repository
 when C<dzil release> is run.
 
 =cut
+
+around dump_config => sub
+{
+    my ($orig, $self) = @_;
+    my $config = $self->$orig;
+
+    my $option = first { $self->$_ } qw(meta_home metacpan p3rl cpan);
+    $config->{+__PACKAGE__} = {
+        $option => ($self->$option ? 1 : 0),
+    };
+
+    return $config;
+};
 
 sub after_release {
     my $self      = shift;

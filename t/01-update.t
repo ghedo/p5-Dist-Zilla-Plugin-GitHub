@@ -4,9 +4,6 @@ use warnings;
 use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 
-plan skip_all => 'TODO';
-__END__
-
 use Path::Tiny;
 use Test::DZil;
 use Test::Fatal;
@@ -38,17 +35,31 @@ my $http_request;
 
 my @tests = (
     {
-        test_name => ...,
-        config => { ... },
-        log_messages => [
-            # expected log messages
-            ...
-        ],
-        expected_request => {
-            # expected http parameters
-            ...
+        test_name => 'homepage: meta_home',
+        config => {
+            meta_home => 1,
         },
+        log_messages => [
+            '[GitHub::Update] Using distmeta URL',
+        ],
+        expected_request => [
+            PATCH => 'https://api.github.com/repos/bob/My-Stuff' => {
+                headers => undef,
+                content => json({
+                    name => 'My-Stuff',
+                    description => 'Sample DZ Dist',
+                    homepage => 'http://homepage',
+                }),
+            },
+        ],
     },
+
+    # tests needed:
+    # - homepage: metacpan
+    # - homepage: p4rl
+    # - homepage: cpan
+    # - 2fa
+    # - no updates needed
 );
 
 
