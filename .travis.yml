@@ -10,11 +10,12 @@ perl:
  - "5.20"
 
 install:
- - cpanm --notest Dist::Zilla Dist::Zilla::PluginBundle::Author::ALEXBIO
- - dzil listdeps --missing | cpanm --notest
+  - cpanm JSON::PP Dist::Zilla Dist::Zilla::Plugin::BlockRelease
+  - dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
+  - dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
 
 script:
- - dzil test
+  - HARNESS_OPTIONS=j9:c DZIL_AIRPLANE=1 PERL5OPT=Ilib dzil test --author
 
 notifications:
   recipient:
