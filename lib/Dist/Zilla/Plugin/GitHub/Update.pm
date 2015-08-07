@@ -88,9 +88,7 @@ sub after_release {
         description => $self->zilla->abstract,
     };
 
-    my $meta_home = $self->zilla->distmeta->{resources}{homepage};
-
-    if ($meta_home && $self->meta_home) {
+    if ($self->meta_home && (my $meta_home = $self->zilla->distmeta->{resources}{homepage})) {
         $self->log("Using distmeta URL");
         $params->{homepage} = $meta_home;
     } elsif ($self->metacpan) {
