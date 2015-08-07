@@ -1,0 +1,13 @@
+
+- TESTS!!!
+    - fill in skeletal test for [GitHub::Update]
+    - test other plugins, command.
+
+- dump configs in other plugins
+- no documentation for 'repo' option.
+
+Config::Identity has a terrible interface. it loads all credentials into a hash,
+and then you use regular hash access to select which key you want. so we're
+exposing a bunch of data to the application, most of which it shouldn't see...
+
+and also CI doesn't support anything but GPG. it needs to support OSX Keychain!
