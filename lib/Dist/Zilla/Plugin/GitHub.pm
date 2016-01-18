@@ -124,8 +124,12 @@ sub _get_repo_name {
 
     $repo = $self->repo if $self->repo;
 
-    my ($url) = map /Fetch URL: (.*)/,
-        $git->remote('show', '-n', $self->remote);
+    my $url;
+    {
+        local $ENV{LANG}='C';
+        ($url) = map /Fetch URL: (.*)/,
+            $git->remote('show', '-n', $self->remote);
+    }
 
     $url =~ /github\.com.*?[:\/](.*)\.git$/;
     $repo = $1 unless $repo and not $1;
