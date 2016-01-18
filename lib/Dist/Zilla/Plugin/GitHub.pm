@@ -130,7 +130,7 @@ sub _get_repo_name {
         ($url) = map /Fetch URL: (.*)/,
             $git->remote('show', '-n', $self->remote);
     }
- 
+
     $url =~ /github\.com.*?[:\/](.*)\.git$/;
     $repo = $1 unless $repo and not $1;
 
