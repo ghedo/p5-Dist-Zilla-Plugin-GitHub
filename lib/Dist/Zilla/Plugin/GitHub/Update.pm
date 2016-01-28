@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::GitHub::Update;
+# ABSTRACT: Update a GitHub repo's info on release
 use strict;
 use warnings;
 
@@ -35,10 +36,6 @@ has meta_home => (
     isa     => 'Bool',
     default => 0
 );
-
-=head1 NAME
-
-Dist::Zilla::Plugin::GitHub::Update - Update a GitHub repo's info on release
 
 =head1 SYNOPSIS
 
@@ -227,20 +224,6 @@ Prompt for GitHub two-factor authentication code if this option is set to true
 the login, it'll be automatically enabled.
 
 =back
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =cut
 

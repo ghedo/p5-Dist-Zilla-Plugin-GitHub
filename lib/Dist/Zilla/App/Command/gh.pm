@@ -1,14 +1,12 @@
 package Dist::Zilla::App::Command::gh;
+# ABSTRACT: Use the GitHub plugins from the command-line
+
 use strict;
 use warnings;
 
 our $VERSION = '0.42';
 
 use Dist::Zilla::App -command;
-
-=head1 NAME
-
-Dist::Zilla::App::Command::gh - Use the GitHub plugins from the command-line
 
 =head1 SYNOPSIS
 
@@ -71,21 +69,5 @@ sub _find_plug {
         return $_ if $_->plugin_name =~ /$name/;
     }
 }
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2012 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
-=cut
 
 1; # End of Dist::Zilla::App::Command::gh

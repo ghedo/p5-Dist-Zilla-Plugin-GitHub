@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::GitHub::Create;
+# ABSTRACT: Create a new GitHub repo on dzil new
 use strict;
 use warnings;
 
@@ -49,10 +50,6 @@ has has_downloads => (
     isa     => 'Bool',
     default => 1
 );
-
-=head1 NAME
-
-Dist::Zilla::Plugin::GitHub::Create - Create a new GitHub repo on dzil new
 
 =head1 SYNOPSIS
 
@@ -293,20 +290,6 @@ only when the C<push.default> Git configuration option is set to either
 C<upstream> or C<simple> (which will be the default in Git 2.0). If you are
 using an older Git or don't want to change your config, you may want to have a
 look at L<Dist::Zilla::Plugin::Git::PushInitial>.
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =cut
 

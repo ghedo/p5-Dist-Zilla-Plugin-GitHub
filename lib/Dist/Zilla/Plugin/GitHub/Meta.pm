@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::GitHub::Meta;
+# ABSTRACT: Add a GitHub repo's info to META.{yml,json}
 use strict;
 use warnings;
 
@@ -34,10 +35,6 @@ has fork => (
     isa     => 'Bool',
     default => 1
 );
-
-=head1 NAME
-
-Dist::Zilla::Plugin::GitHub::Meta - Add a GitHub repo's info to META.{yml,json}
 
 =head1 SYNOPSIS
 
@@ -227,20 +224,6 @@ all the information be taken from the original repository instead of the forked
 one, if it's set to true (default).
 
 =back
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
 
 =cut
 

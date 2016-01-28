@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::GitHub;
+# ABSTRACT: Plugins to integrate Dist::Zilla with GitHub
 use strict;
 use warnings;
 
@@ -33,10 +34,6 @@ has prompt_2fa => (
     isa => 'Bool',
     default => 0
 );
-
-=head1 NAME
-
-Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 DESCRIPTION
 
@@ -174,21 +171,5 @@ sub _check_response {
         return;
     }
 }
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
-=cut
 
 1; # End of Dist::Zilla::Plugin::GitHub
