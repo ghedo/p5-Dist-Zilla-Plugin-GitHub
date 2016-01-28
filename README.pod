@@ -4,11 +4,11 @@
 
 =head1 NAME
 
-Dist::Zilla::Plugin::GitHub
+Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 VERSION
 
-version 0.41
+version 0.42
 
 =head1 DESCRIPTION
 
@@ -31,23 +31,10 @@ This distribution also provides an additional C<dzil> command (L<dzil
 gh|Dist::Zilla::App::Command::gh>) and a L<plugin
 bundle|Dist::Zilla::PluginBundle::GitHub>.
 
-=head1 NAME
+=head1 SUPPORT
 
-Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
-
-=head1 AUTHOR
-
-Alessandro Ghedini <alexbio@cpan.org>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2011 Alessandro Ghedini.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
+Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GitHub>
+(or L<bug-Dist-Zilla-Plugin-GitHub@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GitHub@rt.cpan.org>).
 
 =head1 AUTHOR
 
@@ -55,7 +42,7 @@ Alessandro Ghedini <alexbio@cpan.org>
 
 =head1 CONTRIBUTORS
 
-=for stopwords Alessandro Ghedini Karen Etheridge Mike Friedman Jeffrey Ryan Thalhammer Dave Rolsky Doherty Rafael Kitover Brian Phillips Ricardo Signes Alexandr Ciornii Vyacheslav Matyukhin Ioan Rogers Chris Weyl
+=for stopwords Alessandro Ghedini Karen Etheridge Mike Friedman Dave Rolsky Rafael Kitover Jeffrey Ryan Thalhammer Doherty Vyacheslav Matyukhin Alexandr Ciornii Brian Phillips Chris Weyl Ioan Rogers Jose Luis Perez Diez Ricardo Signes
 
 =over 4
 
@@ -73,15 +60,7 @@ Mike Friedman <mike.friedman@10gen.com>
 
 =item *
 
-Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>
-
-=item *
-
 Dave Rolsky <autarch@urth.org>
-
-=item *
-
-Mike Doherty <doherty@cs.dal.ca>
 
 =item *
 
@@ -89,15 +68,11 @@ Rafael Kitover <rkitover@cpan.org>
 
 =item *
 
-Brian Phillips <bphillips@cpan.org>
+Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>
 
 =item *
 
-Ricardo Signes <rjbs@cpan.org>
-
-=item *
-
-Alexandr Ciornii <alexchorny@gmail.com>
+Mike Doherty <doherty@cs.dal.ca>
 
 =item *
 
@@ -105,11 +80,27 @@ Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 
 =item *
 
-Ioan Rogers <ioan.rogers@gmail.com>
+Alexandr Ciornii <alexchorny@gmail.com>
+
+=item *
+
+Brian Phillips <bphillips@cpan.org>
 
 =item *
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+=item *
+
+Ioan Rogers <ioan.rogers@gmail.com>
+
+=item *
+
+Jose Luis Perez Diez <jluis@escomposlinux.org>
+
+=item *
+
+Ricardo Signes <rjbs@cpan.org>
 
 =back
 
