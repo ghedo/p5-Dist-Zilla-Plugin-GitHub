@@ -1,7 +1,8 @@
 package Dist::Zilla::App::Command::gh;
-our $VERSION = '0.42';
 use strict;
 use warnings;
+
+our $VERSION = '0.42';
 
 use Dist::Zilla::App -command;
 

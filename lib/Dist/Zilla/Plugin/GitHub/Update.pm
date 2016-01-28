@@ -1,7 +1,8 @@
 package Dist::Zilla::Plugin::GitHub::Update;
-our $VERSION = '0.42';
 use strict;
 use warnings;
+
+our $VERSION = '0.42';
 
 use JSON::MaybeXS;
 use Moose;
