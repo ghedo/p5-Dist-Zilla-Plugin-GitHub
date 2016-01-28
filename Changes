@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
+{{$NEXT}}
+
 0.42      2016-01-28 02:20:07Z
 
   - localize locale when fetching repository information (thanks, Jose Luis
