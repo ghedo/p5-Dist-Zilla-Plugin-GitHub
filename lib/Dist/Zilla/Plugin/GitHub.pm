@@ -136,8 +136,9 @@ sub _get_repo_name {
 
     if ($repo !~ /.*\/.*/) {
         ($login, undef, undef) = $self->_get_credentials(1);
-
-        $repo = "$login/$repo";
+        if (defined $login) {
+            $repo = "$login/$repo";
+        }
     }
 
     return $repo;
