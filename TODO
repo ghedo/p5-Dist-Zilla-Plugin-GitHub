@@ -11,3 +11,51 @@ and then you use regular hash access to select which key you want. so we're
 exposing a bunch of data to the application, most of which it shouldn't see...
 
 and also CI doesn't support anything but GPG. it needs to support OSX Keychain!
+
+
+
+we should be able to use the OAUTH token, as in App::Nopaste::Service::Gist:
+
+
+    my %auth = $self->_get_auth;
+            $ua->post(
+                $url,
+                'Authorization' => "token $auth{oauth_token}",
+                Content         => $content,
+                Content_Type    => 'application/json',
+            );
+
+sub _get_auth {
+    my ($self) = @_;
+
+    if (my $oauth_token = $ENV{GITHUB_OAUTH_TOKEN}) {
+        return (oauth_token => $oauth_token);
+    }
+    elsif ($ENV{GITHUB_USER} && $ENV{GITHUB_PASSWORD}) {
+        return (
+            username => $ENV{GITHUB_USER},
+            password => $ENV{GITHUB_PASSWORD},
+        );
+    }
+    else {
+        # this is also done by the fallback mechanism in Config::Identity::GitHub.
+        my $github_config = path('~', '.github');
+        if (-f $github_config) {
+            my $content = $github_config->slurp_utf8;
+            my ($username) = $content =~ m/\blogin (.+)(?:$|#)/m;
+            my ($password) = $content =~ m/\bpassword (.+)(?:$|#)/m;
+            return (
+                username => $username,
+                password => $password,
+            ) if $username and $password;
+        }
+    }
+
+    die join("\n",
+        "Export GITHUB_OAUTH_TOKEN first. For example:",
+        "    perl -MApp::Nopaste::Service::Gist -e 'App::Nopaste::Service::Gist->create_token'",
+        "",
+        "OR you can export GITHUB_USER and GITHUB_PASSWORD.",
+        "OR you can set 'login' and 'password' in ~/.github.",
+    ) . "\n";
+}
