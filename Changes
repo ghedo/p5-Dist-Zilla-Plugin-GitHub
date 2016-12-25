@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
-{{$NEXT}}
+0.43      2016-12-25 01:42:31Z
 
   - avoid undef warnings when the login name cannot be determined from git
     configs (Mohammad S Anwar, GH#49)
