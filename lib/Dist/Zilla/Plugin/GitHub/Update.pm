@@ -92,6 +92,10 @@ sub after_release {
     return if (!$login);
 
     my $repo_name = $self->_get_repo_name($login);
+    if (not $repo_name) {
+        $self->log('cannot update GitHub repository info');
+        return;
+    }
 
     $self->log("Updating GitHub repository info");
 
