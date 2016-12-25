@@ -184,6 +184,13 @@ sub metadata {
     return $meta;
 }
 
+__PACKAGE__->meta->make_immutable;
+
+1; # End of Dist::Zilla::Plugin::GitHub::Meta
+__END__
+
+=pod
+
 =head1 ATTRIBUTES
 
 =over
@@ -226,9 +233,3 @@ one, if it's set to true (default).
 =back
 
 =cut
-
-no Moose;
-
-__PACKAGE__->meta->make_immutable;
-
-1; # End of Dist::Zilla::Plugin::GitHub::Meta

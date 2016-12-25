@@ -173,6 +173,13 @@ sub _current_params {
     return $self->_check_response($response);
 }
 
+__PACKAGE__->meta->make_immutable;
+1; # End of Dist::Zilla::Plugin::GitHub::Update
+
+__END__
+
+=pod
+
 =head1 ATTRIBUTES
 
 =over
@@ -230,9 +237,3 @@ the login, it'll be automatically enabled.
 =back
 
 =cut
-
-no Moose;
-
-__PACKAGE__->meta->make_immutable;
-
-1; # End of Dist::Zilla::Plugin::GitHub::Update

@@ -205,6 +205,12 @@ sub _confirm {
     return $self->zilla->chrome->prompt_yn($prompt, {default => 1} );
 }
 
+__PACKAGE__->meta->make_immutable;
+1; # End of Dist::Zilla::Plugin::GitHub::Create
+__END__
+
+=pod
+
 =head1 ATTRIBUTES
 
 =over
@@ -292,9 +298,3 @@ using an older Git or don't want to change your config, you may want to have a
 look at L<Dist::Zilla::Plugin::Git::PushInitial>.
 
 =cut
-
-no Moose;
-
-__PACKAGE__->meta->make_immutable;
-
-1; # End of Dist::Zilla::Plugin::GitHub::Create

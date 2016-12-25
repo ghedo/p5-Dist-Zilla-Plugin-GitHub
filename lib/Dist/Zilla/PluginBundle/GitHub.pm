@@ -154,6 +154,11 @@ sub configure {
     );
 }
 
+__PACKAGE__->meta->make_immutable;
+1; # End of Dist::Zilla::PluginBundle::GitHub
+
+=pod
+
 =head1 ATTRIBUTES
 
 =over
@@ -237,9 +242,3 @@ Prompt for GitHub two-factor authentication code if this option is set to true
 L<Dist::Zilla::Plugin::GitHub::Meta>, L<Dist::Zilla::Plugin::GitHub::Update>
 
 =cut
-
-no Moose;
-
-__PACKAGE__->meta->make_immutable;
-
-1; # End of Dist::Zilla::PluginBundle::GitHub
