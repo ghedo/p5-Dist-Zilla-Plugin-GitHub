@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+  - avoid undef warnings when the login name cannot be determined from git
+    configs (Mohammad S Anwar, GH#49)
+
 0.42      2016-01-28 02:20:07Z
 
   - localize locale when fetching repository information (thanks, Jose Luis
