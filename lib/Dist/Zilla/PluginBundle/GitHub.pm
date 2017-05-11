@@ -3,7 +3,7 @@ package Dist::Zilla::PluginBundle::GitHub;
 use strict;
 use warnings;
 
-our $VERSION = '0.44';
+our $VERSION = '0.45';
 
 use Moose;
 

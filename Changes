@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
+{{$NEXT}}
+
 0.44      2017-05-11 09:30:45Z
 
   - fix undef warnings in [GitHub::Update] when any current settings un GitHub
