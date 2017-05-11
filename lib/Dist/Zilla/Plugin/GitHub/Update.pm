@@ -124,9 +124,9 @@ sub after_release {
 
     my $current = $self->_current_params($url);
     if ($current &&
-        $current->{name} eq $params->{name} &&
-        $current->{description} eq $params->{description} &&
-        $current->{homepage} eq $params->{homepage}) {
+        ($current->{name} || '') eq $params->{name} &&
+        ($current->{description} || '') eq $params->{description} &&
+        ($current->{homepage} || '') eq $params->{homepage}) {
 
         $self->log("GitHub repo info is up to date");
         return;
