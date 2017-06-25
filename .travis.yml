@@ -13,6 +13,7 @@ perl:
  - "5.26"
 
 install:
+  - unzip -v
   - cpanm JSON::PP Dist::Zilla Dist::Zilla::Plugin::BlockRelease
   - dzil authordeps --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
   - dzil listdeps --author --missing | cpanm || { cat ~/.cpanm/build.log ; false ; }
