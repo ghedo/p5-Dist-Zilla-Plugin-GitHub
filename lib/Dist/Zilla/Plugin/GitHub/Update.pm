@@ -88,7 +88,7 @@ sub after_release {
     my ($opts)    = @_;
     my $dist_name = $self->zilla->name;
 
-    my ($login, $pass, $otp)  = $self->_get_credentials(0);
+    my ($login, $pass, $otp)  = $self->_get_credentials;
     return if (!$login);
 
     my $repo_name = $self->_get_repo_name($login);

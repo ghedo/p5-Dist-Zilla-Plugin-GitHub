@@ -111,7 +111,7 @@ sub after_mint {
         $repo_name = $self->zilla->name;
     }
 
-    my ($login, $pass, $otp)  = $self->_get_credentials(0);
+    my ($login, $pass, $otp)  = $self->_get_credentials;
 
     my $http = HTTP::Tiny->new;
 

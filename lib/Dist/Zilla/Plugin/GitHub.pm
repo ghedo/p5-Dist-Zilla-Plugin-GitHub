@@ -59,7 +59,7 @@ bundle|Dist::Zilla::PluginBundle::GitHub>.
 =cut
 
 sub _get_credentials {
-    my ($self, $nopass) = @_;
+    my $self = shift;
 
     my ($login, $pass, $token, $otp);
 
@@ -81,34 +81,32 @@ sub _get_credentials {
         return;
     }
 
-    if (!$nopass) {
-        if (%identity) {
-            $token = $identity{token};
-            $pass  = $identity{password};
-        } else {
-            $token = `git config github.token`;    chomp $token;
-            $pass  = `git config github.password`; chomp $pass;
+    if (%identity) {
+        $token = $identity{token};
+        $pass  = $identity{password};
+    } else {
+        $token = `git config github.token`;    chomp $token;
+        $pass  = `git config github.password`; chomp $pass;
 
-            # modern "tokens" can be used as passwords with basic auth, so...
-            # see https://help.github.com/articles/creating-an-access-token-for-command-line-use
-            $pass ||= $token if $token;
-        }
+        # modern "tokens" can be used as passwords with basic auth, so...
+        # see https://help.github.com/articles/creating-an-access-token-for-command-line-use
+        $pass ||= $token if $token;
+    }
 
-        $self->log("Err: Login with GitHub token is deprecated")
-            if $token && !$pass;
+    $self->log("Err: Login with GitHub token is deprecated")
+        if $token && !$pass;
 
-        if (!$pass) {
-            $pass = $self->zilla->chrome->prompt_str(
-                "GitHub password for '$login'", { noecho => 1 },
-            );
-        }
+    if (!$pass) {
+        $pass = $self->zilla->chrome->prompt_str(
+            "GitHub password for '$login'", { noecho => 1 },
+        );
+    }
 
-        if ($self->prompt_2fa) {
-            $otp = $self->zilla->chrome->prompt_str(
-                "GitHub two-factor authentication code for '$login'",
-                { noecho => 1 },
-            );
-        }
+    if ($self->prompt_2fa) {
+        $otp = $self->zilla->chrome->prompt_str(
+            "GitHub two-factor authentication code for '$login'",
+            { noecho => 1 },
+        );
     }
 
     return ($login, $pass, $otp);
