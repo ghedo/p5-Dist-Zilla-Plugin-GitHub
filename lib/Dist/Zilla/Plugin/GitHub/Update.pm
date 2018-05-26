@@ -88,10 +88,9 @@ sub after_release {
     my ($opts)    = @_;
     my $dist_name = $self->zilla->name;
 
-    my ($login, $pass, $otp)  = $self->_get_credentials;
-    return if (!$login);
+    return if (!$self->_has_credentials);
 
-    my $repo_name = $self->_get_repo_name($login);
+    my $repo_name = $self->_get_repo_name($self->_credentials->{login});
     if (not $repo_name) {
         $self->log('cannot update GitHub repository info');
         return;
@@ -132,22 +131,9 @@ sub after_release {
         return;
     }
 
-    my $headers;
-
-    if ($pass) {
-        require MIME::Base64;
-        my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-        $headers->{Authorization} = "Basic $basic";
-    }
-
-    if ($self->prompt_2fa) {
-        $headers->{'X-GitHub-OTP'} = $otp;
-        $self->log([ "Using two-factor authentication" ]);
-    }
-
     my $response = HTTP::Tiny->new->request('PATCH', $url, {
         content => encode_json($params),
-        headers => $headers
+        headers => $self->_auth_headers,
     });
 
     my $repo = $self->_check_response($response);
