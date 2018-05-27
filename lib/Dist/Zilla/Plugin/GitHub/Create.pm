@@ -111,8 +111,6 @@ sub after_mint {
         $repo_name = $self->zilla->name;
     }
 
-    my ($login, $pass, $otp)  = $self->_get_credentials(0);
-
     my $http = HTTP::Tiny->new;
 
     $self->log([ "Creating new GitHub repository '%s'", $repo_name ]);
@@ -139,23 +137,11 @@ sub after_mint {
     $url .= $self->org ? '/orgs/' . $self->org . '/' : '/user/';
     $url .= 'repos';
 
-    if ($pass) {
-        require MIME::Base64;
-
-        my $basic = MIME::Base64::encode_base64("$login:$pass", '');
-        $headers->{authorization} = "Basic $basic";
-    }
-
-    if ($self->prompt_2fa) {
-        $headers->{'X-GitHub-OTP'} = $otp;
-        $self->log([ "Using two-factor authentication" ]);
-    }
-
     $content = encode_json($params);
 
     my $response = $http->request('POST', $url, {
         content => $content,
-        headers => $headers
+        headers => $self->_auth_headers,
     });
 
     my $repo = $self->_check_response($response);

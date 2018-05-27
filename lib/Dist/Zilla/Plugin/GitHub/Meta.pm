@@ -36,6 +36,12 @@ has fork => (
     default => 1
 );
 
+has require_auth => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0
+);
+
 =head1 SYNOPSIS
 
 Configure git with your GitHub login name:
@@ -124,7 +130,7 @@ sub metadata {
     $self->log("Getting GitHub repository info");
 
     my $url      = $self->api."/repos/$repo_name";
-    my $response = $http->request('GET', $url);
+    my $response = $http->request('GET', $url, $self->require_auth ? {headers => $self->_auth_headers} : ());
 
     my $repo = $self->_check_response($response);
     $offline = 1 if not $repo;
@@ -229,6 +235,20 @@ be activated (see the GitHub repository's C<Admin> panel).
 If the repository is a GitHub fork of another repository this option will make
 all the information be taken from the original repository instead of the forked
 one, if it's set to true (default).
+
+=item C<require_auth>
+
+If this is true, then the API request will be sent with Authorization
+headers. This is useful if you are behind some sort of proxy that is
+triggering the GitHub rate limiting.
+
+=item C<prompt_2fa>
+
+Prompt for GitHub two-factor authentication code if this option is set to true
+(default is false). If this option is set to false but GitHub requires 2fa for
+the login, it'll be automatically enabled.
+
+This is only relevant if C<require_auth> is true.
 
 =back
 

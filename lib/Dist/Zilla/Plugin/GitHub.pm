@@ -35,6 +35,13 @@ has prompt_2fa => (
     default => 0
 );
 
+has _credentials => (
+    is => 'ro',
+    isa => 'HashRef',
+    lazy => 1,
+    builder => '_build_credentials',
+);
+
 =head1 DESCRIPTION
 
 B<Dist::Zilla::Plugin::GitHub> is a set of plugins for L<Dist::Zilla> intended
@@ -58,8 +65,8 @@ bundle|Dist::Zilla::PluginBundle::GitHub>.
 
 =cut
 
-sub _get_credentials {
-    my ($self, $nopass) = @_;
+sub _build_credentials {
+    my $self = shift;
 
     my ($login, $pass, $token, $otp);
 
@@ -78,40 +85,63 @@ sub _get_credentials {
             "Err: Missing value 'github.user' in git config";
 
         $self->log($error);
-        return;
+        return [];
     }
 
-    if (!$nopass) {
-        if (%identity) {
-            $token = $identity{token};
-            $pass  = $identity{password};
-        } else {
-            $token = `git config github.token`;    chomp $token;
-            $pass  = `git config github.password`; chomp $pass;
+    if (%identity) {
+        $token = $identity{token};
+        $pass  = $identity{password};
+    } else {
+        $token = `git config github.token`;    chomp $token;
+        $pass  = `git config github.password`; chomp $pass;
 
-            # modern "tokens" can be used as passwords with basic auth, so...
-            # see https://help.github.com/articles/creating-an-access-token-for-command-line-use
-            $pass ||= $token if $token;
-        }
-
-        $self->log("Err: Login with GitHub token is deprecated")
-            if $token && !$pass;
-
-        if (!$pass) {
-            $pass = $self->zilla->chrome->prompt_str(
-                "GitHub password for '$login'", { noecho => 1 },
-            );
-        }
-
-        if ($self->prompt_2fa) {
-            $otp = $self->zilla->chrome->prompt_str(
-                "GitHub two-factor authentication code for '$login'",
-                { noecho => 1 },
-            );
-        }
+        # modern "tokens" can be used as passwords with basic auth, so...
+        # see https://help.github.com/articles/creating-an-access-token-for-command-line-use
+        $pass ||= $token if $token;
     }
 
-    return ($login, $pass, $otp);
+    $self->log("Err: Login with GitHub token is deprecated")
+        if $token && !$pass;
+
+    if (!$pass) {
+        $pass = $self->zilla->chrome->prompt_str(
+            "GitHub password for '$login'", { noecho => 1 },
+        );
+    }
+
+    if ($self->prompt_2fa) {
+        $otp = $self->zilla->chrome->prompt_str(
+            "GitHub two-factor authentication code for '$login'",
+            { noecho => 1 },
+        );
+    }
+
+    return {login => $login, pass => $pass, otp => $otp};
+}
+
+sub _has_credentials {
+    my $self = shift;
+    return keys %{$self->_credentials};
+}
+
+sub _auth_headers {
+    my $self = shift;
+
+    my $credentials = $self->_credentials;
+
+    my %headers;
+    if ($credentials->{pass}) {
+        require MIME::Base64;
+        my $basic = MIME::Base64::encode_base64("$credentials->{login}:$credentials->{pass}", '');
+        $headers{Authorization} = "Basic $basic";
+    }
+
+    if ($self->prompt_2fa) {
+        $headers{'X-GitHub-OTP'} = $credentials->{otp};
+        $self->log([ "Using two-factor authentication" ]);
+    }
+
+    return \%headers;
 }
 
 sub _get_repo_name {
