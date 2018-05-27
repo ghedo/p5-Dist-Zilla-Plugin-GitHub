@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 VERSION
 
-version 0.44
+version 0.45
 
 =head1 DESCRIPTION
 
@@ -36,13 +36,19 @@ bundle|Dist::Zilla::PluginBundle::GitHub>.
 Bugs may be submitted through L<the RT bug tracker|https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-GitHub>
 (or L<bug-Dist-Zilla-Plugin-GitHub@rt.cpan.org|mailto:bug-Dist-Zilla-Plugin-GitHub@rt.cpan.org>).
 
+There is also a mailing list available for users of this distribution, at
+L<http://dzil.org/#mailing-list>.
+
+There is also an irc channel available for users of this distribution, at
+L<C<#distzilla> on C<irc.perl.org>|irc://irc.perl.org/#distzilla>.
+
 =head1 AUTHOR
 
 Alessandro Ghedini <alexbio@cpan.org>
 
 =head1 CONTRIBUTORS
 
-=for stopwords Alessandro Ghedini Karen Etheridge Mike Friedman Dave Rolsky Jeffrey Ryan Thalhammer Doherty Rafael Kitover Ricardo Signes Vyacheslav Matyukhin Alexandr Ciornii Brian Phillips Chris Weyl Ioan Rogers Jose Luis Perez Diez Mohammad S Anwar
+=for stopwords Alessandro Ghedini Karen Etheridge Dave Rolsky Mike Friedman Jeffrey Ryan Thalhammer Doherty Rafael Kitover Ricardo Signes Vyacheslav Matyukhin Alexandr Ciornii Brian Phillips Chris Weyl Ioan Rogers Jose Luis Perez Diez Mohammad S Anwar
 
 =over 4
 
@@ -56,11 +62,11 @@ Karen Etheridge <ether@cpan.org>
 
 =item *
 
-Mike Friedman <mike.friedman@10gen.com>
+Dave Rolsky <autarch@urth.org>
 
 =item *
 
-Dave Rolsky <autarch@urth.org>
+Mike Friedman <mike.friedman@10gen.com>
 
 =item *
 
