@@ -36,7 +36,9 @@ sub execute {
     my $zilla = $self->zilla;
 
     $_->gather_files for
-        @{ $zilla->plugins_with(-FileGatherer) };
+        eval { Dist::Zilla::App->VERSION('7.000') }
+            ? $zilla->plugins_with(-FileGatherer)
+            : @{ $zilla->plugins_with(-FileGatherer) };
 
     if ($arg->[0] eq 'create') {
         require Dist::Zilla::Dist::Minter;
