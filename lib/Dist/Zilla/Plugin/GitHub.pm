@@ -35,6 +35,13 @@ has prompt_2fa => (
     default => 0
 );
 
+has _login => (
+    is      => 'ro',
+    isa     => 'Maybe[Str]',
+    lazy    => 1,
+    builder => '_build_login',
+);
+
 has _credentials => (
     is => 'ro',
     isa => 'HashRef',
@@ -65,10 +72,10 @@ bundle|Dist::Zilla::PluginBundle::GitHub>.
 
 =cut
 
-sub _build_credentials {
+sub _build_login {
     my $self = shift;
 
-    my ($login, $pass, $token, $otp);
+    my ($login);
 
     my %identity = Config::Identity::GitHub->load
         if try_load_class('Config::Identity::GitHub');
@@ -85,8 +92,25 @@ sub _build_credentials {
             "Err: Missing value 'github.user' in git config";
 
         $self->log($error);
-        return [];
+        return undef;
     }
+
+    return $login;
+}
+
+sub _build_credentials {
+    my $self = shift;
+
+    my ($login, $pass, $token, $otp);
+
+    $login = $self->_login;
+
+    if (!$login) {
+        return {};
+    }
+
+    my %identity = Config::Identity::GitHub->load
+        if try_load_class('Config::Identity::GitHub');
 
     if (%identity) {
         $token = $identity{token};
@@ -165,7 +189,7 @@ sub _get_repo_name {
     $repo = $self->zilla->name unless $repo;
 
     if ($repo !~ /.*\/.*/) {
-        ($login, undef, undef) = $self->_get_credentials(1);
+        $login = $self->_login;
         if (defined $login) {
             $repo = "$login/$repo";
         }
