@@ -50,7 +50,10 @@ in the (optionally GPG-encrypted) C<~/.github> file as follows:
     login LoginName
     password GitHubpassword
 
-(if only the login name is set, the password will be asked interactively)
+(if only the login name is set, the password will be asked interactively).
+
+You can also generate an access token for "full control over repositories" by following
+L<these instructions|https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/>,
 
 then, in your F<dist.ini>:
 
