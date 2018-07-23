@@ -3,6 +3,8 @@ Revision history for Dist-Zilla-Plugin-GitHub
 {{$NEXT}}
 
   - Fix error in calculating github credentials (J.Maslak, #52)
+  - the 'cpan' option in [GitHub::Update] is now deprecated, and will now
+    behave as if the 'metacpan' option was set instead.
 
 0.45      2018-05-27 03:56:57Z
 
