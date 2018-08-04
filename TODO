@@ -1,4 +1,10 @@
 
+[GitHub::TravisEnable] plugin for minting dists...
+https://github.com/travis-ci/travis.rb
+
+
+----------------
+
 - TESTS!!!
     - fill in skeletal test for [GitHub::Update]
     - test other plugins, command.
