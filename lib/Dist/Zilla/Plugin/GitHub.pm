@@ -5,6 +5,8 @@ use warnings;
 
 our $VERSION = '0.46';
 
+die 'hello this is dog';
+
 use JSON::MaybeXS;
 use Moose;
 use Try::Tiny;

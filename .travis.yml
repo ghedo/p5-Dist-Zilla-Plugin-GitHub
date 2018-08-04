@@ -33,9 +33,7 @@ script:
   - ./Build
   - prove -b -r -s -j$(test-jobs) $(test-files)
 notifications:
-  recipient:
-   - alessandro@ghedini.me
-   - ether@cpan.org
   email:
     on_success: change
     on_failure: always
+    on_pull_requests: true
