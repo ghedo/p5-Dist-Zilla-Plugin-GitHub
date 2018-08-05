@@ -191,13 +191,13 @@ default). This is used when trying to guess the repository name.
 =item C<p3rl>
 
 The GitHub homepage field will be set to the p3rl.org shortened URL
-(e.g. C<http://p3rl.org/My::Module>) if this option is set to true (default is
+(e.g. C<http://p3rl.org/Dist::Zilla::Plugin::GitHub>) if this option is set to true (default is
 false).
 
 =item C<metacpan>
 
 The GitHub homepage field will be set to the metacpan.org distribution URL
-(e.g. C<http://metacpan.org/release/My-Module>) if this option is set to true
+(e.g. C<http://metacpan.org/release/Dist-Zilla-Plugin-GitHub>) if this option is set to true
 (default).
 
 This takes precedence over the C<p3rl> options (if both are
