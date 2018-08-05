@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::GitHub::Meta;
 use strict;
 use warnings;
 
-our $VERSION = '0.46';
+our $VERSION = '0.47';
 
 use JSON::MaybeXS;
 use Moose;
