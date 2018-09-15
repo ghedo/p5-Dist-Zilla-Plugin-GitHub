@@ -101,7 +101,7 @@ sub _build_login {
 sub _build_credentials {
     my $self = shift;
 
-    my ($login, $pass, $token, $otp);
+    my ($login, $pass, $token);
 
     $login = $self->_login;
 
@@ -133,14 +133,7 @@ sub _build_credentials {
         );
     }
 
-    if ($self->prompt_2fa) {
-        $otp = $self->zilla->chrome->prompt_str(
-            "GitHub two-factor authentication code for '$login'",
-            { noecho => 1 },
-        );
-    }
-
-    return {login => $login, pass => $pass, otp => $otp};
+    return {login => $login, pass => $pass};
 }
 
 sub _has_credentials {
@@ -160,8 +153,16 @@ sub _auth_headers {
         $headers{Authorization} = "Basic $basic";
     }
 
+    # This can't be done at object creation because we autodetect the
+    # need for 2FA when GitHub says we need it, so we won't know to
+    # prompt at object creation time.
     if ($self->prompt_2fa) {
-        $headers{'X-GitHub-OTP'} = $credentials->{otp};
+        my $otp = $self->zilla->chrome->prompt_str(
+            "GitHub two-factor authentication code for '$credentials->{login}'",
+            { noecho => 1 },
+        );
+
+        $headers{'X-GitHub-OTP'} = $otp;
         $self->log([ "Using two-factor authentication" ]);
     }
 
