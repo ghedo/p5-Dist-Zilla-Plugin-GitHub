@@ -128,7 +128,9 @@ then, in your F<dist.ini>:
 
 =head1 DESCRIPTION
 
-This bundle automatically adds all the GitHub plugins.
+This bundle automatically adds the plugins
+L<GitHub::Meta|Dist::Zilla::Plugin::GitHub::Meta>
+and L<[GitHub::Update|Dist::Zilla::Plugin::GitHub::Update>.
 
 =cut
 

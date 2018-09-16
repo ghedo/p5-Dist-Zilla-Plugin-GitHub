@@ -51,20 +51,24 @@ has _credentials => (
 
 =head1 DESCRIPTION
 
-B<Dist::Zilla::Plugin::GitHub> is a set of plugins for L<Dist::Zilla> intended
+B<Dist-Zilla-Plugin-GitHub> is a set of plugins for L<Dist::Zilla> intended
 to more easily integrate L<GitHub|https://github.com> in the C<dzil> workflow.
 
 The following is the list of the plugins shipped in this distribution:
 
 =over 4
 
-=item * L<Dist::Zilla::Plugin::GitHub::Create> Create GitHub repo on dzil new
+=item * L<Dist::Zilla::Plugin::GitHub::Create> Create GitHub repo on C<dzil new>
 
 =item * L<Dist::Zilla::Plugin::GitHub::Update> Update GitHub repo info on release
 
-=item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to META.{yml,json}
+=item * L<Dist::Zilla::Plugin::GitHub::Meta> Add GitHub repo info to F<META.{yml,json}>
 
 =back
+
+This distribution also provides a plugin bundle, L<Dist::Zilla::PluginBundle::GitHub>,
+which provides L<GitHub::Meta|Dist::Zilla::Plugin::GitHub::Meta> and
+L<[GitHub::Update|Dist::Zilla::Plugin::GitHub::Update> together in one convenient bundle.
 
 This distribution also provides an additional C<dzil> command (L<dzil
 gh|Dist::Zilla::App::Command::gh>) and a L<plugin
