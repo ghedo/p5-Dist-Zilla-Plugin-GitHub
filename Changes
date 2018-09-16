@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
+{{$NEXT}}
+
 0.47      2018-09-16 22:43:24Z
 
   - Fix infinite loop when using 2FA (Joelle Maslak, #55)
