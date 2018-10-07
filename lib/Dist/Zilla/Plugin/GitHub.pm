@@ -68,7 +68,7 @@ The following is the list of the plugins shipped in this distribution:
 
 This distribution also provides a plugin bundle, L<Dist::Zilla::PluginBundle::GitHub>,
 which provides L<GitHub::Meta|Dist::Zilla::Plugin::GitHub::Meta> and
-L<[GitHub::Update|Dist::Zilla::Plugin::GitHub::Update> together in one convenient bundle.
+L<GitHub::Update|Dist::Zilla::Plugin::GitHub::Update> together in one convenient bundle.
 
 This distribution also provides an additional C<dzil> command (L<dzil
 gh|Dist::Zilla::App::Command::gh>) and a L<plugin
@@ -188,8 +188,9 @@ sub _get_repo_name {
             $git->remote('show', '-n', $self->remote);
     }
 
-    $url =~ /github\.com.*?[:\/](.*)\.git$/;
-    $repo = $1 unless $repo and not $1;
+    if ($url =~ /github\.com.*?[:\/](.*?)(?:\.git)?$/) {
+        $repo = $1;
+    }
 
     $repo = $self->zilla->name unless $repo;
 
@@ -199,6 +200,8 @@ sub _get_repo_name {
             $repo = "$login/$repo";
         }
     }
+
+    $self->log([ "Using repo name github.com/$repo" ]);
 
     return $repo;
 }
