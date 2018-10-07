@@ -25,6 +25,7 @@ before_install:
   - perl -V
   - build-dist
   - cd $BUILD_DIR
+  - git config --global github.user dummyloginname
 install:
   - perl -M5.014 -e1 2>/dev/null || cpan-install Dist::Zilla@5.048
   - cpan-install --deps
