@@ -221,20 +221,20 @@ the GitHub repository's info if this option is set to true (default).
 =item C<wiki>
 
 The META homepage field will be set to the URL of the wiki of the GitHub
-repository, if this option is set to true (default is false) and if the GitHub
+repository if this option is set to true (default is false) and if the GitHub
 Wiki happens to be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<bugs>
 
-The META bugtracker web field will be set to the issue's page of the repository
-on GitHub, if this options is set to true (default) and if the GitHub Issues happen to
-be activated (see the GitHub repository's C<Admin> panel).
+The META bugtracker web field will be set to the issues page of the repository
+on GitHub if this option is set to true (default) and if GitHub Issues happens
+to be activated on the repository (see the GitHub repository's C<Admin> panel).
 
 =item C<fork>
 
 If the repository is a GitHub fork of another repository this option will make
 all the information be taken from the original repository instead of the forked
-one, if it's set to true (default).
+one if this is set to true (default).
 
 =item C<require_auth>
 
