@@ -188,8 +188,9 @@ sub _get_repo_name {
             $git->remote('show', '-n', $self->remote);
     }
 
-    $url =~ /github\.com.*?[:\/](.*)\.git$/;
-    $repo = $1 unless $repo and not $1;
+    if ($url =~ /github\.com.*?[:\/](.*?)(?:\.git)?$/) {
+        $repo = $1;
+    }
 
     $repo = $self->zilla->name unless $repo;
 
