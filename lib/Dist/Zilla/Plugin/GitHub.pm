@@ -12,6 +12,12 @@ use HTTP::Tiny;
 use Git::Wrapper;
 use Class::Load qw(try_load_class);
 
+has continue_if_repo_not_found => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0,
+);
+
 has remote => (
     is      => 'ro',
     isa     => 'Maybe[Str]',
@@ -213,12 +219,18 @@ sub _check_response {
             return 'redo' if (($response->{status} eq '401') and
                               ($response->{headers}{'x-github-otp'} =~ /^required/));
 
+            if ($response->{status} eq '404' &&
+                !$self->continue_if_repo_not_found) {
+                die 'incorrect repository URL (HTTP 404 from ' . $response->{url} . ')';
+            }
             $self->log("Err: ", $json_text->{message});
             return;
         }
 
         return $json_text;
     } catch {
+        die $_ if $_ =~ 'incorrect repository URL';
+
         if ($response and !$response->{success} and
             $response->{status} eq '599') {
             #possibly HTTP::Tiny error

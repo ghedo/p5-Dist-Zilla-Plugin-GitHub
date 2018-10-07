@@ -2,6 +2,10 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+  - Fail if repository URL is incorrect (indicated by GitHub returning HTTP 404
+    from API requests). The new option `continue_if_repo_not_found' can be set
+    to continue anyway.
+
 0.47      2018-09-16 22:43:24Z
 
   - Fix infinite loop when using 2FA (Joelle Maslak, #55)
