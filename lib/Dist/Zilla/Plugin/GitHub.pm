@@ -201,6 +201,8 @@ sub _get_repo_name {
         }
     }
 
+    $self->log([ "Using repo name github.com/$repo" ]);
+
     return $repo;
 }
 
