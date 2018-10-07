@@ -2,6 +2,10 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+  - Require your GitHub username to be available (in Git's config or
+    otherwise). Previously this plugin would log this and halfway succeed in
+    some of its actions. This makes us more strictly check our preconditions.
+
 0.47      2018-09-16 22:43:24Z
 
   - Fix infinite loop when using 2FA (Joelle Maslak, #55)
