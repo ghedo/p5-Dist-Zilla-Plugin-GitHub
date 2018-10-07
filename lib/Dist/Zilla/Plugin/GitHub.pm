@@ -37,8 +37,7 @@ has prompt_2fa => (
 
 has _login => (
     is      => 'ro',
-    isa     => 'Maybe[Str]',
-    lazy    => 1,
+    isa     => 'Str',
     builder => '_build_login',
 );
 
@@ -87,7 +86,7 @@ sub _build_login {
     if (%identity) {
         $login = $identity{login};
     } else {
-        $login = `git config github.user`;  chomp $login;
+        $login = _get_git_github_user();
     }
 
     if (!$login) {
@@ -95,10 +94,15 @@ sub _build_login {
             "Err: missing value 'user' in ~/.github" :
             "Err: Missing value 'github.user' in git config";
 
-        $self->log($error);
-        return undef;
+        die $error;
     }
 
+    return $login;
+}
+
+sub _get_git_github_user {
+    my $login = `git config github.user`;
+    chomp $login;
     return $login;
 }
 
@@ -174,7 +178,7 @@ sub _auth_headers {
 }
 
 sub _get_repo_name {
-    my ($self, $login) = @_;
+    my ($self) = @_;
 
     my $repo;
     my $git = Git::Wrapper->new('./');
@@ -194,7 +198,7 @@ sub _get_repo_name {
     $repo = $self->zilla->name unless $repo;
 
     if ($repo !~ /.*\/.*/) {
-        $login = $self->_login;
+        my $login = $self->_login;
         if (defined $login) {
             $repo = "$login/$repo";
         }
