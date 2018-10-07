@@ -178,7 +178,7 @@ sub _auth_headers {
 }
 
 sub _get_repo_name {
-    my ($self, $login) = @_;
+    my ($self) = @_;
 
     my $repo;
     my $git = Git::Wrapper->new('./');
@@ -198,7 +198,7 @@ sub _get_repo_name {
     $repo = $self->zilla->name unless $repo;
 
     if ($repo !~ /.*\/.*/) {
-        $login = $self->_login;
+        my $login = $self->_login;
         if (defined $login) {
             $repo = "$login/$repo";
         }

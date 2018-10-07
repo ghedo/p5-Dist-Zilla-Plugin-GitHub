@@ -99,7 +99,7 @@ sub after_release {
 
     return if (!$self->_has_credentials);
 
-    my $repo_name = $self->_get_repo_name($self->_credentials->{login});
+    my $repo_name = $self->_get_repo_name;
     if (not $repo_name) {
         $self->log('cannot update GitHub repository info');
         return;
