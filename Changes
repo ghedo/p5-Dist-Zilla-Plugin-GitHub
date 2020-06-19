@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-GitHub
 
 {{$NEXT}}
 
+  - fix uninitialized warning, and dump full response, on receipt of an error
+    from github
+
 0.47      2018-09-16 22:43:24Z
 
   - Fix infinite loop when using 2FA (Joelle Maslak, #55)

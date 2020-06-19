@@ -211,9 +211,10 @@ sub _check_response {
 
         if (!$response->{success}) {
             return 'redo' if (($response->{status} eq '401') and
-                              ($response->{headers}{'x-github-otp'} =~ /^required/));
+                              (($response->{headers}{'x-github-otp'} // '') =~ /^required/));
 
-            $self->log("Err: ", $json_text->{message});
+            require Data::Dumper;
+            $self->log("Err: ", Data::Dumper->new([ $response ])->Indent(2)->Terse(1)->Sortkeys(1)->Dump);
             return;
         }
 
