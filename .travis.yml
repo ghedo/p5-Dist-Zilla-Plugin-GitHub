@@ -1,4 +1,3 @@
-sudo: false
 language: perl
 perl:
   - blead   # builds perl from git
