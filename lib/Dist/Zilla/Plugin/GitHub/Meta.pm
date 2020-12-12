@@ -227,7 +227,7 @@ Wiki happens to be activated (see the GitHub repository's C<Admin> panel).
 =item C<bugs>
 
 The META bugtracker web field will be set to the issue's page of the repository
-on GitHub, if this options is set to true (default) and if the GitHub Issues happen to
+on GitHub, if this option is set to true (default) and if the GitHub Issues happen to
 be activated (see the GitHub repository's C<Admin> panel).
 
 =item C<fork>
