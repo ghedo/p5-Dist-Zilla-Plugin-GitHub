@@ -5,6 +5,7 @@ Revision history for Dist-Zilla-Plugin-GitHub
   - fix uninitialized warning, and dump full response, on receipt of an error
     from github
   - use https URLs for metacpan.org, p3rl.org
+  - fix use of authentication tokens against latest github APIs
 
 0.47      2018-09-16 22:43:24Z
 

@@ -122,22 +122,15 @@ sub _build_credentials {
     } else {
         $token = `git config github.token`;    chomp $token;
         $pass  = `git config github.password`; chomp $pass;
-
-        # modern "tokens" can be used as passwords with basic auth, so...
-        # see https://help.github.com/articles/creating-an-access-token-for-command-line-use
-        $pass ||= $token if $token;
     }
 
-    $self->log("Err: Login with GitHub token is deprecated")
-        if $token && !$pass;
-
-    if (!$pass) {
+    if (!$pass and !$token) {
         $pass = $self->zilla->chrome->prompt_str(
             "GitHub password for '$login'", { noecho => 1 },
         );
     }
 
-    return {login => $login, pass => $pass};
+    return { login => $login, pass => $pass, token => $token };
 }
 
 sub _has_credentials {
@@ -150,11 +143,14 @@ sub _auth_headers {
 
     my $credentials = $self->_credentials;
 
-    my %headers;
+    my %headers = ( Accept => 'application/vnd.github.v3+json' );
     if ($credentials->{pass}) {
         require MIME::Base64;
         my $basic = MIME::Base64::encode_base64("$credentials->{login}:$credentials->{pass}", '');
         $headers{Authorization} = "Basic $basic";
+    }
+    elsif ($credentials->{token}) {
+       $headers{Authorization} = "token $credentials->{token}";
     }
 
     # This can't be done at object creation because we autodetect the
