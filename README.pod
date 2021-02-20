@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::GitHub - Plugins to integrate Dist::Zilla with GitHub
 
 =head1 VERSION
 
-version 0.47
+version 0.48
 
 =head1 DESCRIPTION
 
@@ -52,7 +52,7 @@ Alessandro Ghedini <alexbio@cpan.org>
 
 =head1 CONTRIBUTORS
 
-=for stopwords Alessandro Ghedini Karen Etheridge Dave Rolsky Mike Friedman Jeffrey Ryan Thalhammer Rafael Kitover Joelle Maslak Doherty Vyacheslav Matyukhin Alexandr Ciornii Brian Phillips Chris Weyl Ioan Rogers Jose Luis Perez Diez Mohammad S Anwar Ricardo Signes
+=for stopwords Alessandro Ghedini Karen Etheridge Dave Rolsky Mike Friedman Jeffrey Ryan Thalhammer Joelle Maslak Doherty Rafael Kitover Alexandr Ciornii Brian Phillips Chris Weyl Ioan Rogers Jose Luis Perez Diez Mohammad S Anwar Paul Cochrane Ricardo Signes Vyacheslav Matyukhin
 
 =over 4
 
@@ -78,10 +78,6 @@ Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>
 
 =item *
 
-Rafael Kitover <rkitover@cpan.org>
-
-=item *
-
 Joelle Maslak <jmaslak@antelope.net>
 
 =item *
@@ -90,7 +86,7 @@ Mike Doherty <doherty@cs.dal.ca>
 
 =item *
 
-Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
+Rafael Kitover <rkitover@cpan.org>
 
 =item *
 
@@ -118,7 +114,15 @@ Mohammad S Anwar <mohammad.anwar@yahoo.com>
 
 =item *
 
+Paul Cochrane <paul.cochrane@posteo.de>
+
+=item *
+
 Ricardo Signes <rjbs@cpan.org>
+
+=item *
+
+Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 
 =back
 
