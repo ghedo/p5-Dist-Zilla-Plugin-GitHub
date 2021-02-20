@@ -130,6 +130,7 @@ sub metadata {
     $self->log("Getting GitHub repository info");
 
     my $url      = $self->api."/repos/$repo_name";
+    $self->log_debug("Sending GET $url");
     my $response = $http->request('GET', $url, $self->require_auth ? {headers => $self->_auth_headers} : ());
 
     my $repo = $self->_check_response($response);

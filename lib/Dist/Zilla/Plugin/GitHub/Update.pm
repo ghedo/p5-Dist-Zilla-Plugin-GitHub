@@ -137,6 +137,7 @@ sub after_release {
         return;
     }
 
+    $self->log_debug("Sending PATCH $url");
     my $response = HTTP::Tiny->new->request('PATCH', $url, {
         content => encode_json($params),
         headers => $self->_auth_headers,
@@ -160,6 +161,7 @@ sub _current_params {
 
     my $http = HTTP::Tiny->new;
 
+    $self->log_debug("Sending GET $url");
     my $response = $http->request('GET', $url);
 
     return $self->_check_response($response);

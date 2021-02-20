@@ -139,6 +139,7 @@ sub after_mint {
 
     $content = encode_json($params);
 
+    $self->log_debug("Sending POST $url");
     my $response = $http->request('POST', $url, {
         content => $content,
         headers => $self->_auth_headers,
