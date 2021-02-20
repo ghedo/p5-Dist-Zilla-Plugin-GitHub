@@ -216,6 +216,7 @@ sub _check_response {
 
         return $json_text;
     } catch {
+        $self->log("Error: $_");
         if ($response and !$response->{success} and
             $response->{status} eq '599') {
             #possibly HTTP::Tiny error
@@ -223,10 +224,10 @@ sub _check_response {
             return;
         }
 
-        $self->log("Err: Can't connect to GitHub");
+        $self->log("Error communicating with GitHub: $_");
 
         return;
-    }
+    };
 }
 
 __PACKAGE__->meta->make_immutable;
