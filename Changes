@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-GitHub
 
+{{$NEXT}}
+
 0.49      2023-04-30 13:17:09Z
   - better diagnostics when [GitHub::Update] encounters permission errors
 
