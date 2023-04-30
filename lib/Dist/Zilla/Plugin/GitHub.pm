@@ -209,6 +209,11 @@ sub _check_response {
             return 'redo' if (($response->{status} eq '401') and
                               (($response->{headers}{'x-github-otp'} // '') =~ /^required/));
 
+            if ($response->{status} eq '404') {
+                $self->log($response->{reason}.' (insufficient permissions to edit this resource?)');
+                return;
+            }
+
             require Data::Dumper;
             $self->log("Err: ", Data::Dumper->new([ $response ])->Indent(2)->Terse(1)->Sortkeys(1)->Dump);
             return;
